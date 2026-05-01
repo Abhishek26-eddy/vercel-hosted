@@ -272,7 +272,7 @@ function Nav({ cta }: { cta: string }) {
    HERO - Editorial, cinematic, confident
 ───────────────────────────────────────────────────────────────── */
 function Hero({ cta }: { cta: string }) {
-  const { prices } = useLocale();
+  const { prices, t } = useLocale();
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -323,7 +323,7 @@ function Hero({ cta }: { cta: string }) {
             >
               <div className="h-px w-8" style={{ background: P.goldMuted }} />
               <p className="text-[10px] font-medium tracking-[0.35em] uppercase" style={{ color: P.gold }}>
-                Digital Wedding Invitations
+                {t("hero.eyebrow")}
               </p>
             </motion.div>
 
@@ -339,10 +339,10 @@ function Hero({ cta }: { cta: string }) {
                 letterSpacing: "-0.02em",
               }}
             >
-              An invitation
+              {t("hero.title1")}
               <br />
               <span className="font-script" style={{ color: P.gold, fontSize: "0.85em" }}>
-                as unique as your love
+                {t("hero.title2")}
               </span>
             </motion.h1>
 
@@ -353,8 +353,7 @@ function Hero({ cta }: { cta: string }) {
               className="mt-6 max-w-md text-[15px] leading-[1.9]"
               style={{ color: P.body }}
             >
-              We craft bespoke digital invitations that capture the essence of your story. 
-              Your guests will feel the thought in every detail.
+              {t("hero.subtitle")}
             </motion.p>
 
             {/* Trust indicators - softer presentation */}
@@ -392,7 +391,7 @@ function Hero({ cta }: { cta: string }) {
                 >
                   <ArrowRight size={16} />
                 </span>
-                <span>Create your invitation</span>
+                <span>{t("hero.cta")}</span>
                 <span style={{ color: P.gold }}>{prices.essential}</span>
               </a>
               <Link
@@ -400,7 +399,7 @@ function Hero({ cta }: { cta: string }) {
                 className="text-[12px] tracking-wide transition-colors hover:text-[#9a7b4f]"
                 style={{ color: P.muted }}
               >
-                View samples
+                {t("hero.viewSamples")}
               </Link>
             </motion.div>
           </motion.div>
@@ -1168,7 +1167,7 @@ function Footer({ cta }: { cta: string }) {
    MAIN
 ───────────────────────────────────────────────────────────────── */
 export default function PortfolioHome() {
-  const { prices } = useLocale();
+  const { prices, t } = useLocale();
   const cta = `${BRAND.whatsappBase}Hi%2C%20I%27d%20like%20to%20discuss%20a%20custom%20wedding%20invitation.`;
 
   return (
@@ -1198,7 +1197,7 @@ export default function PortfolioHome() {
           style={{ background: P.ink, color: P.bg }}
         >
           <MessageCircle size={18} />
-          Start Your Invite — {prices.essential}
+          {t("cta.mobile")} — {prices.essential}
           <ArrowRight size={14} />
         </a>
       </div>
