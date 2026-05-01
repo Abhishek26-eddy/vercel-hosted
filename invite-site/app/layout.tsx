@@ -40,9 +40,10 @@ export const metadata: Metadata = {
     template: "%s | The Digital Inviters",
   },
   description:
-    "Bespoke digital wedding invitations crafted for modern couples. Cinematic animations, personalized storytelling, and mobile-first design. From Paris to Santorini to your hometown — we create invites guests screenshot and remember.",
+    "Boutique digital wedding invitations from ₹7,999 to ₹14,999. Cinematic animations, personalized storytelling, built-in RSVP, and lifetime hosting. Custom designs delivered in 3–5 days.",
   keywords: [
     "digital wedding invitation",
+    "digital wedding invitation India",
     "wedding invite design",
     "animated wedding card",
     "luxury wedding invitation",
@@ -51,13 +52,20 @@ export const metadata: Metadata = {
     "destination wedding invite",
     "Indian wedding card",
     "modern wedding invitation",
+    "wedding e-invite",
+    "digital shaadi card",
+    "online wedding invitation",
+    "wedding website India",
   ],
   authors: [{ name: "The Digital Inviters" }],
   creator: "The Digital Inviters",
+  other: {
+    "theme-color": "#faf9f7",
+  },
   openGraph: {
     title: "The Digital Inviters — Boutique Digital Wedding Invitations",
     description:
-      "Bespoke digital wedding invitations with cinematic animations and personalized storytelling. Crafted for modern couples who want their invite to feel as special as their love story.",
+      "Boutique digital wedding invitations from ₹7,999 to ₹14,999. Custom designs, cinematic animations, built-in RSVP, and lifetime hosting.",
     type: "website",
     url: "https://thedigitalinviters.vercel.app",
     siteName: "The Digital Inviters",
@@ -74,7 +82,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "The Digital Inviters — Boutique Digital Wedding Invitations",
     description:
-      "Bespoke digital wedding invitations with cinematic animations. Crafted for modern couples.",
+      "Boutique digital wedding invitations from ₹7,999 to ₹14,999. Custom designs with cinematic animations.",
     images: ["https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=85"],
   },
   robots: {

@@ -8,11 +8,12 @@ import WhatsAppButton from "@/components/portfolio/WhatsAppButton";
 
 const hero = "https://images.unsplash.com/photo-1609925265061-7d5a6b1b9dab?auto=format&fit=crop&w=1800&q=85";
 const gallery = [
-  "https://images.unsplash.com/photo-1567306226416-28f0efdc88ce?auto=format&fit=crop&w=900&q=85",
-  "https://images.unsplash.com/photo-1610030469668-8e4a9c2889f1?auto=format&fit=crop&w=900&q=85",
-  "https://images.unsplash.com/photo-1596178065887-1198b6148b2b?auto=format&fit=crop&w=900&q=85",
-  "https://images.unsplash.com/photo-1574351406668-7588abbed12f?auto=format&fit=crop&w=900&q=85",
-  "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&w=900&q=85",
+  "https://images.unsplash.com/photo-1583089892943-e02e5b017b6a?auto=format&fit=crop&w=900&q=85",
+  "https://images.unsplash.com/photo-1604604557532-cd5e53e2d033?auto=format&fit=crop&w=900&q=85",
+  "https://images.unsplash.com/photo-1591604466107-ec97de577aff?auto=format&fit=crop&w=900&q=85",
+  "https://images.unsplash.com/photo-1610173826608-e3a5e1c3bba0?auto=format&fit=crop&w=900&q=85",
+  "https://images.unsplash.com/photo-1587825140708-dfaf18c4c93a?auto=format&fit=crop&w=900&q=85",
+  "https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=900&q=85",
 ];
 
 const ceremonies = [
@@ -156,7 +157,7 @@ export default function SouthIndianTempleInvite() {
       </section>
 
       <section className="relative overflow-hidden px-5 py-24 sm:px-8">
-        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1567306226416-28f0efdc88ce?auto=format&fit=crop&w=1800&q=85')] bg-cover bg-center" />
+        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1609925265061-7d5a6b1b9dab?auto=format&fit=crop&w=1800&q=85')] bg-cover bg-center" />
         <div className="absolute inset-0 bg-[#0f5132]/80" />
         <div className="relative mx-auto grid max-w-5xl gap-8 rounded-[2.5rem] border border-[#c9a14a]/40 bg-[#fdf7ea]/10 p-10 text-[#fdf7ea] backdrop-blur-md md:grid-cols-[1fr_auto]">
           <div>
