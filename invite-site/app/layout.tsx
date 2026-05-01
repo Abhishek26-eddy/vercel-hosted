@@ -36,24 +36,50 @@ const body = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL("https://thedigitalinviters.vercel.app"),
   title: {
-    default: "The Digital Inviters — Premium Digital Wedding Invitations",
+    default: "The Digital Inviters — Boutique Digital Wedding Invitations",
     template: "%s | The Digital Inviters",
   },
   description:
-    "Premium digital wedding invitations crafted for modern celebrations. Browse cinematic themes — floral, royal, boho, minimal, Bollywood, temple and beach destination invites.",
+    "Bespoke digital wedding invitations crafted for modern couples. Cinematic animations, personalized storytelling, and mobile-first design. From Paris to Santorini to your hometown — we create invites guests screenshot and remember.",
+  keywords: [
+    "digital wedding invitation",
+    "wedding invite design",
+    "animated wedding card",
+    "luxury wedding invitation",
+    "custom wedding invite",
+    "WhatsApp wedding invitation",
+    "destination wedding invite",
+    "Indian wedding card",
+    "modern wedding invitation",
+  ],
+  authors: [{ name: "The Digital Inviters" }],
+  creator: "The Digital Inviters",
   openGraph: {
-    title: "The Digital Inviters — Premium Digital Wedding Invitations",
+    title: "The Digital Inviters — Boutique Digital Wedding Invitations",
     description:
-      "Premium digital wedding invitations crafted for modern celebrations.",
+      "Bespoke digital wedding invitations with cinematic animations and personalized storytelling. Crafted for modern couples who want their invite to feel as special as their love story.",
     type: "website",
     url: "https://thedigitalinviters.vercel.app",
     siteName: "The Digital Inviters",
+    images: [
+      {
+        url: "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=85",
+        width: 1200,
+        height: 630,
+        alt: "The Digital Inviters - Premium Wedding Invitations",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "The Digital Inviters — Premium Digital Wedding Invitations",
+    title: "The Digital Inviters — Boutique Digital Wedding Invitations",
     description:
-      "Premium digital wedding invitations crafted for modern celebrations.",
+      "Bespoke digital wedding invitations with cinematic animations. Crafted for modern couples.",
+    images: ["https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=85"],
+  },
+  robots: {
+    index: true,
+    follow: true,
   },
 };
 

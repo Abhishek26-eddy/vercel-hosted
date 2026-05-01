@@ -20,6 +20,54 @@ export const BRAND = {
 };
 
 export const PORTFOLIO_THEMES: PortfolioTheme[] = [
+  // ─────────────────────────────────────────────────────────────
+  // INTERNATIONAL DESTINATION THEMES (Premium)
+  // ─────────────────────────────────────────────────────────────
+  {
+    slug: "paris-romance",
+    name: "Paris Romance",
+    tagline: "Eiffel Tower dreams. Champagne kisses.",
+    shortDescription:
+      "A dreamy Parisian wedding invitation with French elegance, champagne blush tones, and cinematic romance under the City of Lights.",
+    couple: "Amélie & Étienne",
+    location: "Paris, France",
+    palette: ["#faf8f5", "#e8d4d0", "#c9a87c", "#2c2420"],
+    image:
+      "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=1200&q=85",
+    accent: "#d4a574",
+    background: "#faf8f5",
+  },
+  {
+    slug: "santorini-sunset",
+    name: "Santorini Sunset",
+    tagline: "Where the Aegean meets forever.",
+    shortDescription:
+      "A breathtaking Greek island invitation with whitewashed domes, Aegean blues, and Mediterranean sunsets over the caldera.",
+    couple: "Elena & Nikos",
+    location: "Santorini, Greece",
+    palette: ["#ffffff", "#4a90a4", "#1e3a5f", "#d4a574"],
+    image:
+      "https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?auto=format&fit=crop&w=1200&q=85",
+    accent: "#d4a574",
+    background: "#ffffff",
+  },
+  {
+    slug: "tuscany-vineyard",
+    name: "Tuscany Vineyard",
+    tagline: "Amore under the Tuscan sun.",
+    shortDescription:
+      "A romantic Italian countryside invitation with rolling hills, olive groves, terracotta warmth, and rustic vineyard elegance.",
+    couple: "Isabella & Marco",
+    location: "Tuscany, Italy",
+    palette: ["#faf6f1", "#c67b5c", "#6b7c5a", "#722f37"],
+    image:
+      "https://images.unsplash.com/photo-1523531294919-4bcd7c65e216?auto=format&fit=crop&w=1200&q=85",
+    accent: "#c67b5c",
+    background: "#faf6f1",
+  },
+  // ─────────────────────────────────────────────────────────────
+  // INDIAN THEMES
+  // ─────────────────────────────────────────────────────────────
   {
     slug: "roses-luxury",
     name: "Roses Luxury",
@@ -49,20 +97,6 @@ export const PORTFOLIO_THEMES: PortfolioTheme[] = [
     background: "#fdf4e3",
   },
   {
-    slug: "boho-sundowner",
-    name: "Boho Sundowner",
-    tagline: "Terracotta skies, barefoot vows.",
-    shortDescription:
-      "A laid-back boho-beach invite with sunset gradients, dried florals and relaxed Goa energy.",
-    couple: "Rhea & Kabir",
-    location: "Goa",
-    palette: ["#fbeee0", "#e5a07a", "#a85c3b", "#556052"],
-    image:
-      "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=85",
-    accent: "#c96a4b",
-    background: "#fbeee0",
-  },
-  {
     slug: "minimal-elegant",
     name: "Minimal Elegant",
     tagline: "Quiet luxury. Clean lines.",
@@ -77,20 +111,6 @@ export const PORTFOLIO_THEMES: PortfolioTheme[] = [
     background: "#f7f6f2",
   },
   {
-    slug: "bollywood-sangeet",
-    name: "Bollywood Sangeet",
-    tagline: "Lights. Music. Shaadi.",
-    shortDescription:
-      "A glamorous high-energy invite made for sangeet nights, with spotlights, magenta neon and disco sparkle.",
-    couple: "Kiara & Ranvijay",
-    location: "New Delhi",
-    palette: ["#1b0b2a", "#5d2a9a", "#e91e63", "#f5c542"],
-    image:
-      "https://images.unsplash.com/photo-1519671482749-fd09be7ccebf?auto=format&fit=crop&w=1200&q=85",
-    accent: "#f5c542",
-    background: "#1b0b2a",
-  },
-  {
     slug: "south-indian-temple",
     name: "South Indian Temple",
     tagline: "Jasmine, gold and sacred vows.",
@@ -103,19 +123,5 @@ export const PORTFOLIO_THEMES: PortfolioTheme[] = [
       "https://images.unsplash.com/photo-1609925265061-7d5a6b1b9dab?auto=format&fit=crop&w=1200&q=85",
     accent: "#c9a14a",
     background: "#fdf7ea",
-  },
-  {
-    slug: "beach-destination",
-    name: "Beach Destination",
-    tagline: "Ocean vows. Pearl skies.",
-    shortDescription:
-      "A luxury destination invite with aqua gradients, pearl-white typography and full travel itinerary.",
-    couple: "Alia & Zayn",
-    location: "Havelock Island, Andaman",
-    palette: ["#eaf7f8", "#bfe2e3", "#2b8a9b", "#f3e6c4"],
-    image:
-      "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=85",
-    accent: "#2b8a9b",
-    background: "#eaf7f8",
   },
 ];
