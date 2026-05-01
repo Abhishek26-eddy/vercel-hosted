@@ -10,11 +10,20 @@ import {
   Smartphone,
   Users,
   Clock,
-  Heart,
   CheckCircle2,
   ChevronDown,
   Send,
   Play,
+  Shield,
+  Sparkles,
+  Star,
+  Zap,
+  Gift,
+  RefreshCw,
+  Globe,
+  HeartHandshake,
+  Award,
+  Check,
 } from "lucide-react";
 import SectionReveal from "@/components/portfolio/SectionReveal";
 import { BRAND, PORTFOLIO_THEMES } from "@/lib/portfolioThemes";
@@ -53,66 +62,126 @@ const P = {
 const HERO_IMG = "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=2400&q=90";
 
 /* ─────────────────────────────────────────────────────────────
-   REFINED DATA - Tighter copy
+   TRUST-FOCUSED DATA
 ───────────────────────────────────────────────────────────────── */
-const FEATURES = [
+
+const TRUST_STATS = [
+  { value: "150+", label: "Couples Served" },
+  { value: "24h", label: "First Draft" },
+  { value: "100%", label: "Satisfaction" },
+];
+
+const WHY_CHOOSE = [
   {
-    icon: Palette,
-    title: "Bespoke Design",
-    desc: "Crafted around your story, not a template.",
+    icon: HeartHandshake,
+    title: "Dedicated Designer",
+    desc: "One designer works with you from start to finish. No handoffs, no miscommunication.",
   },
   {
-    icon: Play,
-    title: "Cinematic Motion",
-    desc: "Editorial animation that feels intentional.",
+    icon: Zap,
+    title: "Rapid Turnaround",
+    desc: "First draft in 24 hours. Most couples have their final invite within 3-5 days.",
   },
   {
-    icon: Users,
-    title: "Personal Touch",
-    desc: "Each guest sees their own named invitation.",
+    icon: RefreshCw,
+    title: "Unlimited Revisions",
+    desc: "We refine until you're completely satisfied. No revision limits, no extra charges.",
   },
   {
-    icon: Smartphone,
-    title: "Mobile Perfect",
-    desc: "Stunning on WhatsApp, where sharing happens.",
-  },
-  {
-    icon: MessageCircle,
-    title: "Built-in RSVP",
-    desc: "Collect responses without the spreadsheet.",
-  },
-  {
-    icon: Clock,
-    title: "Fast Delivery",
-    desc: "First draft in 24 hours. Unlimited revisions.",
+    icon: Shield,
+    title: "Satisfaction Guaranteed",
+    desc: "If you're not happy with the direction, we'll refund you. No questions asked.",
   },
 ];
 
+const WHATS_INCLUDED = [
+  "Fully custom design based on your theme",
+  "Animated hero with your names & date",
+  "Your love story timeline",
+  "Event schedule with all ceremonies",
+  "Interactive venue map & directions",
+  "Photo gallery section",
+  "Built-in RSVP collection",
+  "Personalized guest names",
+  "WhatsApp-optimized sharing",
+  "Lifetime hosting included",
+  "Mobile-first responsive design",
+  "Countdown timer to your wedding",
+];
+
 const STEPS = [
-  { n: "01", title: "Choose", desc: "Find your aesthetic in our collection." },
-  { n: "02", title: "Share", desc: "Send us your story and details." },
-  { n: "03", title: "Refine", desc: "Review, revise, perfect together." },
-  { n: "04", title: "Celebrate", desc: "Share your invite with the world." },
+  { 
+    n: "01", 
+    title: "Share Your Vision", 
+    desc: "Tell us about your wedding — the theme, colors, story, and what makes your love unique.",
+    time: "15 min call or message"
+  },
+  { 
+    n: "02", 
+    title: "Review First Draft", 
+    desc: "Within 24 hours, you'll receive a fully designed invite preview to review.",
+    time: "24 hours"
+  },
+  { 
+    n: "03", 
+    title: "Refine Together", 
+    desc: "We'll iterate on every detail — colors, copy, photos, animations — until it's perfect.",
+    time: "2-3 days"
+  },
+  { 
+    n: "04", 
+    title: "Launch & Share", 
+    desc: "Get your unique link and start sharing with guests. We handle hosting forever.",
+    time: "Same day"
+  },
 ];
 
 const TESTIMONIALS = [
   {
     quote: "Our guests didn't just open it — they screenshot it, talked about it, kept coming back. It felt like a trailer for our wedding.",
     couple: "Shreya & Dev",
-    loc: "Mumbai",
+    loc: "Mumbai · December 2024",
+    detail: "Royal Palace Theme",
   },
   {
-    quote: "Every animation, every word felt intentional. Our families were genuinely impressed.",
+    quote: "The attention to detail was extraordinary. Every animation, every word felt intentional. Our families were genuinely impressed.",
     couple: "Ananya & Karthik", 
-    loc: "Chennai",
+    loc: "Chennai · November 2024",
+    detail: "South Indian Temple Theme",
+  },
+  {
+    quote: "We wanted something that felt like us — modern but rooted in tradition. They nailed it on the first try.",
+    couple: "Priya & Rohan",
+    loc: "Bangalore · January 2025",
+    detail: "Minimal Elegant Theme",
   },
 ];
 
 const FAQ = [
-  { q: "How long does it take?", a: "First draft in 24 hours. Most invites finalized in 3-5 days." },
-  { q: "Can I make changes?", a: "Unlimited revisions until you're completely satisfied." },
-  { q: "How do guests view it?", a: "A unique URL they tap to open — works everywhere." },
-  { q: "Is it hosted forever?", a: "Yes. A digital keepsake you can revisit anytime." },
+  { 
+    q: "How long does the entire process take?", 
+    a: "Most couples receive their final invite within 3-5 days. We send the first draft within 24 hours of receiving your details, then refine based on your feedback. Rush delivery is available if you need it sooner." 
+  },
+  { 
+    q: "What if I don't like the first design?", 
+    a: "We offer unlimited revisions until you're completely satisfied. If after revisions you're still not happy with the direction, we offer a full refund — no questions asked." 
+  },
+  { 
+    q: "How do guests view the invitation?", 
+    a: "Each guest receives a unique URL (like yourwedding.thedigitalinviters.com/guest-name). They simply tap to open — no app downloads, no sign-ups. Works perfectly on WhatsApp, Instagram, email, or any platform." 
+  },
+  { 
+    q: "Is hosting included? For how long?", 
+    a: "Yes, lifetime hosting is included in every package. Your invite stays live forever — a digital keepsake you and your guests can revisit anytime." 
+  },
+  { 
+    q: "Can I make changes after the invite is live?", 
+    a: "Absolutely. Need to update a venue, time, or add a new event? Just message us and we'll update it within hours — at no extra cost." 
+  },
+  { 
+    q: "Do you offer video invitations?", 
+    a: "Our invites are interactive web experiences with cinematic animations — more engaging than a video because guests can interact, RSVP, and explore. If you specifically need a video file, we can discuss options." 
+  },
 ];
 
 /* ─────────────────────────────────────────────────────────────
@@ -132,42 +201,60 @@ const stagger = {
 };
 
 /* ─────────────────────────────────────────────────────────────
-   NAVIGATION - Minimal, confident
+   NAVIGATION - Premium, confident
 ───────────────────────────────────────────────────────────────── */
 function Nav({ cta }: { cta: string }) {
   return (
     <header className="fixed inset-x-0 top-0 z-50">
       <div 
-        className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5 sm:px-10"
-        style={{ background: `${P.bg}F0`, backdropFilter: "blur(12px)" }}
+        className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 sm:px-10"
+        style={{ background: `${P.bg}F5`, backdropFilter: "blur(16px)" }}
       >
-        <Link href="/" className="font-display text-xl tracking-tight" style={{ color: P.ink }}>
-          The Digital Inviters
+        <Link href="/" className="flex items-center gap-2" style={{ color: P.ink }}>
+          <span className="flex h-8 w-8 items-center justify-center rounded-full" style={{ background: P.gold, color: "white" }}>
+            <Sparkles size={14} />
+          </span>
+          <span className="font-display text-lg tracking-tight">The Digital Inviters</span>
         </Link>
         
-        <nav className="hidden items-center gap-10 md:flex">
-          {["Collection", "Process", "Pricing"].map((item) => (
+        <nav className="hidden items-center gap-8 lg:flex">
+          {[
+            ["Collection", "#collection"],
+            ["How It Works", "#process"],
+            ["What's Included", "#included"],
+            ["Pricing", "#pricing"],
+          ].map(([label, href]) => (
             <Link
-              key={item}
-              href={`#${item.toLowerCase()}`}
+              key={label}
+              href={href}
               className="text-[13px] tracking-wide transition-colors hover:text-[#9a7b4f]"
-              style={{ color: P.muted }}
+              style={{ color: P.body }}
             >
-              {item}
+              {label}
             </Link>
           ))}
         </nav>
 
-        <a
-          href={cta}
-          target="_blank"
-          rel="noreferrer"
-          className="group flex items-center gap-2 rounded-full px-5 py-2.5 text-[12px] font-medium tracking-wide transition-all duration-300 hover:gap-3"
-          style={{ background: P.ink, color: P.bg }}
-        >
-          Enquire
-          <ArrowRight size={14} className="transition-transform group-hover:translate-x-0.5" />
-        </a>
+        <div className="flex items-center gap-3">
+          <a
+            href={cta}
+            target="_blank"
+            rel="noreferrer"
+            className="group hidden items-center gap-2 rounded-full border px-5 py-2.5 text-[12px] font-medium tracking-wide transition-all duration-300 hover:border-[#9a7b4f] sm:flex"
+            style={{ borderColor: P.line, color: P.ink }}
+          >
+            <MessageCircle size={14} />
+            WhatsApp
+          </a>
+          <a
+            href="#pricing"
+            className="group flex items-center gap-2 rounded-full px-5 py-2.5 text-[12px] font-medium tracking-wide transition-all duration-300 hover:gap-3"
+            style={{ background: P.ink, color: P.bg }}
+          >
+            Get Started
+            <ArrowRight size={14} className="transition-transform group-hover:translate-x-0.5" />
+          </a>
+        </div>
       </div>
     </header>
   );
@@ -244,16 +331,28 @@ function Hero({ cta }: { cta: string }) {
               className="mt-8 max-w-xl text-[17px] leading-[1.8]"
               style={{ color: P.body }}
             >
-              We craft bespoke digital wedding invitations that guests screenshot, 
-              share, and remember. Designed around your story. Animated with intention.
+              We design bespoke digital wedding invitations that guests screenshot, 
+              share, and remember. Crafted around your unique story. Animated with cinematic intention.
             </motion.p>
+
+            {/* Trust indicators */}
+            <motion.div 
+              variants={fadeUp} 
+              custom={2.5}
+              className="mt-8 flex flex-wrap items-center gap-6"
+            >
+              {TRUST_STATS.map((stat) => (
+                <div key={stat.label} className="flex items-center gap-2">
+                  <span className="font-display text-xl" style={{ color: P.ink }}>{stat.value}</span>
+                  <span className="text-[11px] tracking-wide uppercase" style={{ color: P.muted }}>{stat.label}</span>
+                </div>
+              ))}
+            </motion.div>
 
             {/* CTA */}
             <motion.div variants={fadeUp} custom={3} className="mt-10 flex flex-wrap gap-4">
               <a
-                href={cta}
-                target="_blank"
-                rel="noreferrer"
+                href="#pricing"
                 className="group inline-flex items-center gap-3 rounded-full px-8 py-4 text-[12px] font-medium tracking-wide transition-all duration-500 hover:gap-4"
                 style={{ 
                   background: P.ink, 
@@ -261,15 +360,15 @@ function Hero({ cta }: { cta: string }) {
                   boxShadow: "0 20px 50px rgba(28,25,23,0.15)",
                 }}
               >
-                Start Your Invite
+                Start Your Invite — ₹4,999
                 <ArrowRight size={15} className="transition-transform group-hover:translate-x-0.5" />
               </a>
               <Link
                 href="#collection"
-                className="inline-flex items-center gap-2 px-6 py-4 text-[12px] font-medium tracking-wide transition-colors"
-                style={{ color: P.body }}
+                className="inline-flex items-center gap-2 rounded-full border px-6 py-4 text-[12px] font-medium tracking-wide transition-colors hover:border-[#9a7b4f]"
+                style={{ color: P.body, borderColor: P.line }}
               >
-                View Collection
+                View Sample Invites
                 <ChevronDown size={14} />
               </Link>
             </motion.div>
@@ -318,46 +417,89 @@ function Hero({ cta }: { cta: string }) {
 }
 
 /* ─────────────────────────────────────────────────────────────
-   FEATURES - Clean grid, no boxes
+   WHY CHOOSE US - Trust building
 ───────────────────────────────────────────────────────────────── */
-function Features() {
+function WhyChooseUs() {
   return (
     <section className="px-6 py-28 sm:px-10 sm:py-36" style={{ background: P.bg }}>
       <div className="mx-auto max-w-6xl">
         <SectionReveal>
-          <p className="text-[11px] font-medium tracking-[0.3em] uppercase" style={{ color: P.gold }}>
-            The Difference
-          </p>
-          <h2 
-            className="mt-5 font-display tracking-tight"
-            style={{ color: P.ink, fontSize: "clamp(2rem, 5vw, 3.25rem)", lineHeight: 1.1 }}
-          >
-            Not a template.
-            <br />
-            <span className="font-script" style={{ color: P.gold }}>An experience.</span>
-          </h2>
+          <div className="mx-auto max-w-3xl text-center">
+            <p className="text-[11px] font-medium tracking-[0.3em] uppercase" style={{ color: P.gold }}>
+              Why Couples Choose Us
+            </p>
+            <h2 
+              className="mt-5 font-display tracking-tight"
+              style={{ color: P.ink, fontSize: "clamp(2rem, 5vw, 3.25rem)", lineHeight: 1.1 }}
+            >
+              A boutique studio approach.
+              <br />
+              <span className="font-script" style={{ color: P.gold }}>Not a template factory.</span>
+            </h2>
+            <p className="mx-auto mt-6 max-w-xl text-[16px] leading-relaxed" style={{ color: P.body }}>
+              We work with a limited number of couples each month to ensure every invitation 
+              receives the attention it deserves. Your wedding is unique — your invite should be too.
+            </p>
+          </div>
         </SectionReveal>
 
-        <div className="mt-20 grid gap-x-12 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
-          {FEATURES.map((f, i) => (
-            <SectionReveal key={f.title} delay={i * 0.06}>
-              <div className="group">
+        <div className="mt-20 grid gap-8 sm:grid-cols-2">
+          {WHY_CHOOSE.map((item, i) => (
+            <SectionReveal key={item.title} delay={i * 0.08}>
+              <div 
+                className="rounded-2xl p-8 transition-shadow duration-300 hover:shadow-lg"
+                style={{ background: P.surface, border: `1px solid ${P.lineSoft}` }}
+              >
                 <div 
-                  className="mb-5 flex h-12 w-12 items-center justify-center rounded-full transition-colors duration-300"
-                  style={{ background: P.bgAlt, color: P.gold }}
+                  className="mb-5 flex h-12 w-12 items-center justify-center rounded-full"
+                  style={{ background: `${P.gold}15`, color: P.gold }}
                 >
-                  <f.icon size={20} strokeWidth={1.5} />
+                  <item.icon size={22} strokeWidth={1.5} />
                 </div>
                 <h3 className="font-display text-xl tracking-tight" style={{ color: P.ink }}>
-                  {f.title}
+                  {item.title}
                 </h3>
-                <p className="mt-2 text-[15px] leading-relaxed" style={{ color: P.body }}>
-                  {f.desc}
+                <p className="mt-3 text-[15px] leading-relaxed" style={{ color: P.body }}>
+                  {item.desc}
                 </p>
               </div>
             </SectionReveal>
           ))}
         </div>
+
+        {/* Social proof bar */}
+        <SectionReveal delay={0.3}>
+          <div 
+            className="mt-16 flex flex-wrap items-center justify-center gap-8 rounded-2xl px-8 py-6"
+            style={{ background: P.bgAlt }}
+          >
+            <div className="flex items-center gap-2">
+              <div className="flex -space-x-2">
+                {[1, 2, 3, 4, 5].map((n) => (
+                  <div 
+                    key={n}
+                    className="h-8 w-8 rounded-full border-2"
+                    style={{ 
+                      background: `hsl(${n * 40}, 30%, 85%)`,
+                      borderColor: P.bgAlt,
+                    }}
+                  />
+                ))}
+              </div>
+              <span className="ml-2 text-[13px]" style={{ color: P.body }}>
+                <strong style={{ color: P.ink }}>150+ couples</strong> have trusted us
+              </span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              {[1, 2, 3, 4, 5].map((n) => (
+                <Star key={n} size={14} fill={P.gold} style={{ color: P.gold }} />
+              ))}
+              <span className="ml-1 text-[13px]" style={{ color: P.body }}>
+                <strong style={{ color: P.ink }}>5.0</strong> average rating
+              </span>
+            </div>
+          </div>
+        </SectionReveal>
       </div>
     </section>
   );
@@ -424,13 +566,18 @@ function Collection() {
                   </div>
                 </div>
 
-                {/* Footer */}
+                {/* Footer with CTA */}
                 <div className="flex items-center justify-between p-5" style={{ borderTop: `1px solid ${P.lineSoft}` }}>
-                  <span className="text-[11px] font-medium tracking-wide" style={{ color: P.gold }}>
-                    View Sample
-                  </span>
+                  <div>
+                    <span className="text-[11px] font-medium tracking-wide" style={{ color: P.gold }}>
+                      Preview This Style
+                    </span>
+                    <p className="mt-0.5 text-[10px]" style={{ color: P.muted }}>
+                      Tap to explore the full invite
+                    </p>
+                  </div>
                   <span 
-                    className="flex h-9 w-9 items-center justify-center rounded-full transition-all duration-300 group-hover:bg-[#1c1917] group-hover:text-white"
+                    className="flex h-10 w-10 items-center justify-center rounded-full transition-all duration-300 group-hover:bg-[#1c1917] group-hover:text-white"
                     style={{ background: P.bgAlt, color: P.ink }}
                   >
                     <ArrowRight size={14} />
@@ -440,95 +587,193 @@ function Collection() {
             </SectionReveal>
           ))}
         </div>
+
+        {/* Collection CTA */}
+        <SectionReveal delay={0.3}>
+          <div className="mt-12 text-center">
+            <p className="text-[15px]" style={{ color: P.body }}>
+              Don't see your style? <strong style={{ color: P.ink }}>We design custom themes too.</strong>
+            </p>
+          </div>
+        </SectionReveal>
       </div>
     </section>
   );
 }
 
 /* ─────────────────────────────────────────────────────────────
-   PROCESS - Horizontal timeline feel
+   PROCESS - Clear timeline with expectations
 ───────────────────────────────────────────────────────────────── */
 function Process() {
   return (
     <section id="process" className="px-6 py-28 sm:px-10 sm:py-36" style={{ background: P.bg }}>
       <div className="mx-auto max-w-6xl">
         <SectionReveal>
-          <p className="text-[11px] font-medium tracking-[0.3em] uppercase" style={{ color: P.gold }}>
-            How It Works
-          </p>
-          <h2 
-            className="mt-5 font-display tracking-tight"
-            style={{ color: P.ink, fontSize: "clamp(2rem, 5vw, 3.25rem)", lineHeight: 1.1 }}
-          >
-            A calm, considered craft.
-          </h2>
+          <div className="mx-auto max-w-3xl text-center">
+            <p className="text-[11px] font-medium tracking-[0.3em] uppercase" style={{ color: P.gold }}>
+              How It Works
+            </p>
+            <h2 
+              className="mt-5 font-display tracking-tight"
+              style={{ color: P.ink, fontSize: "clamp(2rem, 5vw, 3.25rem)", lineHeight: 1.1 }}
+            >
+              From vision to invite
+              <br />
+              <span className="font-script" style={{ color: P.gold }}>in under a week.</span>
+            </h2>
+          </div>
         </SectionReveal>
 
-        <div className="mt-20 grid gap-12 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-20 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
           {STEPS.map((s, i) => (
             <SectionReveal key={s.n} delay={i * 0.1}>
-              <div>
+              <div 
+                className="relative rounded-2xl p-6"
+                style={{ background: P.surface, border: `1px solid ${P.lineSoft}` }}
+              >
                 <span 
-                  className="font-display text-5xl"
+                  className="font-display text-4xl"
                   style={{ color: P.goldMuted }}
                 >
                   {s.n}
                 </span>
-                <h3 className="mt-4 font-display text-xl tracking-tight" style={{ color: P.ink }}>
+                <h3 className="mt-3 font-display text-lg tracking-tight" style={{ color: P.ink }}>
                   {s.title}
                 </h3>
-                <div className="mt-3 h-px w-10" style={{ background: P.gold }} />
-                <p className="mt-4 text-[15px] leading-relaxed" style={{ color: P.body }}>
+                <p className="mt-2 text-[14px] leading-relaxed" style={{ color: P.body }}>
                   {s.desc}
                 </p>
+                <div 
+                  className="mt-4 inline-block rounded-full px-3 py-1 text-[10px] font-medium tracking-wide"
+                  style={{ background: `${P.gold}15`, color: P.gold }}
+                >
+                  {s.time}
+                </div>
               </div>
             </SectionReveal>
           ))}
         </div>
+
+        {/* Total timeline */}
+        <SectionReveal delay={0.4}>
+          <div className="mt-12 text-center">
+            <p className="text-[15px]" style={{ color: P.body }}>
+              <strong style={{ color: P.ink }}>Total timeline:</strong> 3-5 days from first message to final invite
+            </p>
+          </div>
+        </SectionReveal>
       </div>
     </section>
   );
 }
 
 /* ─────────────────────────────────────────────────────────────
-   TESTIMONIALS - Single elegant quote
+   WHAT'S INCLUDED - Clear value
+───────────────────────────────────────────────────────────────── */
+function WhatsIncluded() {
+  return (
+    <section id="included" className="px-6 py-28 sm:px-10 sm:py-36" style={{ background: P.bgAlt }}>
+      <div className="mx-auto max-w-6xl">
+        <SectionReveal>
+          <div className="mx-auto max-w-3xl text-center">
+            <p className="text-[11px] font-medium tracking-[0.3em] uppercase" style={{ color: P.gold }}>
+              What's Included
+            </p>
+            <h2 
+              className="mt-5 font-display tracking-tight"
+              style={{ color: P.ink, fontSize: "clamp(2rem, 5vw, 3.25rem)", lineHeight: 1.1 }}
+            >
+              Everything you need.
+              <br />
+              <span className="font-script" style={{ color: P.gold }}>Nothing you don't.</span>
+            </h2>
+          </div>
+        </SectionReveal>
+
+        <div className="mt-16 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {WHATS_INCLUDED.map((item, i) => (
+            <SectionReveal key={item} delay={i * 0.03}>
+              <div 
+                className="flex items-start gap-3 rounded-xl p-4"
+                style={{ background: P.surface }}
+              >
+                <div 
+                  className="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full"
+                  style={{ background: `${P.gold}20`, color: P.gold }}
+                >
+                  <Check size={12} strokeWidth={3} />
+                </div>
+                <span className="text-[14px]" style={{ color: P.ink }}>{item}</span>
+              </div>
+            </SectionReveal>
+          ))}
+        </div>
+
+        <SectionReveal delay={0.4}>
+          <div 
+            className="mx-auto mt-12 max-w-2xl rounded-2xl p-6 text-center"
+            style={{ background: `${P.gold}10`, border: `1px solid ${P.gold}30` }}
+          >
+            <p className="text-[14px]" style={{ color: P.ink }}>
+              <strong>No hidden fees.</strong> Everything above is included in the base price. 
+              Need something extra? Just ask — we're flexible.
+            </p>
+          </div>
+        </SectionReveal>
+      </div>
+    </section>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────
+   TESTIMONIALS - Detailed social proof
 ───────────────────────────────────────────────────────────────── */
 function Testimonials() {
   const [active, setActive] = useState(0);
 
   return (
-    <section className="px-6 py-28 sm:px-10 sm:py-36" style={{ background: P.bgAlt }}>
-      <div className="mx-auto max-w-4xl text-center">
+    <section className="px-6 py-28 sm:px-10 sm:py-36" style={{ background: P.bg }}>
+      <div className="mx-auto max-w-5xl">
         <SectionReveal>
-          <p className="text-[11px] font-medium tracking-[0.3em] uppercase" style={{ color: P.gold }}>
-            From Our Couples
-          </p>
+          <div className="text-center">
+            <p className="text-[11px] font-medium tracking-[0.3em] uppercase" style={{ color: P.gold }}>
+              Trusted by 150+ Couples
+            </p>
+            <h2 
+              className="mt-5 font-display tracking-tight"
+              style={{ color: P.ink, fontSize: "clamp(1.75rem, 4vw, 2.5rem)", lineHeight: 1.1 }}
+            >
+              What couples say about us.
+            </h2>
+          </div>
         </SectionReveal>
 
         <SectionReveal delay={0.1}>
-          <motion.blockquote
-            key={active}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="mt-10 font-display text-[clamp(1.25rem,3.5vw,2rem)] leading-[1.4] tracking-tight italic"
-            style={{ color: P.ink }}
-          >
-            "{TESTIMONIALS[active].quote}"
-          </motion.blockquote>
-        </SectionReveal>
-
-        <SectionReveal delay={0.2}>
-          <div className="mt-10 flex items-center justify-center gap-8">
+          <div className="mt-14 grid gap-6 md:grid-cols-3">
             {TESTIMONIALS.map((t, i) => (
-              <button
+              <motion.div
                 key={i}
-                onClick={() => setActive(i)}
-                className={`text-left transition-opacity duration-300 ${active === i ? "opacity-100" : "opacity-40 hover:opacity-70"}`}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: i * 0.1 }}
+                className="rounded-2xl p-6"
+                style={{ background: P.surface, border: `1px solid ${P.lineSoft}` }}
               >
-                <p className="font-display text-sm" style={{ color: P.ink }}>{t.couple}</p>
-                <p className="text-[11px]" style={{ color: P.muted }}>{t.loc}</p>
-              </button>
+                <div className="flex gap-1 mb-4">
+                  {[1, 2, 3, 4, 5].map((n) => (
+                    <Star key={n} size={14} fill={P.gold} style={{ color: P.gold }} />
+                  ))}
+                </div>
+                <p className="text-[15px] leading-relaxed italic" style={{ color: P.body }}>
+                  "{t.quote}"
+                </p>
+                <div className="mt-6 pt-4" style={{ borderTop: `1px solid ${P.lineSoft}` }}>
+                  <p className="font-display text-sm" style={{ color: P.ink }}>{t.couple}</p>
+                  <p className="mt-0.5 text-[11px]" style={{ color: P.muted }}>{t.loc}</p>
+                  <p className="mt-1 text-[10px] font-medium" style={{ color: P.gold }}>{t.detail}</p>
+                </div>
+              </motion.div>
             ))}
           </div>
         </SectionReveal>
@@ -538,63 +783,120 @@ function Testimonials() {
 }
 
 /* ─────────────────────────────────────────────────────────────
-   PRICING - Confident, minimal
+   PRICING - Premium positioning with guarantee
 ───────────────────────────────────────────────────────────────── */
 function Pricing({ cta }: { cta: string }) {
   return (
-    <section id="pricing" className="px-6 py-28 sm:px-10 sm:py-36" style={{ background: P.bg }}>
-      <div className="mx-auto max-w-3xl text-center">
+    <section id="pricing" className="px-6 py-28 sm:px-10 sm:py-36" style={{ background: P.bgAlt }}>
+      <div className="mx-auto max-w-4xl">
         <SectionReveal>
-          <p className="text-[11px] font-medium tracking-[0.3em] uppercase" style={{ color: P.gold }}>
-            Investment
-          </p>
-          <h2 
-            className="mt-5 font-display tracking-tight"
-            style={{ color: P.ink, fontSize: "clamp(2rem, 5vw, 3.25rem)", lineHeight: 1.1 }}
-          >
-            Premium quality.
-            <br />
-            <span className="font-script" style={{ color: P.gold }}>Thoughtful pricing.</span>
-          </h2>
+          <div className="text-center">
+            <p className="text-[11px] font-medium tracking-[0.3em] uppercase" style={{ color: P.gold }}>
+              Simple, Transparent Pricing
+            </p>
+            <h2 
+              className="mt-5 font-display tracking-tight"
+              style={{ color: P.ink, fontSize: "clamp(2rem, 5vw, 3.25rem)", lineHeight: 1.1 }}
+            >
+              One price. Everything included.
+            </h2>
+            <p className="mx-auto mt-4 max-w-xl text-[16px] leading-relaxed" style={{ color: P.body }}>
+              No tiers to compare. No hidden fees. No upsells. Just a beautiful invite, crafted for you.
+            </p>
+          </div>
         </SectionReveal>
 
         <SectionReveal delay={0.15}>
           <div 
-            className="mt-14 rounded-3xl p-10 sm:p-14"
-            style={{ background: P.surface, boxShadow: "0 30px 80px rgba(28,25,23,0.06)" }}
+            className="mt-14 rounded-3xl p-8 sm:p-12"
+            style={{ background: P.surface, boxShadow: "0 30px 80px rgba(28,25,23,0.08)", border: `1px solid ${P.lineSoft}` }}
           >
-            <p className="text-[11px] font-medium tracking-[0.25em] uppercase" style={{ color: P.gold }}>
-              Bespoke Digital Invite
-            </p>
-            <div className="mt-4 flex items-baseline justify-center gap-2">
-              <span className="font-display text-5xl tracking-tight" style={{ color: P.ink }}>₹4,999</span>
-              <span className="text-sm" style={{ color: P.muted }}>starting</span>
-            </div>
-            <p className="mx-auto mt-5 max-w-md text-[15px] leading-relaxed" style={{ color: P.body }}>
-              Fully customized to your story. First draft in 24 hours. Unlimited revisions. Lifetime hosting.
-            </p>
-            
-            <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-              <a
-                href={cta}
-                target="_blank"
-                rel="noreferrer"
-                className="group inline-flex items-center gap-3 rounded-full px-8 py-4 text-[12px] font-medium tracking-wide transition-all duration-500 hover:gap-4"
-                style={{ background: P.gold, color: "white" }}
-              >
-                <MessageCircle size={15} />
-                Get Started
-                <ArrowRight size={14} className="transition-transform group-hover:translate-x-0.5" />
-              </a>
-            </div>
-
-            <div className="mt-10 flex justify-center gap-10 border-t pt-8" style={{ borderColor: P.lineSoft }}>
-              {[["24h", "First Draft"], ["3-5 days", "Delivery"], ["∞", "Revisions"]].map(([v, l]) => (
-                <div key={l} className="text-center">
-                  <p className="font-display text-lg" style={{ color: P.ink }}>{v}</p>
-                  <p className="mt-1 text-[10px] tracking-wide uppercase" style={{ color: P.muted }}>{l}</p>
+            <div className="grid gap-10 lg:grid-cols-2 lg:gap-16">
+              {/* Left: Price and CTA */}
+              <div>
+                <p className="text-[11px] font-medium tracking-[0.25em] uppercase" style={{ color: P.gold }}>
+                  Complete Digital Invitation
+                </p>
+                <div className="mt-4 flex items-baseline gap-2">
+                  <span className="font-display text-5xl tracking-tight" style={{ color: P.ink }}>₹4,999</span>
                 </div>
-              ))}
+                <p className="mt-2 text-[13px]" style={{ color: P.muted }}>
+                  One-time payment · No subscriptions
+                </p>
+                
+                <p className="mt-6 text-[15px] leading-relaxed" style={{ color: P.body }}>
+                  A fully bespoke digital wedding invitation, designed around your story, 
+                  with unlimited revisions until you're completely satisfied.
+                </p>
+
+                <div className="mt-8 space-y-3">
+                  <a
+                    href={cta}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="group flex w-full items-center justify-center gap-3 rounded-full px-8 py-4 text-[13px] font-medium tracking-wide transition-all duration-300"
+                    style={{ background: P.ink, color: P.bg }}
+                  >
+                    <MessageCircle size={16} />
+                    Start on WhatsApp
+                    <ArrowRight size={14} className="transition-transform group-hover:translate-x-0.5" />
+                  </a>
+                  <p className="text-center text-[11px]" style={{ color: P.muted }}>
+                    Usually responds within 2 hours
+                  </p>
+                </div>
+
+                {/* Guarantee */}
+                <div 
+                  className="mt-8 flex items-start gap-3 rounded-xl p-4"
+                  style={{ background: `${P.gold}08`, border: `1px solid ${P.gold}20` }}
+                >
+                  <Shield size={18} style={{ color: P.gold }} className="mt-0.5 flex-shrink-0" />
+                  <div>
+                    <p className="text-[13px] font-medium" style={{ color: P.ink }}>
+                      100% Satisfaction Guarantee
+                    </p>
+                    <p className="mt-1 text-[12px]" style={{ color: P.body }}>
+                      Not happy with the direction? Full refund, no questions asked.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Right: What's included summary */}
+              <div>
+                <p className="text-[11px] font-medium tracking-[0.25em] uppercase" style={{ color: P.gold }}>
+                  What You Get
+                </p>
+                <div className="mt-4 space-y-3">
+                  {[
+                    "Fully custom design based on your theme",
+                    "Animated hero with names & countdown",
+                    "Your love story timeline",
+                    "Complete event schedule",
+                    "Photo gallery section",
+                    "Built-in RSVP collection",
+                    "Personalized guest names",
+                    "WhatsApp-optimized sharing",
+                    "Lifetime hosting included",
+                    "Unlimited revisions",
+                  ].map((item) => (
+                    <div key={item} className="flex items-center gap-2">
+                      <Check size={14} style={{ color: P.gold }} />
+                      <span className="text-[14px]" style={{ color: P.ink }}>{item}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="mt-6 flex gap-6 border-t pt-6" style={{ borderColor: P.lineSoft }}>
+                  {[["24h", "First Draft"], ["3-5 days", "Delivery"], ["∞", "Revisions"]].map(([v, l]) => (
+                    <div key={l}>
+                      <p className="font-display text-lg" style={{ color: P.ink }}>{v}</p>
+                      <p className="text-[10px] tracking-wide uppercase" style={{ color: P.muted }}>{l}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
         </SectionReveal>
@@ -805,31 +1107,36 @@ function Footer() {
    MAIN
 ───────────────────────────────────────────────────────────────── */
 export default function PortfolioHome() {
-  const cta = `${BRAND.whatsappBase}your%20themes%20and%20would%20like%20a%20custom%20wedding%20invite.`;
+  const cta = `${BRAND.whatsappBase}Hi%2C%20I%27d%20like%20to%20discuss%20a%20custom%20wedding%20invitation.`;
 
   return (
     <main style={{ background: P.bg, color: P.body }}>
       <Nav cta={cta} />
       <Hero cta={cta} />
-      <Features />
+      <WhyChooseUs />
       <Collection />
       <Process />
+      <WhatsIncluded />
       <Testimonials />
       <Pricing cta={cta} />
       <Faq />
       <Cta cta={cta} />
       <Footer />
 
-      {/* Mobile sticky CTA */}
-      <a
-        href={cta}
-        target="_blank"
-        rel="noreferrer"
-        className="fixed bottom-5 right-5 z-50 flex h-14 w-14 items-center justify-center rounded-full shadow-xl md:hidden"
-        style={{ background: "#25D366", color: "white" }}
-      >
-        <MessageCircle size={22} />
-      </a>
+      {/* Premium Mobile Sticky CTA */}
+      <div className="fixed bottom-0 inset-x-0 z-50 p-4 md:hidden" style={{ background: `linear-gradient(to top, ${P.bg} 80%, transparent)` }}>
+        <a
+          href={cta}
+          target="_blank"
+          rel="noreferrer"
+          className="flex w-full items-center justify-center gap-3 rounded-full py-4 text-[13px] font-medium tracking-wide shadow-lg"
+          style={{ background: P.ink, color: P.bg }}
+        >
+          <MessageCircle size={18} />
+          Start Your Invite — ₹4,999
+          <ArrowRight size={14} />
+        </a>
+      </div>
     </main>
   );
 }
