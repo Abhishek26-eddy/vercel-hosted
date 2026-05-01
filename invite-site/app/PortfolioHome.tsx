@@ -207,6 +207,15 @@ const stagger = {
    NAVIGATION - Premium, confident
 ───────────────────────────────────────────────────────────────── */
 function Nav({ cta }: { cta: string }) {
+  const { t } = useLocale();
+  
+  const navItems = [
+    { key: "nav.collection", href: "#collection" },
+    { key: "nav.howItWorks", href: "#process" },
+    { key: "nav.included", href: "#included" },
+    { key: "nav.pricing", href: "#pricing" },
+  ];
+
   return (
     <header className="fixed inset-x-0 top-0 z-50">
       <div 
@@ -221,19 +230,14 @@ function Nav({ cta }: { cta: string }) {
         </Link>
         
         <nav className="hidden items-center gap-8 lg:flex">
-          {[
-            ["Collection", "#collection"],
-            ["How It Works", "#process"],
-            ["What's Included", "#included"],
-            ["Pricing", "#pricing"],
-          ].map(([label, href]) => (
+          {navItems.map((item) => (
             <Link
-              key={label}
-              href={href}
+              key={item.key}
+              href={item.href}
               className="text-[13px] tracking-wide transition-colors hover:text-[#9a7b4f]"
               style={{ color: P.body }}
             >
-              {label}
+              {t(item.key)}
             </Link>
           ))}
         </nav>
@@ -252,14 +256,14 @@ function Nav({ cta }: { cta: string }) {
             style={{ borderColor: P.line, color: P.ink }}
           >
             <MessageCircle size={14} />
-            WhatsApp
+            {t("nav.whatsapp")}
           </a>
           <a
             href="#pricing"
             className="group flex items-center gap-2 rounded-full px-5 py-2.5 text-[12px] font-medium tracking-wide transition-all duration-300 hover:gap-3"
             style={{ background: P.ink, color: P.bg }}
           >
-            Get Started
+            {t("nav.getStarted")}
             <ArrowRight size={14} className="transition-transform group-hover:translate-x-0.5" />
           </a>
         </div>
@@ -294,11 +298,11 @@ function Hero({ cta }: { cta: string }) {
           className="absolute inset-0 scale-110 bg-cover bg-center"
           style={{ backgroundImage: `url(${HERO_IMG})` }}
         />
-        {/* Soft gradient overlay for readability */}
+        {/* Strong gradient overlay for text readability */}
         <div 
           className="absolute inset-0"
           style={{ 
-            background: `linear-gradient(135deg, ${P.bg}F0 0%, ${P.bg}C0 40%, ${P.bg}80 70%, transparent 100%)`,
+            background: `linear-gradient(135deg, ${P.bg} 0%, ${P.bg}F8 35%, ${P.bg}E0 55%, ${P.bg}90 75%, ${P.bg}40 100%)`,
           }}
         />
       </motion.div>
@@ -784,8 +788,9 @@ const PLAN_FEATURES = {
     "WhatsApp-optimized sharing",
     "Mobile-first responsive design",
     "Lifetime hosting",
-    "Unlimited revisions",
-    "Delivered in 3-5 days",
+    "Up to 3 revisions included",
+    "First draft in 3-5 days",
+    "Delivered in 7 days",
   ],
   signature: [
     "Everything in Essential",
@@ -797,8 +802,9 @@ const PLAN_FEATURES = {
     "Interactive venue map",
     "Background music",
     "Unlimited photos",
-    "Priority 24h first draft",
-    "Post-launch edits included",
+    "Unlimited revisions",
+    "First draft in 3-5 days",
+    "Delivered in 7 days",
   ],
 };
 
