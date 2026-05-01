@@ -19,6 +19,8 @@ import {
 } from "lucide-react";
 import SectionReveal from "@/components/portfolio/SectionReveal";
 import { BRAND, PORTFOLIO_THEMES } from "@/lib/portfolioThemes";
+import { LocaleSelectors } from "@/components/LocaleSelectors";
+import { useLocale } from "@/components/LocaleProvider";
 
 /* ─────────────────────────────────────────────────────────────
    LUXURY ART DIRECTION PALETTE
@@ -237,6 +239,11 @@ function Nav({ cta }: { cta: string }) {
         </nav>
 
         <div className="flex items-center gap-3">
+          {/* Currency & Language Selectors */}
+          <div className="hidden md:block">
+            <LocaleSelectors />
+          </div>
+          
           <a
             href={cta}
             target="_blank"
@@ -265,6 +272,7 @@ function Nav({ cta }: { cta: string }) {
    HERO - Editorial, cinematic, confident
 ───────────────────────────────────────────────────────────────── */
 function Hero({ cta }: { cta: string }) {
+  const { prices } = useLocale();
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -385,7 +393,7 @@ function Hero({ cta }: { cta: string }) {
                   <ArrowRight size={16} />
                 </span>
                 <span>Create your invitation</span>
-                <span style={{ color: P.gold }}>₹7,999</span>
+                <span style={{ color: P.gold }}>{prices.essential}</span>
               </a>
               <Link
                 href="#collection"
@@ -767,47 +775,54 @@ function Testimonials() {
 /* ─────────────────────────────────────────────────────────────
    PRICING - Tiered, premium positioning
 ───────────────────────────────────────────────────────────────── */
-const PLANS = [
-  {
-    name: "Essential",
-    price: "₹7,999",
-    tagline: "For intimate celebrations",
-    popular: false,
-    features: [
-      "Custom design from our collection",
-      "Animated hero with your names",
-      "Complete event schedule",
-      "Photo gallery (up to 8 photos)",
-      "Built-in RSVP collection",
-      "WhatsApp-optimized sharing",
-      "Mobile-first responsive design",
-      "Lifetime hosting",
-      "Unlimited revisions",
-      "Delivered in 3-5 days",
-    ],
-  },
-  {
-    name: "Signature",
-    price: "₹14,999",
-    tagline: "Most couples choose this",
-    popular: true,
-    features: [
-      "Everything in Essential",
-      "Fully bespoke design from scratch",
-      "Your love story timeline",
-      "Personalized guest names",
-      "Custom domain (your-names.com)",
-      "Countdown timer",
-      "Interactive venue map",
-      "Background music",
-      "Unlimited photos",
-      "Priority 24h first draft",
-      "Post-launch edits included",
-    ],
-  },
-];
+const PLAN_FEATURES = {
+  essential: [
+    "Custom design from our collection",
+    "Animated hero with your names",
+    "Complete event schedule",
+    "Photo gallery (up to 8 photos)",
+    "Built-in RSVP collection",
+    "WhatsApp-optimized sharing",
+    "Mobile-first responsive design",
+    "Lifetime hosting",
+    "Unlimited revisions",
+    "Delivered in 3-5 days",
+  ],
+  signature: [
+    "Everything in Essential",
+    "Fully bespoke design from scratch",
+    "Your love story timeline",
+    "Personalized guest names",
+    "Custom domain (your-names.com)",
+    "Countdown timer",
+    "Interactive venue map",
+    "Background music",
+    "Unlimited photos",
+    "Priority 24h first draft",
+    "Post-launch edits included",
+  ],
+};
 
 function Pricing({ cta }: { cta: string }) {
+  const { prices } = useLocale();
+  
+  const plans = [
+    {
+      name: "Essential",
+      price: prices.essential,
+      tagline: "For intimate celebrations",
+      popular: false,
+      features: PLAN_FEATURES.essential,
+    },
+    {
+      name: "Signature",
+      price: prices.signature,
+      tagline: "Most couples choose this",
+      popular: true,
+      features: PLAN_FEATURES.signature,
+    },
+  ];
+
   return (
     <section id="pricing" className="px-6 py-28 sm:px-10 sm:py-36" style={{ background: P.bgAlt }}>
       <div className="mx-auto max-w-6xl">
@@ -829,7 +844,7 @@ function Pricing({ cta }: { cta: string }) {
         </SectionReveal>
 
         <div className="mt-16 grid gap-6 md:grid-cols-2 max-w-4xl mx-auto">
-          {PLANS.map((plan, i) => (
+          {plans.map((plan, i) => (
             <SectionReveal key={plan.name} delay={i * 0.08}>
               <div 
                 className="relative flex h-full flex-col rounded-2xl p-7"
@@ -1153,10 +1168,11 @@ function Footer({ cta }: { cta: string }) {
    MAIN
 ───────────────────────────────────────────────────────────────── */
 export default function PortfolioHome() {
+  const { prices } = useLocale();
   const cta = `${BRAND.whatsappBase}Hi%2C%20I%27d%20like%20to%20discuss%20a%20custom%20wedding%20invitation.`;
 
   return (
-    <main style={{ background: P.bg, color: P.body }}>
+    <main className="relative" style={{ background: P.bg, color: P.ink }}>
       <Nav cta={cta} />
       <Hero cta={cta} />
       <WhyChooseUs />
@@ -1182,7 +1198,7 @@ export default function PortfolioHome() {
           style={{ background: P.ink, color: P.bg }}
         >
           <MessageCircle size={18} />
-          Start Your Invite — ₹7,999
+          Start Your Invite — {prices.essential}
           <ArrowRight size={14} />
         </a>
       </div>
