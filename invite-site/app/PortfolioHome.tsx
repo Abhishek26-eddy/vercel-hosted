@@ -325,8 +325,8 @@ function Hero({ cta }: { cta: string }) {
               custom={0}
               className="flex items-center gap-3"
             >
-              <div className="h-px w-8" style={{ background: P.goldMuted }} />
-              <p className="text-[10px] font-medium tracking-[0.35em] uppercase" style={{ color: P.gold }}>
+              <div className="h-px w-8" style={{ background: "#8B7355" }} />
+              <p className="text-[11px] font-semibold tracking-[0.35em] uppercase" style={{ color: "#8B7355" }}>
                 {t("hero.eyebrow")}
               </p>
             </motion.div>
@@ -337,15 +337,16 @@ function Hero({ cta }: { cta: string }) {
               custom={1}
               className="mt-6 font-display"
               style={{ 
-                color: P.ink,
+                color: "#1C1917",
                 fontSize: "clamp(2.75rem, 7vw, 5rem)",
                 lineHeight: 1.05,
                 letterSpacing: "-0.02em",
+                textShadow: "0 2px 20px rgba(255,255,255,0.8)",
               }}
             >
               {t("hero.title1")}
               <br />
-              <span className="font-script" style={{ color: P.gold, fontSize: "0.85em" }}>
+              <span className="font-script" style={{ color: "#8B6914", fontSize: "0.85em" }}>
                 {t("hero.title2")}
               </span>
             </motion.h1>
@@ -354,8 +355,8 @@ function Hero({ cta }: { cta: string }) {
             <motion.p
               variants={fadeUp}
               custom={2}
-              className="mt-6 max-w-md text-[15px] leading-[1.9]"
-              style={{ color: P.body }}
+              className="mt-6 max-w-md text-[16px] font-medium leading-[1.9]"
+              style={{ color: "#3D3D3D", textShadow: "0 1px 10px rgba(255,255,255,0.6)" }}
             >
               {t("hero.subtitle")}
             </motion.p>
@@ -368,10 +369,10 @@ function Hero({ cta }: { cta: string }) {
             >
               {TRUST_STATS.map((stat, i) => (
                 <div key={stat.label} className="flex items-baseline gap-2">
-                  <span className="font-display text-lg" style={{ color: P.ink }}>{stat.value}</span>
-                  <span className="text-[10px] tracking-wide" style={{ color: P.muted }}>{stat.label}</span>
+                  <span className="font-display text-lg font-semibold" style={{ color: "#1C1917" }}>{stat.value}</span>
+                  <span className="text-[11px] font-medium tracking-wide" style={{ color: "#5C5C5C" }}>{stat.label}</span>
                   {i < TRUST_STATS.length - 1 && (
-                    <span className="ml-4 text-[10px]" style={{ color: P.line }}>|</span>
+                    <span className="ml-4 text-[10px]" style={{ color: "#999" }}>|</span>
                   )}
                 </div>
               ))}
@@ -395,8 +396,8 @@ function Hero({ cta }: { cta: string }) {
                 >
                   <ArrowRight size={16} />
                 </span>
-                <span>{t("hero.cta")}</span>
-                <span style={{ color: P.gold }}>{prices.essential}</span>
+                <span className="font-semibold">{t("hero.cta")}</span>
+                <span className="font-bold" style={{ color: "#8B6914" }}>{prices.essential}</span>
               </a>
               <Link
                 href="#collection"
