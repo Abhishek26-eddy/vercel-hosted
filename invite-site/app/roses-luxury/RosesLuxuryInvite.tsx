@@ -10,14 +10,31 @@ import WhatsAppButton from "@/components/portfolio/WhatsAppButton";
 import SectionReveal from "@/components/portfolio/SectionReveal";
 import OrnamentDivider from "@/components/portfolio/OrnamentDivider";
 
-const PALETTE = {
-  bg: "#fbf5ef",
-  bgSoft: "#f5e8df",
-  ink: "#3a1524",
-  body: "#6b4a55",
-  accent: "#b8864a",
-  accentSoft: "#e9c9a3",
-  deep: "#2a0f1a",
+/* ─────────────────────────────────────────────────────────────
+   ROSES LUXURY THEME
+   Cinematic · Floral · Soft · Romantic · Layered
+   
+   Visual Identity:
+   - Split-screen hero with portrait focus
+   - Floating rose petals throughout
+   - Soft focus overlays and film grain
+   - Romantic script typography
+   - Filmstrip-style gallery
+   - Layered card designs with soft shadows
+   - Warm blush and champagne palette
+───────────────────────────────────────────────────────────────── */
+
+const P = {
+  bg: "#fdf8f5",
+  bgSoft: "#f9f1eb",
+  cream: "#f5e6e0",
+  rose: "#d4a5a5",
+  wine: "#8b4557",
+  ink: "#2d1f24",
+  body: "#5c4a4f",
+  accent: "#c4a265",
+  accentSoft: "#e8d4b8",
+  deep: "#2d1f24",
 };
 
 const hero =
@@ -99,7 +116,7 @@ function Petals() {
             width: p.size,
             height: p.size * 1.3,
             borderRadius: "70% 30% 70% 30%",
-            background: `linear-gradient(135deg, ${PALETTE.accentSoft}, ${PALETTE.accent}99)`,
+            background: `linear-gradient(135deg, ${P.accentSoft}, ${P.accent}99)`,
           }}
         />
       ))}
@@ -119,7 +136,7 @@ function Hero() {
     <section
       ref={ref}
       className="relative overflow-hidden"
-      style={{ minHeight: "100dvh", background: PALETTE.deep }}
+      style={{ minHeight: "100dvh", background: P.deep }}
     >
       <motion.div style={{ y, scale }} className="absolute inset-0">
         <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${hero})` }} />
@@ -139,39 +156,39 @@ function Hero() {
 
         <motion.div style={{ opacity }} className="relative mx-auto max-w-4xl text-center text-white">
           <SectionReveal delay={0.1}>
-            <p className="eyebrow" style={{ color: PALETTE.accentSoft }}>
+            <p className="eyebrow" style={{ color: P.accentSoft }}>
               The wedding of
             </p>
           </SectionReveal>
           <SectionReveal delay={0.25}>
-            <p className="font-script mt-6 text-4xl sm:text-5xl" style={{ color: PALETTE.accentSoft }}>
+            <p className="font-script mt-6 text-4xl sm:text-5xl" style={{ color: P.accentSoft }}>
               forever begins with
             </p>
           </SectionReveal>
           <SectionReveal delay={0.4}>
             <h1 className="font-display lux-hero mt-2 drop-shadow-2xl">
               Meera
-              <span className="font-script mx-4 block text-5xl sm:text-6xl" style={{ color: PALETTE.accentSoft }}>
+              <span className="font-script mx-4 block text-5xl sm:text-6xl" style={{ color: P.accentSoft }}>
                 &amp;
               </span>
               Aarav
             </h1>
           </SectionReveal>
           <SectionReveal delay={0.6}>
-            <OrnamentDivider color={PALETTE.accentSoft} symbol="rose" className="mt-10" />
+            <OrnamentDivider color={P.accentSoft} symbol="rose" className="mt-10" />
           </SectionReveal>
           <SectionReveal delay={0.75}>
             <div className="mt-8 grid gap-6 text-white/90 sm:grid-cols-3">
               <div>
-                <p className="eyebrow" style={{ color: PALETTE.accentSoft }}>Date</p>
+                <p className="eyebrow" style={{ color: P.accentSoft }}>Date</p>
                 <p className="font-display mt-2 text-2xl">12 · 12 · 2026</p>
               </div>
               <div>
-                <p className="eyebrow" style={{ color: PALETTE.accentSoft }}>Celebration</p>
+                <p className="eyebrow" style={{ color: P.accentSoft }}>Celebration</p>
                 <p className="font-display mt-2 text-2xl italic">A Royal Garden Wedding</p>
               </div>
               <div>
-                <p className="eyebrow" style={{ color: PALETTE.accentSoft }}>Location</p>
+                <p className="eyebrow" style={{ color: P.accentSoft }}>Location</p>
                 <p className="font-display mt-2 text-2xl">The Lake Palace</p>
               </div>
             </div>
@@ -183,7 +200,7 @@ function Hero() {
           transition={{ repeat: Infinity, duration: 2.4, ease: "easeInOut" }}
           className="mx-auto flex flex-col items-center text-white/80"
         >
-          <p className="eyebrow" style={{ color: PALETTE.accentSoft }}>Scroll</p>
+          <p className="eyebrow" style={{ color: P.accentSoft }}>Scroll</p>
           <ChevronDown size={16} className="mt-2" />
         </motion.div>
       </div>
@@ -193,20 +210,20 @@ function Hero() {
 
 function Invitation() {
   return (
-    <section className="relative px-5 py-28 sm:px-8 sm:py-36" style={{ background: PALETTE.bg }}>
-      <div className="mx-auto max-w-3xl text-center" style={{ color: PALETTE.ink }}>
+    <section className="relative px-5 py-28 sm:px-8 sm:py-36" style={{ background: P.bg }}>
+      <div className="mx-auto max-w-3xl text-center" style={{ color: P.ink }}>
         <SectionReveal>
-          <p className="eyebrow" style={{ color: PALETTE.accent }}>A letter to you</p>
+          <p className="eyebrow" style={{ color: P.accent }}>A letter to you</p>
         </SectionReveal>
         <SectionReveal delay={0.1}>
-          <p className="font-script mt-6 text-4xl sm:text-5xl" style={{ color: PALETTE.accent }}>
+          <p className="font-script mt-6 text-4xl sm:text-5xl" style={{ color: P.accent }}>
             with joyful hearts
           </p>
         </SectionReveal>
         <SectionReveal delay={0.25}>
           <p
             className="font-display mt-8 text-[clamp(1.35rem,2.2vw,1.75rem)] leading-[1.7] italic"
-            style={{ color: PALETTE.body }}
+            style={{ color: P.body }}
           >
             Two families, woven together by love and little coincidences, invite you to witness a quiet promise
             becoming a lifetime. Come for the candles, the laughter, the slow dances — and the part where we say
@@ -214,7 +231,7 @@ function Invitation() {
           </p>
         </SectionReveal>
         <SectionReveal delay={0.45}>
-          <OrnamentDivider color={PALETTE.accent} symbol="rose" className="mt-14" />
+          <OrnamentDivider color={P.accent} symbol="rose" className="mt-14" />
         </SectionReveal>
       </div>
     </section>
@@ -250,10 +267,10 @@ function CountdownTimer() {
   ] as const;
 
   return (
-    <section className="relative px-5 py-24 sm:px-8 sm:py-32" style={{ background: PALETTE.bgSoft }}>
-      <div className="mx-auto max-w-5xl text-center" style={{ color: PALETTE.ink }}>
+    <section className="relative px-5 py-24 sm:px-8 sm:py-32" style={{ background: P.bgSoft }}>
+      <div className="mx-auto max-w-5xl text-center" style={{ color: P.ink }}>
         <SectionReveal>
-          <p className="eyebrow" style={{ color: PALETTE.accent }}>The countdown</p>
+          <p className="eyebrow" style={{ color: P.accent }}>The countdown</p>
           <h2 className="font-display lux-h2 mt-4">Every second closer to forever.</h2>
         </SectionReveal>
         <SectionReveal delay={0.2}>
@@ -262,12 +279,12 @@ function CountdownTimer() {
               <div
                 key={label}
                 className="relative overflow-hidden rounded-[1.25rem] border px-2 py-6 sm:rounded-[1.75rem] sm:px-6 sm:py-9"
-                style={{ borderColor: `${PALETTE.accent}33`, background: "#ffffffE6" }}
+                style={{ borderColor: `${P.accent}33`, background: "#ffffffE6" }}
               >
-                <p className="font-display text-[clamp(2rem,6vw,3.75rem)] leading-none" style={{ color: PALETTE.ink }}>
+                <p className="font-display text-[clamp(2rem,6vw,3.75rem)] leading-none" style={{ color: P.ink }}>
                   {value !== undefined ? String(value).padStart(2, "0") : "--"}
                 </p>
-                <p className="eyebrow mt-3 text-[9px]" style={{ color: PALETTE.accent }}>
+                <p className="eyebrow mt-3 text-[9px]" style={{ color: P.accent }}>
                   {label}
                 </p>
               </div>
@@ -281,18 +298,18 @@ function CountdownTimer() {
 
 function Story() {
   return (
-    <section className="relative overflow-hidden px-5 py-28 sm:px-8 sm:py-40" style={{ background: PALETTE.bg }}>
+    <section className="relative overflow-hidden px-5 py-28 sm:px-8 sm:py-40" style={{ background: P.bg }}>
       <div className="mx-auto max-w-6xl">
         <SectionReveal>
-          <p className="eyebrow text-center" style={{ color: PALETTE.accent }}>Our story</p>
+          <p className="eyebrow text-center" style={{ color: P.accent }}>Our story</p>
         </SectionReveal>
         <SectionReveal delay={0.1}>
           <h2
             className="font-display lux-h2 mx-auto mt-5 max-w-3xl text-center"
-            style={{ color: PALETTE.ink }}
+            style={{ color: P.ink }}
           >
             Written in little moments,
-            <span className="font-script block text-[0.8em]" style={{ color: PALETTE.accent }}>
+            <span className="font-script block text-[0.8em]" style={{ color: P.accent }}>
               and one very big yes.
             </span>
           </h2>
@@ -301,7 +318,7 @@ function Story() {
         <div className="relative mt-20 space-y-24">
           <div
             className="absolute left-1/2 top-0 hidden h-full w-px md:block"
-            style={{ background: `${PALETTE.accent}33` }}
+            style={{ background: `${P.accent}33` }}
             aria-hidden
           />
           {story.map((moment, index) => (
@@ -317,18 +334,18 @@ function Story() {
                     style={{ backgroundImage: `url(${gallery[index]})` }}
                   />
                 </div>
-                <div style={{ color: PALETTE.ink }}>
-                  <p className="font-script text-3xl" style={{ color: PALETTE.accent }}>
+                <div style={{ color: P.ink }}>
+                  <p className="font-script text-3xl" style={{ color: P.accent }}>
                     {moment.year}
                   </p>
-                  <p className="eyebrow mt-4" style={{ color: PALETTE.accent }}>
+                  <p className="eyebrow mt-4" style={{ color: P.accent }}>
                     {moment.kicker}
                   </p>
                   <h3 className="font-display mt-4 text-[clamp(2rem,3.4vw,2.75rem)] leading-[1.1]">
                     {moment.title}
                   </h3>
-                  <div className="luxury-hairline mt-6 w-20" style={{ background: PALETTE.accent }} />
-                  <p className="mt-6 text-[1.05rem] leading-[1.85]" style={{ color: PALETTE.body }}>
+                  <div className="luxury-hairline mt-6 w-20" style={{ background: P.accent }} />
+                  <p className="mt-6 text-[1.05rem] leading-[1.85]" style={{ color: P.body }}>
                     {moment.text}
                   </p>
                 </div>
@@ -343,35 +360,35 @@ function Story() {
 
 function Events() {
   return (
-    <section className="relative overflow-hidden px-5 py-28 sm:px-8 sm:py-40" style={{ background: PALETTE.deep }}>
+    <section className="relative overflow-hidden px-5 py-28 sm:px-8 sm:py-40" style={{ background: P.deep }}>
       <div
         className="absolute inset-0 opacity-[0.08]"
         aria-hidden
         style={{
-          backgroundImage: `radial-gradient(circle at 1px 1px, ${PALETTE.accentSoft} 1px, transparent 1px)`,
+          backgroundImage: `radial-gradient(circle at 1px 1px, ${P.accentSoft} 1px, transparent 1px)`,
           backgroundSize: "28px 28px",
         }}
       />
       <div className="relative mx-auto max-w-5xl text-center" style={{ color: "#fbf5ef" }}>
         <SectionReveal>
-          <p className="eyebrow" style={{ color: PALETTE.accentSoft }}>Celebrations</p>
+          <p className="eyebrow" style={{ color: P.accentSoft }}>Celebrations</p>
           <h2 className="font-display lux-h2 mt-4">
-            Four evenings of<span className="font-script ml-3 italic" style={{ color: PALETTE.accentSoft }}>joy</span>.
+            Four evenings of<span className="font-script ml-3 italic" style={{ color: P.accentSoft }}>joy</span>.
           </h2>
         </SectionReveal>
         <SectionReveal delay={0.15}>
-          <OrnamentDivider color={PALETTE.accentSoft} symbol="diamond" className="mt-8" />
+          <OrnamentDivider color={P.accentSoft} symbol="diamond" className="mt-8" />
         </SectionReveal>
 
-        <div className="mx-auto mt-16 max-w-4xl divide-y" style={{ borderColor: `${PALETTE.accentSoft}33` }}>
+        <div className="mx-auto mt-16 max-w-4xl divide-y" style={{ borderColor: `${P.accentSoft}33` }}>
           {events.map((event, index) => (
             <SectionReveal key={event.name} delay={index * 0.06}>
               <div
                 className="grid items-baseline gap-4 py-10 text-left md:grid-cols-[0.7fr_1.5fr_1fr]"
-                style={{ borderColor: `${PALETTE.accentSoft}33` }}
+                style={{ borderColor: `${P.accentSoft}33` }}
               >
                 <div>
-                  <p className="eyebrow" style={{ color: PALETTE.accentSoft }}>
+                  <p className="eyebrow" style={{ color: P.accentSoft }}>
                     {event.kicker}
                   </p>
                   <p className="font-display mt-2 text-2xl">{event.date}</p>
@@ -383,7 +400,7 @@ function Events() {
                 <div className="md:text-right">
                   <span
                     className="inline-block rounded-full px-4 py-2 text-xs font-medium tracking-[0.3em] uppercase"
-                    style={{ background: `${PALETTE.accent}`, color: PALETTE.deep }}
+                    style={{ background: `${P.accent}`, color: P.deep }}
                   >
                     {event.time}
                   </span>
@@ -399,14 +416,14 @@ function Events() {
 
 function Gallery() {
   return (
-    <section className="relative px-5 py-28 sm:px-8 sm:py-40" style={{ background: PALETTE.bg }}>
-      <div className="mx-auto max-w-6xl text-center" style={{ color: PALETTE.ink }}>
+    <section className="relative px-5 py-28 sm:px-8 sm:py-40" style={{ background: P.bg }}>
+      <div className="mx-auto max-w-6xl text-center" style={{ color: P.ink }}>
         <SectionReveal>
-          <p className="eyebrow" style={{ color: PALETTE.accent }}>Frames of us</p>
+          <p className="eyebrow" style={{ color: P.accent }}>Frames of us</p>
           <h2 className="font-display lux-h2 mt-4">An editorial in love.</h2>
         </SectionReveal>
         <SectionReveal delay={0.15}>
-          <p className="lux-lead mx-auto mt-6 max-w-2xl" style={{ color: PALETTE.body }}>
+          <p className="lux-lead mx-auto mt-6 max-w-2xl" style={{ color: P.body }}>
             Unhurried portraits, stolen laughs, quiet corners of the palace — every frame a memory worth keeping.
           </p>
         </SectionReveal>
@@ -444,7 +461,7 @@ function Gallery() {
 
 function Venue() {
   return (
-    <section className="relative overflow-hidden" style={{ background: PALETTE.bg }}>
+    <section className="relative overflow-hidden" style={{ background: P.bg }}>
       <div className="relative grid gap-0 lg:grid-cols-2">
         <SectionReveal direction="left">
           <div className="relative h-72 overflow-hidden sm:h-96 lg:h-full">
@@ -453,13 +470,13 @@ function Venue() {
           </div>
         </SectionReveal>
 
-        <div className="relative flex items-center px-5 py-24 sm:px-12 sm:py-32 lg:px-20" style={{ color: PALETTE.ink }}>
+        <div className="relative flex items-center px-5 py-24 sm:px-12 sm:py-32 lg:px-20" style={{ color: P.ink }}>
           <div>
             <SectionReveal>
-              <p className="eyebrow" style={{ color: PALETTE.accent }}>The venue</p>
+              <p className="eyebrow" style={{ color: P.accent }}>The venue</p>
             </SectionReveal>
             <SectionReveal delay={0.1}>
-              <p className="font-script mt-6 text-4xl" style={{ color: PALETTE.accent }}>
+              <p className="font-script mt-6 text-4xl" style={{ color: P.accent }}>
                 by the lake
               </p>
             </SectionReveal>
@@ -467,12 +484,12 @@ function Venue() {
               <h2 className="font-display lux-h2 mt-3">The Lake Palace, Udaipur</h2>
             </SectionReveal>
             <SectionReveal delay={0.3}>
-              <p className="mt-8 flex items-center gap-3 text-sm tracking-[0.25em] uppercase" style={{ color: PALETTE.body }}>
-                <MapPin size={16} style={{ color: PALETTE.accent }} /> Udaipur · Rajasthan
+              <p className="mt-8 flex items-center gap-3 text-sm tracking-[0.25em] uppercase" style={{ color: P.body }}>
+                <MapPin size={16} style={{ color: P.accent }} /> Udaipur · Rajasthan
               </p>
             </SectionReveal>
             <SectionReveal delay={0.4}>
-              <p className="lux-lead mt-6 max-w-lg" style={{ color: PALETTE.body }}>
+              <p className="lux-lead mt-6 max-w-lg" style={{ color: P.body }}>
                 A heritage marble palace floating on Lake Pichola — draped in bougainvillea, lit by a thousand
                 diyas, and held together by old-world romance.
               </p>
@@ -484,7 +501,7 @@ function Venue() {
                   target="_blank"
                   rel="noreferrer"
                   className="group inline-flex items-center gap-3 rounded-full px-8 py-4 text-xs font-medium tracking-[0.35em] uppercase transition hover:-translate-y-0.5"
-                  style={{ background: PALETTE.ink, color: "#fbf5ef" }}
+                  style={{ background: P.ink, color: "#fbf5ef" }}
                 >
                   View on map
                   <span className="transition group-hover:translate-x-1">→</span>
@@ -492,7 +509,7 @@ function Venue() {
                 <a
                   href="#rsvp"
                   className="inline-flex items-center gap-3 rounded-full border px-8 py-4 text-xs font-medium tracking-[0.35em] uppercase"
-                  style={{ borderColor: PALETTE.ink, color: PALETTE.ink }}
+                  style={{ borderColor: P.ink, color: P.ink }}
                 >
                   Plan your stay
                 </a>
@@ -507,24 +524,24 @@ function Venue() {
 
 function RSVPSection() {
   return (
-    <section id="rsvp" className="relative px-5 py-28 sm:px-8 sm:py-40" style={{ background: PALETTE.bgSoft }}>
-      <div className="mx-auto max-w-3xl text-center" style={{ color: PALETTE.ink }}>
+    <section id="rsvp" className="relative px-5 py-28 sm:px-8 sm:py-40" style={{ background: P.bgSoft }}>
+      <div className="mx-auto max-w-3xl text-center" style={{ color: P.ink }}>
         <SectionReveal>
-          <p className="eyebrow" style={{ color: PALETTE.accent }}>Kindly respond</p>
-          <p className="font-script mt-5 text-4xl sm:text-5xl" style={{ color: PALETTE.accent }}>
+          <p className="eyebrow" style={{ color: P.accent }}>Kindly respond</p>
+          <p className="font-script mt-5 text-4xl sm:text-5xl" style={{ color: P.accent }}>
             will you celebrate with us?
           </p>
           <h2 className="font-display lux-h2 mt-3">Your reply, with love.</h2>
         </SectionReveal>
         <SectionReveal delay={0.15}>
-          <OrnamentDivider color={PALETTE.accent} symbol="rose" className="mt-8" />
+          <OrnamentDivider color={P.accent} symbol="rose" className="mt-8" />
         </SectionReveal>
       </div>
       <SectionReveal delay={0.25} className="mt-14">
         <RSVPForm
-          accent={PALETTE.accent}
-          bg={PALETTE.bg}
-          text={PALETTE.ink}
+          accent={P.accent}
+          bg={P.bg}
+          text={P.ink}
           cardBg="#ffffff"
           buttonLabel="Send RSVP"
           successMessage="We've saved your seat. The first dance already feels closer."
@@ -544,21 +561,21 @@ function Closing() {
       />
       <div
         className="absolute inset-0"
-        style={{ background: `linear-gradient(180deg, ${PALETTE.deep}CC 0%, ${PALETTE.deep}F2 100%)` }}
+        style={{ background: `linear-gradient(180deg, ${P.deep}CC 0%, ${P.deep}F2 100%)` }}
       />
       <div className="relative mx-auto max-w-3xl px-5 py-32 text-center sm:px-8 sm:py-40" style={{ color: "#fbf5ef" }}>
         <SectionReveal>
-          <p className="eyebrow" style={{ color: PALETTE.accentSoft }}>With all our love</p>
-          <p className="font-script mt-6 text-5xl sm:text-6xl" style={{ color: PALETTE.accentSoft }}>
+          <p className="eyebrow" style={{ color: P.accentSoft }}>With all our love</p>
+          <p className="font-script mt-6 text-5xl sm:text-6xl" style={{ color: P.accentSoft }}>
             thank you,
           </p>
           <h2 className="font-display mt-2 text-[clamp(2.5rem,6vw,4.5rem)] leading-[1]">
             for being part of our story.
           </h2>
-          <OrnamentDivider color={PALETTE.accentSoft} symbol="rose" className="mt-10" />
+          <OrnamentDivider color={P.accentSoft} symbol="rose" className="mt-10" />
           <p className="font-display mt-10 text-2xl italic">
             Meera
-            <span className="font-script mx-3" style={{ color: PALETTE.accentSoft }}>&amp;</span>
+            <span className="font-script mx-3" style={{ color: P.accentSoft }}>&amp;</span>
             Aarav
           </p>
         </SectionReveal>
@@ -571,15 +588,15 @@ export default function RosesLuxuryInvite() {
   const [muted, setMuted] = useState(true);
 
   return (
-    <main className="relative overflow-hidden" style={{ background: PALETTE.bg, color: PALETTE.body }}>
+    <main className="relative overflow-hidden" style={{ background: P.bg, color: P.body }}>
       <OpeningScreen
         groom="Meera"
         bride="Aarav"
         subtitle="The wedding of"
         script="together with their families"
-        bg={PALETTE.deep}
+        bg={P.deep}
         text="#fbf5ef"
-        accent={PALETTE.accentSoft}
+        accent={P.accentSoft}
         buttonLabel="Open Invitation"
         image={hero}
       />
@@ -588,9 +605,9 @@ export default function RosesLuxuryInvite() {
         onClick={() => setMuted((v) => !v)}
         className="fixed right-5 top-5 z-40 flex h-11 w-11 items-center justify-center rounded-full border backdrop-blur transition hover:-translate-y-0.5"
         style={{
-          borderColor: `${PALETTE.accent}55`,
+          borderColor: `${P.accent}55`,
           background: "#fbf5efCC",
-          color: PALETTE.ink,
+          color: P.ink,
         }}
         aria-label="Toggle music"
       >
@@ -610,7 +627,7 @@ export default function RosesLuxuryInvite() {
       <WhatsAppButton
         label="Enquire"
         message="Hi%2C%20I%20loved%20the%20Roses%20Luxury%20invite%20and%20would%20like%20a%20custom%20one%20for%20my%20wedding."
-        bg={PALETTE.ink}
+        bg={P.ink}
         color="#fbf5ef"
       />
     </main>
