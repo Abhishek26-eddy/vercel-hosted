@@ -28,6 +28,21 @@ export default function RSVPForm({
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    
+    // Create email body with RSVP details
+    const subject = encodeURIComponent(`RSVP: ${form.name} - ${form.attending === "yes" ? "Attending" : "Not Attending"}`);
+    const body = encodeURIComponent(
+      `New RSVP Submission\n\n` +
+      `Name: ${form.name}\n` +
+      `Guests: ${form.guests}\n` +
+      `Attending: ${form.attending === "yes" ? "Joyfully accepts" : "Regretfully declines"}\n` +
+      `Message: ${form.note || "No message"}\n\n` +
+      `---\nSent from The Digital Inviters`
+    );
+    
+    // Open email client with pre-filled details
+    window.open(`mailto:abhishekprajapatiad@gmail.com?subject=${subject}&body=${body}`, "_blank");
+    
     setStatus("success");
   }
 
