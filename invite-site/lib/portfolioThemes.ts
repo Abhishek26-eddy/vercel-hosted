@@ -112,16 +112,16 @@ export const PORTFOLIO_THEMES: PortfolioTheme[] = [
   },
   {
     slug: "south-indian-temple",
-    name: "South Indian Temple",
-    tagline: "Jasmine, gold and sacred vows.",
+    name: "Monsoon Romance",
+    tagline: "Rain-kissed love. Fresh beginnings.",
     shortDescription:
-      "A traditional South Indian temple invite with banana leaf motifs, jasmine detail and deep emerald tones.",
-    couple: "Nandini & Karthik",
-    location: "Chennai, Tamil Nadu",
-    palette: ["#fdf7ea", "#c9a14a", "#0f5132", "#4b1a16"],
+      "A poetic monsoon wedding invite with lush greens, gentle rain motifs, and fresh romantic energy.",
+    couple: "Priya & Rohan",
+    location: "Coorg, Karnataka",
+    palette: ["#f5f9f4", "#3d5a3d", "#7ba17b", "#2c3e2c"],
     image:
-      "https://images.unsplash.com/photo-1609925265061-7d5a6b1b9dab?auto=format&fit=crop&w=1200&q=85",
-    accent: "#c9a14a",
-    background: "#fdf7ea",
+      "https://images.unsplash.com/photo-1518837695005-2083093ee35b?auto=format&fit=crop&w=1200&q=85",
+    accent: "#5a8f5a",
+    background: "#f5f9f4",
   },
 ];
