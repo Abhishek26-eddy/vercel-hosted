@@ -803,21 +803,29 @@ const PLAN_FEATURES = {
 };
 
 function Pricing({ cta }: { cta: string }) {
-  const { prices } = useLocale();
+  const { prices, price, t } = useLocale();
+  
+  // Original prices (before discount) - ~20% higher
+  const originalEssential = price(9999);
+  const originalSignature = price(18999);
   
   const plans = [
     {
-      name: "Essential",
+      name: t("pricing.essential"),
       price: prices.essential,
-      tagline: "For intimate celebrations",
-      popular: false,
+      originalPrice: originalEssential,
+      tagline: t("pricing.essentialTag"),
+      popular: true, // Most couples choose this
+      discount: "20% OFF",
       features: PLAN_FEATURES.essential,
     },
     {
-      name: "Signature",
+      name: t("pricing.signature"),
       price: prices.signature,
-      tagline: "Most couples choose this",
-      popular: true,
+      originalPrice: originalSignature,
+      tagline: t("pricing.signatureTag"),
+      popular: false,
+      discount: "21% OFF",
       features: PLAN_FEATURES.signature,
     },
   ];
@@ -828,16 +836,16 @@ function Pricing({ cta }: { cta: string }) {
         <SectionReveal>
           <div className="mx-auto max-w-3xl text-center">
             <p className="text-[11px] font-medium tracking-[0.3em] uppercase" style={{ color: P.gold }}>
-              Transparent Pricing
+              {t("nav.pricing")}
             </p>
             <h2 
               className="mt-5 font-display tracking-tight"
               style={{ color: P.ink, fontSize: "clamp(2rem, 5vw, 3.25rem)", lineHeight: 1.1 }}
             >
-              Choose your experience.
+              {t("pricing.title")}
             </h2>
             <p className="mx-auto mt-4 max-w-xl text-[15px] leading-relaxed" style={{ color: P.body }}>
-              One-time payment. No subscriptions. No hidden charges. Lifetime hosting included in every plan.
+              {t("pricing.subtitle")}
             </p>
           </div>
         </SectionReveal>
@@ -855,20 +863,37 @@ function Pricing({ cta }: { cta: string }) {
               >
                 {plan.popular && (
                   <div 
-                    className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full px-4 py-1 text-[10px] font-medium tracking-wide"
+                    className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full px-4 py-1.5 text-[10px] font-semibold tracking-wide flex items-center gap-1.5"
                     style={{ background: P.gold, color: "white" }}
                   >
-                    Most Popular
+                    <Star size={10} fill="white" />
+                    {t("pricing.mostPopular")}
                   </div>
                 )}
                 
-                <p 
-                  className="text-[11px] font-medium tracking-[0.2em] uppercase"
-                  style={{ color: plan.popular ? P.goldSoft : P.gold }}
-                >
-                  {plan.name}
-                </p>
-                <div className="mt-3 flex items-baseline gap-1">
+                <div className="flex items-center justify-between">
+                  <p 
+                    className="text-[11px] font-medium tracking-[0.2em] uppercase"
+                    style={{ color: plan.popular ? P.goldSoft : P.gold }}
+                  >
+                    {plan.name}
+                  </p>
+                  {plan.discount && (
+                    <span 
+                      className="rounded-full px-2 py-0.5 text-[9px] font-bold tracking-wide"
+                      style={{ background: "#e8f5e9", color: "#2e7d32" }}
+                    >
+                      {plan.discount}
+                    </span>
+                  )}
+                </div>
+                <div className="mt-3 flex items-baseline gap-2">
+                  <span 
+                    className="text-base line-through opacity-50"
+                    style={{ color: plan.popular ? "#ffffff" : P.muted }}
+                  >
+                    {plan.originalPrice}
+                  </span>
                   <span 
                     className="font-display text-4xl tracking-tight"
                     style={{ color: plan.popular ? "#ffffff" : P.ink }}
@@ -912,7 +937,7 @@ function Pricing({ cta }: { cta: string }) {
                   }}
                 >
                   <MessageCircle size={14} />
-                  Get Started
+                  {t("pricing.getStarted")}
                   <ArrowRight size={13} className="transition-transform group-hover:translate-x-0.5" />
                 </a>
               </div>
