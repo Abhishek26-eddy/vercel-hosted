@@ -16,6 +16,8 @@ import {
   RefreshCw,
   HeartHandshake,
   Check,
+  CreditCard,
+  Lock,
 } from "lucide-react";
 import SectionReveal from "@/components/portfolio/SectionReveal";
 import { BRAND, PORTFOLIO_THEMES } from "@/lib/portfolioThemes";
@@ -809,6 +811,12 @@ const PLAN_FEATURES = {
   ],
 };
 
+// Payment links - Replace with your actual Razorpay payment links
+const PAYMENT_LINKS = {
+  essential: "https://razorpay.me/@thedigitalinviters?amount=799900", // ₹7,999
+  signature: "https://razorpay.me/@thedigitalinviters?amount=1499900", // ₹14,999
+};
+
 function Pricing({ cta }: { cta: string }) {
   const { prices, price, t } = useLocale();
   
@@ -825,6 +833,7 @@ function Pricing({ cta }: { cta: string }) {
       popular: true, // Most couples choose this
       discount: "20% OFF",
       features: PLAN_FEATURES.essential,
+      paymentLink: PAYMENT_LINKS.essential,
     },
     {
       name: t("pricing.signature"),
@@ -834,6 +843,7 @@ function Pricing({ cta }: { cta: string }) {
       popular: false,
       discount: "21% OFF",
       features: PLAN_FEATURES.signature,
+      paymentLink: PAYMENT_LINKS.signature,
     },
   ];
 
@@ -933,20 +943,47 @@ function Pricing({ cta }: { cta: string }) {
                   ))}
                 </div>
 
+                {/* Primary CTA - Pay Now */}
                 <a
-                  href={cta}
+                  href={plan.paymentLink}
                   target="_blank"
                   rel="noreferrer"
-                  className="group mt-8 flex w-full items-center justify-center gap-2 rounded-full py-3.5 text-[12px] font-medium tracking-wide transition-all duration-300"
+                  className="group mt-8 flex w-full items-center justify-center gap-2 rounded-full py-3.5 text-[12px] font-semibold tracking-wide transition-all duration-300 hover:scale-[1.02]"
                   style={{ 
                     background: plan.popular ? P.gold : P.ink, 
                     color: plan.popular ? "white" : P.bg,
                   }}
                 >
-                  <MessageCircle size={14} />
-                  {t("pricing.getStarted")}
+                  <CreditCard size={14} />
+                  Book Now — {plan.price}
                   <ArrowRight size={13} className="transition-transform group-hover:translate-x-0.5" />
                 </a>
+                
+                {/* Secondary CTA - Chat First */}
+                <a
+                  href={cta}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="mt-3 flex w-full items-center justify-center gap-2 rounded-full py-2.5 text-[11px] font-medium tracking-wide transition-all border"
+                  style={{ 
+                    borderColor: plan.popular ? "rgba(255,255,255,0.3)" : P.line,
+                    color: plan.popular ? "rgba(255,255,255,0.8)" : P.muted,
+                  }}
+                >
+                  <MessageCircle size={12} />
+                  Have questions? Chat first
+                </a>
+                
+                {/* Secure Payment Badge */}
+                <div className="mt-4 flex items-center justify-center gap-1.5">
+                  <Lock size={10} style={{ color: plan.popular ? "rgba(255,255,255,0.5)" : P.muted }} />
+                  <span 
+                    className="text-[9px] tracking-wide"
+                    style={{ color: plan.popular ? "rgba(255,255,255,0.5)" : P.muted }}
+                  >
+                    Secure payment via Razorpay
+                  </span>
+                </div>
               </div>
             </SectionReveal>
           ))}
