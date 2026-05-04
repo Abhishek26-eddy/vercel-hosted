@@ -36,9 +36,9 @@ const P = {
   line: "#e8e3db", lineSoft: "#f2efe9", noir: "#110f0d",
 };
 
-const TIER_CONFIG: Record<string, { label: string; color: string; bg: string }> = {
-  basic: { label: "BASIC", color: "#6b7280", bg: "#f3f4f6" },
-  luxe: { label: "LUXE", color: "#92400e", bg: "#fef3c7" },
+const TIER_CONFIG: Record<string, { label: string; color: string; bg: string; description: string }> = {
+  basic: { label: "BASIC", color: "#6b7280", bg: "#f3f4f6", description: "Beautiful design, RSVP, gallery, events" },
+  luxe: { label: "LUXE", color: "#92400e", bg: "#fef3c7", description: "Music, countdown, love story, venue map, unlimited" },
 };
 
 type WeddingDetails = {
@@ -56,15 +56,15 @@ type WeddingDetails = {
 };
 
 const STEPS = [
-  { id: "template", label: "Template", icon: Sparkles },
+  { id: "design", label: "Design", icon: Sparkles },
   { id: "details", label: "Details", icon: User },
   { id: "events", label: "Events", icon: Calendar },
-  { id: "preview", label: "Preview", icon: Eye },
-  { id: "checkout", label: "Pay", icon: CreditCard },
+  { id: "review", label: "Review", icon: Eye },
+  { id: "payment", label: "Payment", icon: CreditCard },
 ];
 
 /* ══════════════════════════════════════════════════════════
-   MAIN BUILDER COMPONENT
+   MAIN BUILDER — Premium editorial ordering experience
    ══════════════════════════════════════════════════════════ */
 function BuilderInner() {
   const searchParams = useSearchParams();
@@ -77,6 +77,7 @@ function BuilderInner() {
   const [selectedTemplate, setSelectedTemplate] = useState(initialTemplate);
   const [paymentDone, setPaymentDone] = useState(false);
   const [upiCopied, setUpiCopied] = useState(false);
+  const [designFilter, setDesignFilter] = useState<"all" | "basic" | "luxe">("all");
   const [details, setDetails] = useState<WeddingDetails>({
     groomName: "", brideName: "", weddingDate: "",
     venue: "", venueAddress: "", city: "",
@@ -95,6 +96,10 @@ function BuilderInner() {
   const tierLabel = TIER_CONFIG[tier]?.label || "BASIC";
   const tierPrice = tier === "luxe" ? prices.luxe : prices.basic;
   const tierPriceINR = tier === "luxe" ? BASE_PRICES.luxe : BASE_PRICES.basic;
+
+  const filteredDesigns = PORTFOLIO_THEMES
+    .filter(t => t.tier !== "signature")
+    .filter(t => designFilter === "all" || t.tier === designFilter);
 
   const updateDetail = (key: keyof WeddingDetails, value: string) => {
     setDetails((prev) => ({ ...prev, [key]: value }));
@@ -157,28 +162,31 @@ function BuilderInner() {
   return (
     <main className="min-h-screen" style={{ background: P.bg, color: P.ink }}>
       {/* ─── Top bar ─── */}
-      <header className="sticky top-0 z-50 px-4 py-3 flex items-center justify-between" style={{ background: `${P.bg}F0`, backdropFilter: "blur(16px)", borderBottom: `1px solid ${P.line}` }}>
-        <Link href="/" className="flex items-center gap-2 text-[12px] font-medium" style={{ color: P.muted }}>
-          <ArrowLeft size={14} /> Back
+      <header className="sticky top-0 z-50 px-5 py-3.5 flex items-center justify-between" style={{ background: `${P.bg}F0`, backdropFilter: "blur(16px)", borderBottom: `1px solid ${P.line}` }}>
+        <Link href="/" className="flex items-center gap-2 text-[11px] font-medium tracking-wide" style={{ color: P.muted }}>
+          <ArrowLeft size={13} /> Home
         </Link>
         <div className="flex items-center gap-2">
-          <Heart size={13} strokeWidth={1.5} style={{ color: P.gold }} />
-          <span className="font-display text-lg" style={{ color: P.ink }}>Create Invitation</span>
+          <Heart size={12} strokeWidth={1.5} style={{ color: P.gold }} />
+          <span className="font-display text-[15px] tracking-tight" style={{ color: P.ink }}>Commission Your Invitation</span>
         </div>
         {selectedTheme ? (
-          <span className="text-[11px] font-semibold" style={{ color: P.gold }}>{tierPrice}</span>
-        ) : <div className="w-12" />}
+          <div className="flex items-center gap-2">
+            <span className="rounded-full px-2 py-0.5 text-[7px] font-bold tracking-[0.1em]" style={{ background: TIER_CONFIG[tier]?.bg, color: TIER_CONFIG[tier]?.color }}>{tierLabel}</span>
+            <span className="text-[12px] font-semibold" style={{ color: P.gold }}>{tierPrice}</span>
+          </div>
+        ) : <div className="w-16" />}
       </header>
 
       {/* ─── Stepper ─── */}
-      <div className="px-4 py-3 overflow-x-auto" style={{ borderBottom: `1px solid ${P.lineSoft}` }}>
-        <div className="flex items-center justify-center gap-0.5 min-w-max mx-auto">
+      <div className="px-4 py-3 overflow-x-auto" style={{ borderBottom: `1px solid ${P.lineSoft}`, background: P.surface }}>
+        <div className="flex items-center justify-center gap-0 min-w-max mx-auto">
           {STEPS.map((s, i) => (
             <div key={s.id} className="flex items-center">
               <button onClick={() => i <= step && setStep(i)}
-                className="flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[10px] font-medium tracking-wide transition-all"
+                className="flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-[10px] font-semibold tracking-wide transition-all"
                 style={{
-                  background: i === step ? P.ink : i < step ? `${P.gold}20` : "transparent",
+                  background: i === step ? P.ink : i < step ? `${P.gold}15` : "transparent",
                   color: i === step ? P.bg : i < step ? P.gold : P.muted,
                   cursor: i <= step ? "pointer" : "default",
                 }}
@@ -186,51 +194,76 @@ function BuilderInner() {
                 {i < step ? <Check size={10} /> : <s.icon size={10} />}
                 <span className="hidden sm:inline">{s.label}</span>
               </button>
-              {i < STEPS.length - 1 && <div className="mx-0.5 h-px w-4 sm:w-6" style={{ background: i < step ? P.gold : P.line }} />}
+              {i < STEPS.length - 1 && <div className="mx-1 h-px w-5 sm:w-8" style={{ background: i < step ? P.gold : P.line }} />}
             </div>
           ))}
         </div>
       </div>
 
       {/* ─── Content ─── */}
-      <div className="mx-auto max-w-5xl px-4 py-8">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 py-8 sm:py-10">
         <AnimatePresence mode="wait">
 
-          {/* ═══ STEP 0: Choose Template ═══ */}
+          {/* ═══ STEP 0: Choose Your Design ═══ */}
           {step === 0 && (
-            <StepWrapper key="template">
-              <h2 className="font-display text-2xl" style={{ color: P.ink }}>Pick a design you love</h2>
-              <p className="mt-2 text-[14px]" style={{ color: P.body }}>Each design is customizable with your details, events, and photos.</p>
-              <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-                {PORTFOLIO_THEMES.map((theme) => {
+            <StepWrapper key="design">
+              <div className="text-center mb-8">
+                <p className="text-[10px] font-semibold tracking-[0.3em] uppercase" style={{ color: P.gold }}>Step 1 of 5</p>
+                <h2 className="mt-3 font-display text-2xl sm:text-3xl" style={{ color: P.ink }}>Choose your design</h2>
+                <p className="mt-2 text-[14px]" style={{ color: P.body }}>Every design is fully customizable with your details, photos, and events.</p>
+              </div>
+
+              {/* Tier filter */}
+              <div className="flex items-center justify-center gap-2 mb-8">
+                {([["all", "All Designs"], ["basic", `Basic · ${prices.basic}`], ["luxe", `Luxe · ${prices.luxe}`]] as const).map(([key, label]) => (
+                  <button key={key} onClick={() => setDesignFilter(key)}
+                    className="rounded-full px-4 py-1.5 text-[10px] font-semibold tracking-wide transition-all"
+                    style={{
+                      background: designFilter === key ? P.ink : "transparent",
+                      color: designFilter === key ? P.bg : P.muted,
+                      border: `1px solid ${designFilter === key ? P.ink : P.line}`,
+                    }}
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
+
+              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                {filteredDesigns.map((theme) => {
                   const tc = TIER_CONFIG[theme.tier];
                   const tp = theme.tier === "luxe" ? prices.luxe : prices.basic;
                   const sel = selectedTemplate === theme.slug;
                   return (
                     <button key={theme.slug} onClick={() => setSelectedTemplate(theme.slug)}
-                      className="group relative text-left overflow-hidden rounded-xl transition-all"
-                      style={{ border: sel ? `2px solid ${P.gold}` : `1px solid ${P.lineSoft}`, boxShadow: sel ? `0 0 0 3px ${P.gold}30` : "none" }}
+                      className="group relative text-left overflow-hidden rounded-2xl transition-all"
+                      style={{ border: sel ? `2px solid ${P.gold}` : `1px solid ${P.lineSoft}`, boxShadow: sel ? `0 0 0 4px ${P.gold}20` : "none" }}
                     >
-                      <div className="relative aspect-[4/3] overflow-hidden">
-                        <div className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105" style={{ backgroundImage: `url(${theme.image})` }} />
-                        <div className="absolute top-2 left-2">
-                          <span className="rounded-full px-2.5 py-0.5 text-[9px] font-bold tracking-[0.1em]" style={{ background: tc?.bg, color: tc?.color }}>{tc?.label}</span>
+                      <div className="relative aspect-[3/4] overflow-hidden">
+                        <div className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105" style={{ backgroundImage: `url(${theme.image})` }} />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+                        <div className="absolute top-3 left-3 flex gap-1.5">
+                          <span className="rounded-full px-2.5 py-0.5 text-[7px] font-bold tracking-[0.12em] shadow-sm" style={{ background: tc?.bg, color: tc?.color }}>{tc?.label}</span>
+                          {theme.badge && <span className="rounded-full px-2 py-0.5 text-[7px] font-bold tracking-[0.08em] shadow-sm" style={{ background: "white", color: P.ink }}>{theme.badge}</span>}
                         </div>
-                        {theme.badge && <div className="absolute top-2 right-2"><span className="rounded-full px-2 py-0.5 text-[8px] font-bold tracking-[0.08em] shadow" style={{ background: "white", color: P.ink }}>{theme.badge}</span></div>}
-                        {sel && <div className="absolute top-2 right-2 flex h-6 w-6 items-center justify-center rounded-full" style={{ background: P.gold }}><Check size={12} color="white" /></div>}
+                        {sel && (
+                          <div className="absolute top-3 right-3 flex h-7 w-7 items-center justify-center rounded-full shadow-lg" style={{ background: P.gold }}>
+                            <Check size={13} color="white" strokeWidth={3} />
+                          </div>
+                        )}
                         <Link href={`/${theme.slug}`} target="_blank" onClick={(e) => e.stopPropagation()}
-                          className="absolute bottom-2 right-2 flex items-center gap-1 rounded-full px-2.5 py-1 text-[9px] font-medium opacity-0 group-hover:opacity-100 transition-opacity"
-                          style={{ background: "rgba(0,0,0,0.7)", color: "white" }}
+                          className="absolute bottom-3 right-3 flex items-center gap-1 rounded-full px-2.5 py-1 text-[9px] font-medium backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity"
+                          style={{ background: "rgba(255,255,255,0.9)", color: P.ink }}
                         >
                           <Eye size={10} /> Preview
                         </Link>
                       </div>
-                      <div className="p-3">
+                      <div className="p-3.5" style={{ background: sel ? `${P.gold}08` : P.surface }}>
                         <div className="flex items-center justify-between">
-                          <h3 className="font-display text-base" style={{ color: P.ink }}>{theme.name}</h3>
-                          <span className="text-[13px] font-semibold" style={{ color: P.gold }}>{tp}</span>
+                          <h3 className="font-display text-[14px]" style={{ color: P.ink }}>{theme.name}</h3>
+                          <span className="text-[12px] font-semibold" style={{ color: P.gold }}>{tp}</span>
                         </div>
-                        <p className="mt-0.5 text-[11px]" style={{ color: P.muted }}>{theme.tagline}</p>
+                        <p className="mt-0.5 text-[10px]" style={{ color: P.muted }}>{theme.tagline}</p>
                       </div>
                     </button>
                   );
@@ -239,59 +272,76 @@ function BuilderInner() {
             </StepWrapper>
           )}
 
-          {/* ═══ STEP 1: Details ═══ */}
+          {/* ═══ STEP 1: Your Details ═══ */}
           {step === 1 && (
             <StepWrapper key="details">
-              <div className="grid gap-8 lg:grid-cols-[1fr_380px]">
+              <div className="grid gap-8 lg:grid-cols-[1fr_360px]">
                 <div>
-                  <h2 className="font-display text-2xl" style={{ color: P.ink }}>Tell us about the couple</h2>
-                  <p className="mt-2 text-[14px]" style={{ color: P.body }}>This info goes directly onto your invite.</p>
-                  <div className="mt-6 space-y-4">
+                  <p className="text-[10px] font-semibold tracking-[0.3em] uppercase" style={{ color: P.gold }}>Step 2 of 5</p>
+                  <h2 className="mt-3 font-display text-2xl" style={{ color: P.ink }}>Tell us about your wedding</h2>
+                  <p className="mt-2 text-[13px]" style={{ color: P.body }}>This goes directly onto your invitation. You can edit anytime later.</p>
+
+                  <div className="mt-7 rounded-2xl p-6 space-y-5" style={{ background: P.surface, border: `1px solid ${P.lineSoft}` }}>
+                    <p className="text-[9px] font-bold tracking-[0.2em] uppercase" style={{ color: P.gold }}>The Couple</p>
                     <div className="grid grid-cols-2 gap-4">
                       <InputField label="Groom's Name" value={details.groomName} onChange={(v) => updateDetail("groomName", v)} placeholder="e.g. Aarav Sharma" required />
                       <InputField label="Bride's Name" value={details.brideName} onChange={(v) => updateDetail("brideName", v)} placeholder="e.g. Meera Patel" required />
                     </div>
                     <InputField label="Wedding Date" value={details.weddingDate} onChange={(v) => updateDetail("weddingDate", v)} type="date" required />
+                  </div>
+
+                  <div className="mt-5 rounded-2xl p-6 space-y-5" style={{ background: P.surface, border: `1px solid ${P.lineSoft}` }}>
+                    <p className="text-[9px] font-bold tracking-[0.2em] uppercase" style={{ color: P.gold }}>The Venue</p>
                     <InputField label="Venue Name" value={details.venue} onChange={(v) => updateDetail("venue", v)} placeholder="e.g. Taj Lake Palace" />
                     <div className="grid grid-cols-2 gap-4">
-                      <InputField label="Venue Address" value={details.venueAddress} onChange={(v) => updateDetail("venueAddress", v)} placeholder="Full address" />
+                      <InputField label="Address" value={details.venueAddress} onChange={(v) => updateDetail("venueAddress", v)} placeholder="Full address" />
                       <InputField label="City" value={details.city} onChange={(v) => updateDetail("city", v)} placeholder="e.g. Udaipur" />
                     </div>
-                    {tier === "luxe" && (
-                      <>
-                        <TextareaField label="Your Love Story" value={details.loveStory} onChange={(v) => updateDetail("loveStory", v)} placeholder="How did you meet? Tell your story..." rows={3} />
-                        <TextareaField label="Message to Guests" value={details.message} onChange={(v) => updateDetail("message", v)} placeholder="We can't wait to celebrate with you..." rows={2} />
-                      </>
-                    )}
+                  </div>
+
+                  {tier === "luxe" && (
+                    <div className="mt-5 rounded-2xl p-6 space-y-5" style={{ background: P.surface, border: `1px solid ${P.lineSoft}` }}>
+                      <div className="flex items-center gap-2">
+                        <Sparkles size={12} style={{ color: P.gold }} />
+                        <p className="text-[9px] font-bold tracking-[0.2em] uppercase" style={{ color: P.gold }}>Luxe Extras</p>
+                      </div>
+                      <TextareaField label="Your Love Story" value={details.loveStory} onChange={(v) => updateDetail("loveStory", v)} placeholder="How did you meet? A few sentences that capture your journey..." rows={3} />
+                      <TextareaField label="Message to Guests" value={details.message} onChange={(v) => updateDetail("message", v)} placeholder="We can't wait to celebrate with you..." rows={2} />
+                    </div>
+                  )}
+
+                  <div className="mt-5 rounded-2xl p-6 space-y-5" style={{ background: P.surface, border: `1px solid ${P.lineSoft}` }}>
+                    <p className="text-[9px] font-bold tracking-[0.2em] uppercase" style={{ color: P.gold }}>Contact (for our team only)</p>
                     <div className="grid grid-cols-2 gap-4">
-                      <InputField label="Your Phone" value={details.phone} onChange={(v) => updateDetail("phone", v)} placeholder="+91 98765 43210" type="tel" />
-                      <InputField label="Your Email" value={details.email} onChange={(v) => updateDetail("email", v)} placeholder="you@email.com" type="email" />
+                      <InputField label="Phone" value={details.phone} onChange={(v) => updateDetail("phone", v)} placeholder="+91 98765 43210" type="tel" />
+                      <InputField label="Email" value={details.email} onChange={(v) => updateDetail("email", v)} placeholder="you@email.com" type="email" />
                     </div>
                   </div>
                 </div>
-                <div className="lg:sticky lg:top-20 lg:self-start">
+                <div className="lg:sticky lg:top-24 lg:self-start">
                   <LivePreview details={details} theme={selectedTheme} />
                 </div>
               </div>
             </StepWrapper>
           )}
 
-          {/* ═══ STEP 2: Events ═══ */}
+          {/* ═══ STEP 2: Ceremonies ═══ */}
           {step === 2 && (
             <StepWrapper key="events">
-              <div className="grid gap-8 lg:grid-cols-[1fr_380px]">
+              <div className="grid gap-8 lg:grid-cols-[1fr_360px]">
                 <div>
-                  <h2 className="font-display text-2xl" style={{ color: P.ink }}>Add your ceremonies</h2>
-                  <p className="mt-2 text-[14px]" style={{ color: P.body }}>Remove any that don&apos;t apply. Add more if needed.</p>
-                  <div className="mt-6 space-y-3">
+                  <p className="text-[10px] font-semibold tracking-[0.3em] uppercase" style={{ color: P.gold }}>Step 3 of 5</p>
+                  <h2 className="mt-3 font-display text-2xl" style={{ color: P.ink }}>Your ceremonies &amp; celebrations</h2>
+                  <p className="mt-2 text-[13px]" style={{ color: P.body }}>Remove events that don&apos;t apply. Add as many as you need.</p>
+                  <div className="mt-7 space-y-3">
                     {details.events.map((event, i) => (
-                      <div key={i} className="rounded-xl p-4 space-y-3" style={{ background: P.surface, border: `1px solid ${P.lineSoft}` }}>
+                      <div key={i} className="rounded-2xl p-5 space-y-3" style={{ background: P.surface, border: `1px solid ${P.lineSoft}` }}>
                         <div className="flex items-center justify-between">
                           <div className="flex-1 grid grid-cols-2 gap-3">
-                            <InputField label="Event" value={event.name} onChange={(v) => updateEvent(i, "name", v)} placeholder="e.g. Sangeet" />
-                            <InputField label="Venue" value={event.venue} onChange={(v) => updateEvent(i, "venue", v)} placeholder="Same as main" />
+                            <InputField label="Event Name" value={event.name} onChange={(v) => updateEvent(i, "name", v)} placeholder="e.g. Sangeet" />
+                            <InputField label="Venue" value={event.venue} onChange={(v) => updateEvent(i, "venue", v)} placeholder="Same as main venue" />
                           </div>
-                          <button onClick={() => removeEvent(i)} className="ml-2 mt-5 p-1 rounded-full hover:bg-red-50" style={{ color: "#ef4444" }}><X size={14} /></button>
+                          <button onClick={() => removeEvent(i)} className="ml-3 mt-5 flex h-7 w-7 items-center justify-center rounded-full transition-colors hover:bg-red-50" style={{ color: "#ef4444" }}><X size={14} /></button>
                         </div>
                         <div className="grid grid-cols-2 gap-3">
                           <InputField label="Date" value={event.date} onChange={(v) => updateEvent(i, "date", v)} type="date" />
@@ -299,169 +349,208 @@ function BuilderInner() {
                         </div>
                       </div>
                     ))}
-                    <button onClick={addEvent} className="flex items-center gap-2 rounded-full px-4 py-2 text-[12px] font-medium" style={{ border: `1px dashed ${P.line}`, color: P.gold }}>
-                      + Add Event
+                    <button onClick={addEvent} className="flex items-center gap-2 rounded-full px-5 py-2.5 text-[11px] font-semibold transition-all hover:border-[#9a7b4f]" style={{ border: `1px dashed ${P.line}`, color: P.gold }}>
+                      + Add Another Ceremony
                     </button>
                   </div>
                 </div>
-                <div className="lg:sticky lg:top-20 lg:self-start">
+                <div className="lg:sticky lg:top-24 lg:self-start">
                   <LivePreview details={details} theme={selectedTheme} />
                 </div>
               </div>
             </StepWrapper>
           )}
 
-          {/* ═══ STEP 3: FULL PREVIEW ═══ */}
+          {/* ═══ STEP 3: Review Your Invitation ═══ */}
           {step === 3 && (
-            <StepWrapper key="preview">
+            <StepWrapper key="review">
               <div className="text-center mb-8">
-                <h2 className="font-display text-2xl" style={{ color: P.ink }}>Here&apos;s your invite</h2>
+                <p className="text-[10px] font-semibold tracking-[0.3em] uppercase" style={{ color: P.gold }}>Step 4 of 5</p>
+                <h2 className="mt-3 font-display text-2xl sm:text-3xl" style={{ color: P.ink }}>Review your invitation</h2>
                 <p className="mt-2 text-[14px]" style={{ color: P.body }}>
-                  This is what your guests will see. Happy? Proceed to payment.
+                  This is how your guests will experience it. Everything look right?
                 </p>
               </div>
+
+              {/* Order summary card */}
+              <div className="mx-auto max-w-2xl mb-8 rounded-2xl p-5" style={{ background: P.surface, border: `1px solid ${P.lineSoft}` }}>
+                <div className="flex items-center gap-4">
+                  {selectedTheme && <div className="h-16 w-16 flex-shrink-0 rounded-xl bg-cover bg-center" style={{ backgroundImage: `url(${selectedTheme.image})` }} />}
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2">
+                      <h3 className="font-display text-lg" style={{ color: P.ink }}>{selectedTheme?.name}</h3>
+                      <span className="rounded-full px-2 py-0.5 text-[7px] font-bold tracking-[0.1em]" style={{ background: TIER_CONFIG[tier]?.bg, color: TIER_CONFIG[tier]?.color }}>{tierLabel}</span>
+                    </div>
+                    <p className="mt-0.5 text-[12px]" style={{ color: P.muted }}>{details.groomName} & {details.brideName} · {fmtDate(details.weddingDate)}</p>
+                  </div>
+                  <span className="font-display text-xl" style={{ color: P.gold }}>{tierPrice}</span>
+                </div>
+              </div>
+
               <FullInvitePreview details={details} theme={selectedTheme} tier={tier} />
-              <div className="mt-8 flex flex-col items-center gap-3">
+
+              <div className="mt-10 flex flex-col items-center gap-4">
                 <button onClick={() => setStep(4)}
-                  className="group flex items-center gap-2 rounded-full px-8 py-4 text-[13px] font-semibold tracking-wide transition-all hover:scale-[1.02]"
+                  className="group flex items-center gap-3 rounded-full px-10 py-4 text-[13px] font-semibold tracking-wide transition-all hover:scale-[1.02] shadow-lg"
                   style={{ background: P.gold, color: "white" }}
                 >
-                  Looks great — Pay {tierPrice}
+                  <Lock size={14} />
+                  Approve &amp; Proceed to Payment — {tierPrice}
                   <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
                 </button>
-                <button onClick={() => setStep(1)} className="text-[12px] font-medium" style={{ color: P.muted }}>Edit my details</button>
+                <button onClick={() => setStep(1)} className="flex items-center gap-1 text-[12px] font-medium transition-colors hover:text-[#9a7b4f]" style={{ color: P.muted }}>
+                  <ArrowLeft size={11} /> Edit my details
+                </button>
               </div>
             </StepWrapper>
           )}
 
-          {/* ═══ STEP 4: UPI CHECKOUT ═══ */}
+          {/* ═══ STEP 4: Boutique Payment ═══ */}
           {step === 4 && !paymentDone && (
-            <StepWrapper key="checkout">
+            <StepWrapper key="payment">
               <div className="mx-auto max-w-lg">
-                <h2 className="font-display text-2xl text-center" style={{ color: P.ink }}>Complete Payment</h2>
-                <p className="mt-2 text-center text-[14px]" style={{ color: P.body }}>Pay via UPI. We&apos;ll finalize your invite within 24 hours.</p>
+                <div className="text-center mb-8">
+                  <p className="text-[10px] font-semibold tracking-[0.3em] uppercase" style={{ color: P.gold }}>Step 5 of 5</p>
+                  <h2 className="mt-3 font-display text-2xl" style={{ color: P.ink }}>Complete your order</h2>
+                  <p className="mt-2 text-[13px]" style={{ color: P.body }}>One-time payment via UPI. Your invite will be ready within 24 hours.</p>
+                </div>
 
                 {/* Order summary */}
-                <div className="mt-8 rounded-xl p-5 space-y-3" style={{ background: P.surface, border: `1px solid ${P.lineSoft}` }}>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      {selectedTheme && <div className="h-12 w-12 rounded-lg bg-cover bg-center" style={{ backgroundImage: `url(${selectedTheme.image})` }} />}
-                      <div>
+                <div className="rounded-2xl p-6 space-y-4" style={{ background: P.surface, border: `1px solid ${P.lineSoft}` }}>
+                  <p className="text-[9px] font-bold tracking-[0.2em] uppercase" style={{ color: P.gold }}>Order Summary</p>
+                  <div className="flex items-center gap-4">
+                    {selectedTheme && <div className="h-14 w-14 flex-shrink-0 rounded-xl bg-cover bg-center shadow-sm" style={{ backgroundImage: `url(${selectedTheme.image})` }} />}
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2">
                         <p className="font-display text-base" style={{ color: P.ink }}>{selectedTheme?.name}</p>
-                        <span className="rounded-full px-2 py-0.5 text-[8px] font-bold tracking-[0.1em]" style={{ background: TIER_CONFIG[tier]?.bg, color: TIER_CONFIG[tier]?.color }}>{tierLabel}</span>
+                        <span className="rounded-full px-2 py-0.5 text-[7px] font-bold tracking-[0.1em]" style={{ background: TIER_CONFIG[tier]?.bg, color: TIER_CONFIG[tier]?.color }}>{tierLabel}</span>
                       </div>
+                      <p className="mt-0.5 text-[11px]" style={{ color: P.muted }}>{details.groomName} & {details.brideName}</p>
                     </div>
-                    <span className="font-display text-xl" style={{ color: P.ink }}>₹{tierPriceINR}</span>
                   </div>
 
-                  <div className="pt-3 space-y-1.5" style={{ borderTop: `1px solid ${P.lineSoft}` }}>
-                    <Row label="Couple" value={`${details.groomName} & ${details.brideName}`} />
-                    <Row label="Date" value={fmtDate(details.weddingDate)} />
+                  <div className="pt-3 space-y-2" style={{ borderTop: `1px solid ${P.lineSoft}` }}>
+                    <Row label="Wedding Date" value={fmtDate(details.weddingDate)} />
                     <Row label="Venue" value={`${details.venue}${details.city ? `, ${details.city}` : ""}`} />
                     <Row label="Events" value={activeEvents.filter(e => e.date).map(e => e.name).join(", ")} />
                   </div>
 
                   <div className="pt-3 flex items-center justify-between" style={{ borderTop: `1px solid ${P.lineSoft}` }}>
-                    <span className="text-[14px] font-semibold" style={{ color: P.body }}>Total</span>
+                    <div>
+                      <span className="text-[13px] font-semibold" style={{ color: P.ink }}>Total</span>
+                      <p className="text-[10px]" style={{ color: P.muted }}>One-time · Lifetime hosting</p>
+                    </div>
                     <span className="font-display text-2xl" style={{ color: P.ink }}>₹{tierPriceINR}</span>
                   </div>
                 </div>
 
-                {/* UPI Payment section */}
-                <div className="mt-6 rounded-xl p-6 space-y-5" style={{ background: `${P.gold}08`, border: `1px solid ${P.gold}20` }}>
-                  <p className="text-[10px] font-semibold tracking-[0.2em] uppercase text-center" style={{ color: P.gold }}>Pay via UPI</p>
+                {/* UPI Payment */}
+                <div className="mt-5 rounded-2xl p-6 space-y-5" style={{ background: `${P.gold}06`, border: `1px solid ${P.gold}18` }}>
+                  <div className="text-center">
+                    <p className="text-[9px] font-bold tracking-[0.25em] uppercase" style={{ color: P.gold }}>Secure UPI Payment</p>
+                    <p className="mt-1 text-[11px]" style={{ color: P.muted }}>Pay using any UPI app — GPay, PhonePe, Paytm, or any bank</p>
+                  </div>
 
-                  {/* UPI ID with copy */}
-                  <div className="flex items-center justify-between rounded-lg p-3" style={{ background: P.surface, border: `1px solid ${P.lineSoft}` }}>
+                  {/* UPI ID */}
+                  <div className="flex items-center justify-between rounded-xl p-4" style={{ background: P.surface, border: `1px solid ${P.lineSoft}` }}>
                     <div>
-                      <p className="text-[9px] font-medium tracking-wide uppercase" style={{ color: P.muted }}>UPI ID</p>
-                      <p className="mt-0.5 text-[14px] font-mono font-semibold" style={{ color: P.ink }}>{BRAND.upiId}</p>
+                      <p className="text-[8px] font-bold tracking-[0.2em] uppercase" style={{ color: P.muted }}>UPI ID</p>
+                      <p className="mt-1 font-mono text-[14px] font-semibold tracking-wide" style={{ color: P.ink }}>{BRAND.upiId}</p>
                     </div>
-                    <button onClick={copyUpi} className="flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[10px] font-semibold transition-all" style={{ background: upiCopied ? "#dcfce7" : P.bgDeep, color: upiCopied ? "#16a34a" : P.ink }}>
-                      {upiCopied ? <><Check size={11} /> Copied</> : <><Copy size={11} /> Copy</>}
+                    <button onClick={copyUpi} className="flex items-center gap-1.5 rounded-full px-4 py-2 text-[10px] font-semibold transition-all" style={{ background: upiCopied ? "#dcfce7" : P.bgDeep, color: upiCopied ? "#16a34a" : P.ink }}>
+                      {upiCopied ? <><Check size={11} /> Copied!</> : <><Copy size={11} /> Copy ID</>}
                     </button>
                   </div>
 
-                  {/* Pay now button — opens UPI app */}
+                  {/* Pay via UPI app */}
                   <a href={upiLink}
-                    className="group flex w-full items-center justify-center gap-2 rounded-full py-4 text-[14px] font-semibold tracking-wide transition-all hover:scale-[1.02]"
+                    className="group flex w-full items-center justify-center gap-2.5 rounded-full py-4 text-[13px] font-semibold tracking-wide transition-all hover:scale-[1.01] shadow-md"
                     style={{ background: P.ink, color: P.bg }}
                   >
-                    <Lock size={14} />
-                    Pay ₹{tierPriceINR} via UPI App
-                    <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
+                    <Lock size={13} />
+                    Pay ₹{tierPriceINR} — Open UPI App
+                    <ArrowRight size={13} className="transition-transform group-hover:translate-x-1" />
                   </a>
 
-                  <p className="text-center text-[11px] leading-relaxed" style={{ color: P.muted }}>
-                    Tap above to open your UPI app (GPay, PhonePe, Paytm).
-                    <br />Or scan QR / enter UPI ID manually in any UPI app.
+                  <p className="text-center text-[10px] leading-relaxed" style={{ color: P.muted }}>
+                    Tapping above will open your default UPI app with amount pre-filled.
+                    <br />You can also copy the UPI ID above and pay manually.
                   </p>
                 </div>
 
-                {/* After payment */}
-                <button onClick={handlePaymentDone}
-                  className="group mt-4 flex w-full items-center justify-center gap-2 rounded-full py-3.5 text-[13px] font-semibold tracking-wide transition-all"
-                  style={{ background: "#25D366", color: "white" }}
-                >
-                  <CheckCircle2 size={15} />
-                  I&apos;ve Paid — Confirm via WhatsApp
-                  <ArrowRight size={13} className="transition-transform group-hover:translate-x-0.5" />
-                </button>
+                {/* After payment confirmation */}
+                <div className="mt-5 rounded-2xl p-5 space-y-4" style={{ background: P.surface, border: `1px solid ${P.lineSoft}` }}>
+                  <p className="text-[9px] font-bold tracking-[0.2em] uppercase text-center" style={{ color: P.gold }}>After Payment</p>
+                  <button onClick={handlePaymentDone}
+                    className="group flex w-full items-center justify-center gap-2 rounded-full py-3.5 text-[12px] font-semibold tracking-wide transition-all hover:scale-[1.01]"
+                    style={{ background: "#25D366", color: "white" }}
+                  >
+                    <CheckCircle2 size={14} />
+                    I&apos;ve Paid — Confirm Order via WhatsApp
+                    <ArrowRight size={12} className="transition-transform group-hover:translate-x-0.5" />
+                  </button>
+                  <p className="text-center text-[10px]" style={{ color: P.muted }}>
+                    This will send your order details to our team. We&apos;ll start immediately.
+                  </p>
+                </div>
 
-                <div className="mt-3 flex items-center justify-center gap-4">
-                  <div className="flex items-center gap-1">
-                    <Shield size={10} style={{ color: P.muted }} />
-                    <span className="text-[9px]" style={{ color: P.muted }}>Secure Payment</span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <Lock size={10} style={{ color: P.muted }} />
-                    <span className="text-[9px]" style={{ color: P.muted }}>100% Refund Guarantee</span>
-                  </div>
+                {/* Trust indicators */}
+                <div className="mt-5 flex items-center justify-center gap-5">
+                  {[
+                    { icon: Shield, text: "Secure Payment" },
+                    { icon: Lock, text: "100% Refund Guarantee" },
+                    { icon: Clock, text: "24h Delivery" },
+                  ].map(({ icon: Icon, text }) => (
+                    <div key={text} className="flex items-center gap-1.5">
+                      <Icon size={11} style={{ color: P.goldSoft }} />
+                      <span className="text-[9px] font-medium" style={{ color: P.muted }}>{text}</span>
+                    </div>
+                  ))}
                 </div>
 
                 <a href={cta} target="_blank" rel="noreferrer"
-                  className="mt-4 flex w-full items-center justify-center gap-2 rounded-full py-3 text-[11px] font-medium border"
+                  className="mt-5 flex w-full items-center justify-center gap-2 rounded-full py-3 text-[11px] font-medium border transition-all hover:border-[#9a7b4f]"
                   style={{ borderColor: P.line, color: P.muted }}
                 >
-                  <MessageCircle size={12} /> Have questions? Chat with us
+                  <MessageCircle size={12} /> Need help? Chat with us first
                 </a>
               </div>
             </StepWrapper>
           )}
 
-          {/* ═══ CONFIRMATION ═══ */}
+          {/* ═══ ORDER CONFIRMED ═══ */}
           {step === 4 && paymentDone && (
             <StepWrapper key="confirmed">
-              <div className="mx-auto max-w-lg text-center py-10">
-                <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full" style={{ background: `${P.gold}15` }}>
+              <div className="mx-auto max-w-lg text-center py-8">
+                <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full" style={{ background: `${P.gold}12` }}>
                   <CheckCircle2 size={40} style={{ color: P.gold }} />
                 </div>
-                <h2 className="mt-6 font-display text-3xl" style={{ color: P.ink }}>Order Confirmed!</h2>
-                <p className="mt-3 text-[15px] leading-[1.8]" style={{ color: P.body }}>
-                  Thank you, {details.groomName} & {details.brideName}. We&apos;ve received your order and will finalize your <strong>{selectedTheme?.name}</strong> invite within 24 hours.
+                <h2 className="mt-6 font-display text-3xl" style={{ color: P.ink }}>You&apos;re all set!</h2>
+                <p className="mt-3 text-[14px] leading-[1.8]" style={{ color: P.body }}>
+                  Thank you, {details.groomName} &amp; {details.brideName}. Your <strong>{selectedTheme?.name}</strong> invitation is now being crafted.
                 </p>
 
-                <div className="mt-8 rounded-xl p-5 text-left space-y-3" style={{ background: P.surface, border: `1px solid ${P.lineSoft}` }}>
-                  <p className="text-[10px] font-semibold tracking-[0.15em] uppercase" style={{ color: P.gold }}>What happens next</p>
+                <div className="mt-8 rounded-2xl p-6 text-left space-y-4" style={{ background: P.surface, border: `1px solid ${P.lineSoft}` }}>
+                  <p className="text-[9px] font-bold tracking-[0.2em] uppercase" style={{ color: P.gold }}>What happens next</p>
                   {[
-                    "We verify your payment and start building your invite.",
-                    "Your unique invite link will be sent via WhatsApp within 24 hours.",
-                    "Share the link with your guests — it works on all platforms.",
-                    "Need edits? Just message us anytime. Free edits included.",
-                  ].map((s, i) => (
-                    <div key={i} className="flex items-start gap-2.5">
-                      <span className="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full text-[10px] font-bold" style={{ background: `${P.gold}15`, color: P.gold }}>{i + 1}</span>
-                      <span className="text-[13px] leading-relaxed" style={{ color: P.body }}>{s}</span>
+                    { step: "1", text: "We verify your payment and begin crafting your invitation." },
+                    { step: "2", text: "Your unique invite link arrives via WhatsApp within 24 hours." },
+                    { step: "3", text: "Share the link with guests — works on WhatsApp, Instagram, email, everywhere." },
+                    { step: "4", text: "Need changes? Message us anytime. Free edits are always included." },
+                  ].map((s) => (
+                    <div key={s.step} className="flex items-start gap-3">
+                      <span className="mt-0.5 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full text-[10px] font-bold" style={{ background: `${P.gold}12`, color: P.gold }}>{s.step}</span>
+                      <span className="text-[13px] leading-relaxed" style={{ color: P.body }}>{s.text}</span>
                     </div>
                   ))}
                 </div>
 
                 <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center">
-                  <Link href="/" className="flex items-center justify-center gap-2 rounded-full px-6 py-3 text-[12px] font-semibold tracking-wide" style={{ background: P.ink, color: P.bg }}>
+                  <Link href="/" className="flex items-center justify-center gap-2 rounded-full px-7 py-3.5 text-[12px] font-semibold tracking-wide" style={{ background: P.ink, color: P.bg }}>
                     <Heart size={13} /> Back to Home
                   </Link>
-                  <a href={cta} target="_blank" rel="noreferrer" className="flex items-center justify-center gap-2 rounded-full px-6 py-3 text-[12px] font-medium border" style={{ borderColor: P.line, color: P.muted }}>
-                    <MessageCircle size={13} /> Message Us
+                  <a href={cta} target="_blank" rel="noreferrer" className="flex items-center justify-center gap-2 rounded-full px-7 py-3.5 text-[12px] font-medium border transition-all hover:border-[#9a7b4f]" style={{ borderColor: P.line, color: P.muted }}>
+                    <MessageCircle size={13} /> Message Our Team
                   </a>
                 </div>
               </div>
@@ -470,20 +559,20 @@ function BuilderInner() {
 
         </AnimatePresence>
 
-        {/* ─── Bottom nav ─── */}
+        {/* ─── Bottom navigation ─── */}
         {step !== 3 && step !== 4 && (
-          <div className="mt-10 flex items-center justify-between">
+          <div className="mt-10 flex items-center justify-between rounded-2xl px-6 py-4" style={{ background: P.surface, border: `1px solid ${P.lineSoft}` }}>
             {step > 0 ? (
-              <button onClick={() => setStep(step - 1)} className="flex items-center gap-2 rounded-full px-5 py-2.5 text-[12px] font-medium" style={{ border: `1px solid ${P.line}`, color: P.muted }}>
-                <ArrowLeft size={13} /> Back
+              <button onClick={() => setStep(step - 1)} className="flex items-center gap-2 rounded-full px-5 py-2.5 text-[11px] font-medium transition-colors hover:text-[#9a7b4f]" style={{ color: P.muted }}>
+                <ArrowLeft size={12} /> Previous
               </button>
             ) : <div />}
             <button onClick={() => canProceed() && setStep(step + 1)} disabled={!canProceed()}
-              className="flex items-center gap-2 rounded-full px-6 py-2.5 text-[12px] font-semibold tracking-wide transition-all disabled:opacity-40"
+              className="group flex items-center gap-2 rounded-full px-7 py-3 text-[12px] font-semibold tracking-wide transition-all disabled:opacity-35 hover:scale-[1.02]"
               style={{ background: canProceed() ? P.ink : P.bgDeep, color: canProceed() ? P.bg : P.muted }}
             >
-              {step === 2 ? "Preview My Invite" : "Continue"}
-              <ArrowRight size={13} />
+              {step === 0 ? "Continue with this design" : step === 2 ? "Preview my invitation" : "Continue"}
+              <ArrowRight size={13} className="transition-transform group-hover:translate-x-0.5" />
             </button>
           </div>
         )}

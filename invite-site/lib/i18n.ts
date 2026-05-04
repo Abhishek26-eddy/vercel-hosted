@@ -89,12 +89,14 @@ export const LANGUAGES: Language[] = [
   { code: "ar", name: "Arabic", nativeName: "العربية" },
 ];
 
-// Base prices in INR (2 tiers)
+// Base prices in INR (3 tiers)
 export const BASE_PRICES = {
   basic: 1499,
   luxe: 3499,
+  signature: 9999,
   basicOriginal: 2999,
   luxeOriginal: 5999,
+  signatureOriginal: 14999,
 };
 
 // Convert price from INR to target currency using dynamic rates
