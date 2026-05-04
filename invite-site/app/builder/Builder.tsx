@@ -234,23 +234,37 @@ function BuilderInner() {
                   const tc = TIER_CONFIG[theme.tier];
                   const tp = theme.tier === "luxe" ? prices.luxe : prices.basic;
                   const sel = selectedTemplate === theme.slug;
+                  const isLuxe = theme.tier === "luxe";
                   return (
                     <button key={theme.slug} onClick={() => setSelectedTemplate(theme.slug)}
                       className="group relative text-left overflow-hidden rounded-xl sm:rounded-2xl transition-all"
-                      style={{ border: sel ? `2px solid ${P.gold}` : `1px solid ${P.lineSoft}`, boxShadow: sel ? `0 0 0 3px ${P.gold}20` : "none" }}
+                      style={{ border: sel ? `2px solid ${P.gold}` : isLuxe ? `1px solid ${P.goldMuted}` : `1px solid ${P.lineSoft}`, boxShadow: sel ? `0 0 0 3px ${P.gold}20` : "none" }}
                     >
                       <div className="relative aspect-[3/4] overflow-hidden">
                         <div className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105" style={{ backgroundImage: `url(${theme.image})` }} />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-                        <div className="absolute top-2 left-2 sm:top-3 sm:left-3 flex gap-1">
-                          <span className="rounded-full px-2 py-0.5 text-[6px] sm:text-[7px] font-bold tracking-[0.12em] shadow-sm" style={{ background: tc?.bg, color: tc?.color }}>{tc?.label}</span>
-                          {theme.badge && <span className="rounded-full px-1.5 sm:px-2 py-0.5 text-[6px] sm:text-[7px] font-bold tracking-[0.08em] shadow-sm" style={{ background: "white", color: P.ink }}>{theme.badge}</span>}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent" />
+
+                        {/* Top-left badges */}
+                        <div className="absolute top-2 left-2 sm:top-3 sm:left-3 flex flex-col gap-1">
+                          <span className="rounded-full px-2 py-0.5 text-[6px] sm:text-[7px] font-bold tracking-[0.12em] shadow-sm" style={{ background: isLuxe ? "linear-gradient(135deg, #1c1208, #3a2a14)" : tc?.bg, color: isLuxe ? "#e0c080" : tc?.color }}>{tc?.label}</span>
+                          {theme.badge && <span className="rounded-full px-1.5 sm:px-2 py-0.5 text-[6px] sm:text-[7px] font-bold tracking-[0.08em] shadow-sm backdrop-blur-sm" style={{ background: "rgba(255,255,255,0.92)", color: P.ink }}>{theme.badge}</span>}
                         </div>
+
+                        {/* Selected check */}
                         {sel && (
                           <div className="absolute top-2 right-2 sm:top-3 sm:right-3 flex h-6 w-6 sm:h-7 sm:w-7 items-center justify-center rounded-full shadow-lg" style={{ background: P.gold }}>
                             <Check size={11} color="white" strokeWidth={3} />
                           </div>
                         )}
+
+                        {/* Mood tag */}
+                        {theme.mood && (
+                          <div className="absolute bottom-2 left-2 sm:bottom-3 sm:left-3">
+                            <span className="rounded-full px-2 py-0.5 text-[6px] sm:text-[7px] font-medium tracking-wide backdrop-blur-md" style={{ background: "rgba(0,0,0,0.4)", color: "rgba(255,255,255,0.85)" }}>{theme.mood}</span>
+                          </div>
+                        )}
+
+                        {/* Preview link */}
                         <Link href={`/${theme.slug}`} target="_blank" onClick={(e) => e.stopPropagation()}
                           className="absolute bottom-2 right-2 sm:bottom-3 sm:right-3 flex items-center gap-1 rounded-full px-2 sm:px-2.5 py-1 text-[8px] sm:text-[9px] font-medium backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity hidden sm:flex"
                           style={{ background: "rgba(255,255,255,0.9)", color: P.ink }}
@@ -258,12 +272,14 @@ function BuilderInner() {
                           <Eye size={9} /> Preview
                         </Link>
                       </div>
-                      <div className="p-2.5 sm:p-3.5" style={{ background: sel ? `${P.gold}08` : P.surface }}>
+
+                      {/* Info strip — dark for Luxe */}
+                      <div className="p-2.5 sm:p-3.5" style={{ background: sel ? `${P.gold}08` : isLuxe ? P.ink : P.surface }}>
                         <div className="flex items-center justify-between gap-1">
-                          <h3 className="font-display text-[12px] sm:text-[14px] truncate" style={{ color: P.ink }}>{theme.name}</h3>
-                          <span className="text-[10px] sm:text-[12px] font-semibold flex-shrink-0" style={{ color: P.gold }}>{tp}</span>
+                          <h3 className="font-display text-[12px] sm:text-[14px] truncate" style={{ color: isLuxe && !sel ? "#fff" : P.ink }}>{theme.name}</h3>
+                          <span className="text-[10px] sm:text-[12px] font-semibold flex-shrink-0" style={{ color: isLuxe ? P.goldSoft : P.gold }}>{tp}</span>
                         </div>
-                        <p className="mt-0.5 text-[9px] sm:text-[10px] truncate" style={{ color: P.muted }}>{theme.tagline}</p>
+                        <p className="mt-0.5 text-[9px] sm:text-[10px] italic truncate" style={{ color: isLuxe && !sel ? "rgba(255,255,255,0.5)" : P.muted }}>{theme.tagline}</p>
                       </div>
                     </button>
                   );
@@ -372,18 +388,46 @@ function BuilderInner() {
                 </p>
               </div>
 
-              {/* Order summary card */}
-              <div className="mx-auto max-w-2xl mb-6 sm:mb-8 rounded-xl sm:rounded-2xl p-4 sm:p-5" style={{ background: P.surface, border: `1px solid ${P.lineSoft}` }}>
+              {/* Full order summary */}
+              <div className="mx-auto max-w-2xl mb-6 sm:mb-8 rounded-xl sm:rounded-2xl p-4 sm:p-6 space-y-4" style={{ background: P.surface, border: `1px solid ${P.lineSoft}` }}>
                 <div className="flex items-center gap-3 sm:gap-4">
-                  {selectedTheme && <div className="h-12 w-12 sm:h-16 sm:w-16 flex-shrink-0 rounded-lg sm:rounded-xl bg-cover bg-center" style={{ backgroundImage: `url(${selectedTheme.image})` }} />}
+                  {selectedTheme && <div className="h-14 w-14 sm:h-16 sm:w-16 flex-shrink-0 rounded-lg sm:rounded-xl bg-cover bg-center shadow-sm" style={{ backgroundImage: `url(${selectedTheme.image})` }} />}
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
                       <h3 className="font-display text-[15px] sm:text-lg truncate" style={{ color: P.ink }}>{selectedTheme?.name}</h3>
                       <span className="rounded-full px-2 py-0.5 text-[6px] sm:text-[7px] font-bold tracking-[0.1em] flex-shrink-0" style={{ background: TIER_CONFIG[tier]?.bg, color: TIER_CONFIG[tier]?.color }}>{tierLabel}</span>
                     </div>
-                    <p className="mt-0.5 text-[11px] sm:text-[12px] truncate" style={{ color: P.muted }}>{details.groomName} & {details.brideName} · {fmtDate(details.weddingDate)}</p>
+                    <p className="mt-0.5 text-[11px] sm:text-[12px] truncate" style={{ color: P.muted }}>{details.groomName} & {details.brideName}</p>
                   </div>
                   <span className="font-display text-lg sm:text-xl flex-shrink-0" style={{ color: P.gold }}>{tierPrice}</span>
+                </div>
+
+                <div className="pt-3 space-y-2" style={{ borderTop: `1px solid ${P.lineSoft}` }}>
+                  <Row label="Wedding Date" value={fmtDate(details.weddingDate)} />
+                  <Row label="Venue" value={`${details.venue}${details.city ? `, ${details.city}` : ""}`} />
+                  <Row label="Events" value={activeEvents.filter(e => e.date).map(e => e.name).join(", ")} />
+                  <Row label="Delivery" value={tier === "luxe" ? "Same-day priority" : "Within 24 hours"} />
+                  <Row label="Revisions" value={tier === "luxe" ? "Unlimited" : "3 free revisions"} />
+                  <Row label="Hosting" value="Lifetime — link never expires" />
+                </div>
+
+                {/* Inclusions */}
+                <div className="pt-3" style={{ borderTop: `1px solid ${P.lineSoft}` }}>
+                  <p className="text-[8px] font-bold tracking-[0.2em] uppercase mb-2" style={{ color: P.gold }}>{tierLabel} Plan Includes</p>
+                  <div className="grid grid-cols-2 gap-x-3 gap-y-1">
+                    {(tier === "luxe" ? [
+                      "Background music", "Countdown timer", "Love story", "Venue map",
+                      "Premium animations", "Unlimited gallery", "Custom guest names", "WhatsApp ready",
+                    ] : [
+                      "Event schedule", "Photo gallery (8)", "RSVP collection", "WhatsApp sharing",
+                      "Mobile responsive", "Instagram ready", "QR code", "Digital keepsake",
+                    ]).map(item => (
+                      <div key={item} className="flex items-center gap-1.5">
+                        <Check size={8} style={{ color: P.gold }} />
+                        <span className="text-[9px] sm:text-[10px]" style={{ color: P.body }}>{item}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
 
@@ -395,7 +439,7 @@ function BuilderInner() {
                   style={{ background: P.gold, color: "white" }}
                 >
                   <Lock size={13} />
-                  Approve &amp; Pay — {tierPrice}
+                  Approve &amp; Proceed to Payment — {tierPrice}
                   <ArrowRight size={13} className="transition-transform group-hover:translate-x-1" />
                 </button>
                 <button onClick={() => setStep(1)} className="flex items-center gap-1 text-[11px] sm:text-[12px] font-medium transition-colors hover:text-[#9a7b4f]" style={{ color: P.muted }}>
@@ -410,9 +454,9 @@ function BuilderInner() {
             <StepWrapper key="payment">
               <div className="mx-auto max-w-lg">
                 <div className="text-center mb-6 sm:mb-8">
-                  <p className="text-[9px] sm:text-[10px] font-semibold tracking-[0.3em] uppercase" style={{ color: P.gold }}>Step 5 of 5</p>
-                  <h2 className="mt-2 sm:mt-3 font-display text-xl sm:text-2xl" style={{ color: P.ink }}>Complete your order</h2>
-                  <p className="mt-1.5 sm:mt-2 text-[12px] sm:text-[13px]" style={{ color: P.body }}>One-time payment via UPI. Your invite will be ready within 24 hours.</p>
+                  <p className="text-[9px] sm:text-[10px] font-semibold tracking-[0.3em] uppercase" style={{ color: P.gold }}>Final Step</p>
+                  <h2 className="mt-2 sm:mt-3 font-display text-xl sm:text-2xl" style={{ color: P.ink }}>Reserve your design</h2>
+                  <p className="mt-1.5 sm:mt-2 text-[12px] sm:text-[13px]" style={{ color: P.body }}>Secure one-time payment. {tier === "luxe" ? "Same-day" : "24-hour"} delivery. No subscriptions.</p>
                 </div>
 
                 {/* Order summary */}
@@ -443,23 +487,12 @@ function BuilderInner() {
                     <span className="font-display text-xl sm:text-2xl" style={{ color: P.ink }}>₹{tierPriceINR}</span>
                   </div>
 
-                  {/* Deliverables */}
-                  <div className="pt-3 space-y-1.5" style={{ borderTop: `1px solid ${P.lineSoft}` }}>
-                    <p className="text-[8px] font-bold tracking-[0.2em] uppercase" style={{ color: P.gold }}>What’s Included</p>
-                    <div className="grid grid-cols-2 gap-x-3 gap-y-1">
-                      {(tier === "luxe" ? [
-                        "Curated Luxe design", "Background music", "Countdown timer", "Love story",
-                        "Venue map", "Premium animations", "Unlimited gallery", "Unlimited revisions",
-                        "Same-day delivery", "Lifetime hosting",
-                      ] : [
-                        "Curated design template", "Event schedule", "Photo gallery (8)", "RSVP collection",
-                        "WhatsApp sharing", "3 free revisions", "24h delivery", "Lifetime hosting",
-                      ]).map(item => (
-                        <div key={item} className="flex items-center gap-1.5">
-                          <Check size={8} style={{ color: P.gold }} />
-                          <span className="text-[9px] sm:text-[10px]" style={{ color: P.body }}>{item}</span>
-                        </div>
-                      ))}
+                  {/* Timeline */}
+                  <div className="pt-3 flex items-center gap-3" style={{ borderTop: `1px solid ${P.lineSoft}` }}>
+                    <Clock size={12} style={{ color: P.gold }} />
+                    <div>
+                      <p className="text-[10px] sm:text-[11px] font-medium" style={{ color: P.ink }}>{tier === "luxe" ? "Same-day delivery" : "Delivered within 24 hours"}</p>
+                      <p className="text-[9px]" style={{ color: P.muted }}>{tier === "luxe" ? "Unlimited revisions included" : "3 free revisions included"} · Lifetime hosting</p>
                     </div>
                   </div>
                 </div>
@@ -498,20 +531,20 @@ function BuilderInner() {
                   </p>
                 </div>
 
-                {/* After payment confirmation */}
+                {/* Confirm reservation */}
                 <div className="mt-4 sm:mt-5 rounded-xl sm:rounded-2xl p-4 sm:p-5 space-y-3 sm:space-y-4" style={{ background: P.surface, border: `1px solid ${P.lineSoft}` }}>
-                  <p className="text-[9px] font-bold tracking-[0.2em] uppercase text-center" style={{ color: P.gold }}>After Payment</p>
+                  <p className="text-[9px] font-bold tracking-[0.2em] uppercase text-center" style={{ color: P.gold }}>Confirm Your Reservation</p>
+                  <p className="text-center text-[10px] sm:text-[11px] leading-relaxed" style={{ color: P.body }}>
+                    Once you&apos;ve completed payment, tap below to confirm. We&apos;ll begin crafting your invite immediately.
+                  </p>
                   <button onClick={handlePaymentDone}
                     className="group flex w-full items-center justify-center gap-2 rounded-full py-3 sm:py-3.5 text-[11px] sm:text-[12px] font-semibold tracking-wide transition-all hover:scale-[1.01]"
-                    style={{ background: "#25D366", color: "white" }}
+                    style={{ background: P.ink, color: P.bg }}
                   >
                     <CheckCircle2 size={13} />
-                    I&apos;ve Paid — Confirm via WhatsApp
+                    I&apos;ve Paid — Confirm My Order
                     <ArrowRight size={11} className="transition-transform group-hover:translate-x-0.5" />
                   </button>
-                  <p className="text-center text-[9px] sm:text-[10px]" style={{ color: P.muted }}>
-                    This will send your order details to our team. We&apos;ll start immediately.
-                  </p>
                 </div>
 
                 {/* Trust indicators */}

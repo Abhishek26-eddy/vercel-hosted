@@ -76,10 +76,10 @@ const TESTIMONIALS = [
 ];
 
 const STATS = [
-  { value: "500+", label: "Invites Delivered", icon: Gift },
-  { value: "50+", label: "Cities Served", icon: MapPin },
-  { value: "24h", label: "Turnaround Time", icon: Clock },
-  { value: "100%", label: "Satisfaction Rate", icon: Shield },
+  { value: "1,200+", label: "Invites Delivered", icon: Gift },
+  { value: "80+", label: "Cities Across India", icon: MapPin },
+  { value: "24h", label: "Average Delivery", icon: Clock },
+  { value: "4.9★", label: "Couple Rating", icon: Star },
 ];
 
 const FAQ = [
@@ -253,64 +253,105 @@ function SignatureShowcase() {
   const cta = `${BRAND.whatsappBase}Hi%2C%20I%27m%20interested%20in%20a%20Signature%20bespoke%20invitation.`;
 
   return (
-    <section className="relative overflow-hidden px-6 py-24 sm:px-10 sm:py-32" style={{ background: P.noir }}>
-      <div className="absolute inset-0 opacity-20" style={{ backgroundImage: "radial-gradient(circle at 20% 50%, #c9a14a22 0%, transparent 50%), radial-gradient(circle at 80% 50%, #c9a87c15 0%, transparent 40%)" }} />
+    <section className="relative overflow-hidden" style={{ background: P.noir }}>
+      {/* Ambient glow */}
+      <div className="absolute inset-0" style={{ backgroundImage: "radial-gradient(ellipse at 30% 40%, rgba(156,127,84,0.08) 0%, transparent 60%), radial-gradient(ellipse at 70% 60%, rgba(191,169,124,0.05) 0%, transparent 50%)" }} />
 
-      <div className="relative mx-auto max-w-6xl">
-        <SectionReveal>
-          <div className="text-center">
-            <div className="inline-flex items-center gap-2 rounded-full px-4 py-1.5" style={{ border: `1px solid ${P.goldMuted}40` }}>
-              <Sparkles size={12} style={{ color: P.goldSoft }} />
-              <span className="text-[9px] font-bold tracking-[0.3em] uppercase" style={{ color: P.goldSoft }}>Signature Collection</span>
+      <div className="relative px-5 py-20 sm:px-10 sm:py-32">
+        <div className="mx-auto max-w-6xl">
+          <SectionReveal>
+            <div className="text-center">
+              <div className="inline-flex items-center gap-2.5 rounded-full px-5 py-2" style={{ border: `1px solid rgba(156,127,84,0.25)`, background: "rgba(156,127,84,0.06)" }}>
+                <Sparkles size={11} style={{ color: P.goldSoft }} />
+                <span className="text-[8px] sm:text-[9px] font-bold tracking-[0.35em] uppercase" style={{ color: P.goldSoft }}>Signature Collection · By Appointment</span>
+              </div>
+              <h2 className="mt-7 sm:mt-8 font-display text-white" style={{ fontSize: "clamp(1.75rem, 5vw, 3.5rem)", lineHeight: 1.05 }}>
+                For the wedding that
+                <br />
+                <span className="font-script" style={{ color: P.goldSoft }}>refuses to be ordinary.</span>
+              </h2>
+              <p className="mx-auto mt-5 max-w-lg text-[13px] sm:text-[14px] leading-[1.9]" style={{ color: "rgba(255,255,255,0.45)" }}>
+                Each Signature invite is a one-of-one creation — custom-designed, hand-directed, and built from the ground up for your story. No templates. No limitations.
+              </p>
             </div>
-            <h2 className="mt-6 font-display text-white" style={{ fontSize: "clamp(2rem, 5vw, 3.25rem)", lineHeight: 1.1 }}>
-              For weddings where only
-              <br />
-              <span className="font-script" style={{ color: P.goldSoft }}>extraordinary</span> will do.
-            </h2>
-            <p className="mx-auto mt-5 max-w-md text-[14px] leading-[1.9]" style={{ color: "rgba(255,255,255,0.5)" }}>
-              Fully bespoke. Custom design. Your own domain. A dedicated designer. Unlimited revisions until it&apos;s perfect.
-            </p>
-          </div>
-        </SectionReveal>
+          </SectionReveal>
 
-        <div className="mt-16 grid gap-8 md:grid-cols-3">
-          {signatureThemes.map((theme, i) => (
-            <SectionReveal key={theme.slug} delay={i * 0.12}>
-              <div className="group relative overflow-hidden rounded-2xl" style={{ border: "1px solid rgba(201,161,74,0.2)" }}>
-                <div className="relative aspect-[3/4] overflow-hidden">
-                  <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.8 }}
-                    className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${theme.image})` }}
+          {/* Featured hero piece — first signature theme, editorial width */}
+          {signatureThemes[0] && (
+            <SectionReveal delay={0.15}>
+              <div className="mt-14 sm:mt-20 group relative overflow-hidden rounded-2xl sm:rounded-3xl" style={{ border: "1px solid rgba(156,127,84,0.2)" }}>
+                <div className="relative aspect-[16/10] sm:aspect-[21/9] overflow-hidden">
+                  <motion.div whileHover={{ scale: 1.03 }} transition={{ duration: 1.2 }}
+                    className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${signatureThemes[0].image})` }}
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-                  <div className="absolute top-4 left-4">
-                    <span className="rounded-full px-3 py-1 text-[8px] font-bold tracking-[0.2em] uppercase" style={{ background: P.gold, color: "white" }}>{theme.badge}</span>
+                  <div className="absolute inset-0" style={{ background: "linear-gradient(135deg, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.3) 40%, rgba(0,0,0,0.6) 100%)" }} />
+                  <div className="absolute top-4 left-4 sm:top-6 sm:left-8">
+                    <span className="rounded-full px-3 py-1 text-[7px] sm:text-[8px] font-bold tracking-[0.25em] uppercase" style={{ background: P.gold, color: "white" }}>Flagship · Bespoke</span>
                   </div>
-                  <div className="absolute inset-x-0 bottom-0 p-6">
-                    <h3 className="font-display text-xl text-white">{theme.name}</h3>
-                    <p className="mt-1.5 text-[12px] leading-[1.7]" style={{ color: "rgba(255,255,255,0.7)" }}>{theme.tagline}</p>
-                    <p className="mt-3 text-[11px] leading-[1.7]" style={{ color: "rgba(255,255,255,0.5)" }}>{theme.shortDescription}</p>
+                  <div className="absolute inset-x-0 bottom-0 p-5 sm:p-10">
+                    <p className="text-[8px] sm:text-[9px] font-bold tracking-[0.3em] uppercase" style={{ color: P.goldSoft }}>{signatureThemes[0].mood}</p>
+                    <h3 className="mt-2 font-display text-white" style={{ fontSize: "clamp(1.5rem, 4vw, 2.75rem)", lineHeight: 1.1 }}>{signatureThemes[0].name}</h3>
+                    <p className="mt-2 max-w-md text-[12px] sm:text-[13px] leading-[1.8]" style={{ color: "rgba(255,255,255,0.6)" }}>{signatureThemes[0].shortDescription}</p>
+                    <div className="mt-4 flex items-center gap-3">
+                      <Link href={`/palace-heirloom`} className="flex items-center gap-2 rounded-full px-5 py-2.5 text-[10px] sm:text-[11px] font-semibold tracking-wide transition-all hover:scale-[1.02]" style={{ background: P.gold, color: "white" }}>
+                        Experience this design <ArrowRight size={11} />
+                      </Link>
+                      <span className="text-[11px] font-display" style={{ color: P.goldSoft }}>from {prices.signature}</span>
+                    </div>
                   </div>
                 </div>
               </div>
             </SectionReveal>
-          ))}
-        </div>
+          )}
 
-        <SectionReveal delay={0.4}>
-          <div className="mt-14 text-center">
-            <p className="text-[14px] font-display text-white">Starting from <span style={{ color: P.goldSoft }}>{prices.signature}</span></p>
-            <a href={cta} target="_blank" rel="noreferrer"
-              className="group mt-5 inline-flex items-center gap-3 rounded-full px-8 py-3.5 text-[12px] font-semibold tracking-wide transition-all hover:scale-[1.02]"
-              style={{ background: P.gold, color: "white" }}
-            >
-              <MessageCircle size={14} />
-              Inquire About Signature
-              <ArrowRight size={13} className="transition-transform group-hover:translate-x-0.5" />
-            </a>
-            <p className="mt-4 text-[11px]" style={{ color: "rgba(255,255,255,0.35)" }}>Consultation call within 24 hours · Limited availability</p>
-          </div>
-        </SectionReveal>
+          {/* Remaining signatures — side by side */}
+          {signatureThemes.length > 1 && (
+            <div className="mt-6 sm:mt-8 grid gap-5 sm:gap-6 sm:grid-cols-2">
+              {signatureThemes.slice(1).map((theme, i) => (
+                <SectionReveal key={theme.slug} delay={0.2 + i * 0.1}>
+                  <div className="group relative overflow-hidden rounded-xl sm:rounded-2xl" style={{ border: "1px solid rgba(156,127,84,0.18)" }}>
+                    <div className="relative aspect-[4/5] sm:aspect-[3/4] overflow-hidden">
+                      <motion.div whileHover={{ scale: 1.04 }} transition={{ duration: 0.8 }}
+                        className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${theme.image})` }}
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+                      <div className="absolute top-3 left-3 sm:top-4 sm:left-4">
+                        <span className="rounded-full px-2.5 py-0.5 text-[7px] font-bold tracking-[0.2em] uppercase" style={{ background: P.gold, color: "white" }}>Bespoke</span>
+                      </div>
+                      <div className="absolute inset-x-0 bottom-0 p-4 sm:p-6">
+                        <p className="text-[8px] font-bold tracking-[0.25em] uppercase" style={{ color: P.goldSoft }}>{theme.mood}</p>
+                        <h3 className="mt-1.5 font-display text-lg sm:text-xl text-white">{theme.name}</h3>
+                        <p className="mt-1.5 text-[11px] sm:text-[12px] leading-[1.7]" style={{ color: "rgba(255,255,255,0.6)" }}>{theme.tagline}</p>
+                      </div>
+                    </div>
+                  </div>
+                </SectionReveal>
+              ))}
+            </div>
+          )}
+
+          <SectionReveal delay={0.4}>
+            <div className="mt-12 sm:mt-16 flex flex-col items-center gap-5">
+              <div className="flex items-center gap-6 text-[10px] sm:text-[11px]" style={{ color: "rgba(255,255,255,0.35)" }}>
+                {["Custom domain", "Dedicated designer", "Unlimited revisions", "2-week delivery"].map((s, i) => (
+                  <span key={s} className="flex items-center gap-1.5">
+                    {i > 0 && <span className="hidden sm:inline" style={{ color: "rgba(255,255,255,0.15)" }}>·</span>}
+                    <Check size={9} style={{ color: P.goldSoft }} /> {s}
+                  </span>
+                ))}
+              </div>
+              <a href={cta} target="_blank" rel="noreferrer"
+                className="group inline-flex items-center gap-3 rounded-full px-8 py-3.5 text-[11px] sm:text-[12px] font-semibold tracking-wide transition-all hover:scale-[1.02]"
+                style={{ background: P.gold, color: "white" }}
+              >
+                <MessageCircle size={13} />
+                Book a Signature Consultation
+                <ArrowRight size={12} className="transition-transform group-hover:translate-x-0.5" />
+              </a>
+              <p className="text-[10px]" style={{ color: "rgba(255,255,255,0.3)" }}>Only 3 Signature slots available this month</p>
+            </div>
+          </SectionReveal>
+        </div>
       </div>
     </section>
   );
@@ -331,7 +372,7 @@ function Catalogue() {
 
   const tierPrice = (tier: string) => tier === "luxe" ? prices.luxe : prices.basic;
   const tierBadge = (tier: string) => tier === "luxe"
-    ? { label: "LUXE", bg: "linear-gradient(135deg, #1a0a2e, #2d1854)", color: "#ffd700" }
+    ? { label: "LUXE", bg: "linear-gradient(135deg, #1c1208, #3a2a14)", color: "#e0c080" }
     : { label: "BASIC", bg: P.surface, color: P.muted };
 
   return (
@@ -385,49 +426,62 @@ function Catalogue() {
 
         {/* Collection grid — 2 cols mobile, 3 tablet, 4 desktop */}
         <div className="mt-8 sm:mt-12 grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-3 xl:grid-cols-4">
-          {filteredThemes.map((theme, i) => (
+          {filteredThemes.map((theme, i) => {
+            const isLuxe = theme.tier === "luxe";
+            const tb = tierBadge(theme.tier);
+            return (
             <SectionReveal key={theme.slug} delay={i * 0.03}>
               <div className="group">
                 <Link href={`/builder?template=${theme.slug}`} className="block">
-                  <div className="relative aspect-[3/4] overflow-hidden rounded-xl sm:rounded-2xl" style={{ background: P.bgDeep }}>
-                    <motion.div whileHover={{ scale: 1.04 }} transition={{ duration: 0.7 }}
-                      className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${theme.image})` }}
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+                  <div className="relative overflow-hidden rounded-xl sm:rounded-2xl" style={{ background: P.bgDeep, border: isLuxe ? `1px solid ${P.goldMuted}` : `1px solid ${P.lineSoft}` }}>
+                    {/* Image */}
+                    <div className="relative aspect-[3/4] overflow-hidden">
+                      <motion.div whileHover={{ scale: 1.04 }} transition={{ duration: 0.7 }}
+                        className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${theme.image})` }}
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
 
-                    {theme.badge && (
-                      <div className="absolute top-2 left-2 sm:top-3 sm:left-3">
-                        <span className="rounded-full px-2 py-0.5 text-[7px] sm:text-[8px] font-bold tracking-[0.1em] shadow-sm" style={{ background: "white", color: P.ink }}>{theme.badge}</span>
+                      {/* Top badges */}
+                      <div className="absolute top-2 left-2 sm:top-3 sm:left-3 flex flex-col gap-1">
+                        <span className="rounded-full px-2 py-0.5 text-[6px] sm:text-[7px] font-bold tracking-[0.12em]"
+                          style={{ background: tb.bg, color: tb.color, border: !isLuxe ? `1px solid ${P.line}` : "none" }}
+                        >
+                          {tb.label}
+                        </span>
+                        {theme.badge && (
+                          <span className="rounded-full px-2 py-0.5 text-[6px] sm:text-[7px] font-bold tracking-[0.08em] shadow-sm backdrop-blur-sm" style={{ background: "rgba(255,255,255,0.92)", color: P.ink }}>{theme.badge}</span>
+                        )}
                       </div>
-                    )}
 
-                    <div className="absolute top-2 right-2 sm:top-3 sm:right-3">
-                      <span className="rounded-full px-2 py-0.5 text-[6px] sm:text-[7px] font-bold tracking-[0.12em]"
-                        style={{ background: tierBadge(theme.tier).bg, color: tierBadge(theme.tier).color, border: theme.tier === "basic" ? `1px solid ${P.line}` : "none" }}
-                      >
-                        {tierBadge(theme.tier).label}
-                      </span>
+                      {/* Mood tag — bottom-left over image */}
+                      {theme.mood && (
+                        <div className="absolute bottom-2 left-2 sm:bottom-3 sm:left-3">
+                          <span className="rounded-full px-2 py-0.5 text-[7px] sm:text-[8px] font-medium tracking-wide backdrop-blur-md" style={{ background: "rgba(0,0,0,0.45)", color: "rgba(255,255,255,0.85)" }}>{theme.mood}</span>
+                        </div>
+                      )}
+
+                      {/* Hover CTA — hidden on mobile (tap navigates) */}
+                      <div className="absolute inset-x-0 bottom-0 p-3 sm:p-4 opacity-0 translate-y-2 transition-all duration-500 group-hover:opacity-100 group-hover:translate-y-0 hidden sm:block">
+                        <div className="flex w-full items-center justify-center gap-2 rounded-full py-2.5 text-[10px] font-semibold tracking-wide shadow-lg backdrop-blur-sm" style={{ background: "rgba(255,255,255,0.95)", color: P.ink }}>
+                          Choose this design <ArrowRight size={11} />
+                        </div>
+                      </div>
                     </div>
 
-                    {/* Hover CTA — hidden on mobile (tap navigates) */}
-                    <div className="absolute inset-x-0 bottom-0 p-3 sm:p-4 opacity-0 translate-y-2 transition-all duration-500 group-hover:opacity-100 group-hover:translate-y-0 hidden sm:block">
-                      <div className="flex w-full items-center justify-center gap-2 rounded-full py-2.5 text-[10px] font-semibold tracking-wide shadow-lg backdrop-blur-sm" style={{ background: "rgba(255,255,255,0.95)", color: P.ink }}>
-                        Choose this design <ArrowRight size={11} />
+                    {/* Info strip below image */}
+                    <div className="p-2.5 sm:p-3.5" style={{ background: isLuxe ? `${P.ink}` : P.surface }}>
+                      <div className="flex items-center justify-between gap-1">
+                        <h3 className="font-display text-[12px] sm:text-[14px] tracking-tight truncate" style={{ color: isLuxe ? "#fff" : P.ink }}>{theme.name}</h3>
+                        <span className="text-[10px] sm:text-[12px] font-semibold flex-shrink-0" style={{ color: isLuxe ? P.goldSoft : P.gold }}>{tierPrice(theme.tier)}</span>
                       </div>
+                      <p className="mt-0.5 text-[9px] sm:text-[11px] italic truncate" style={{ color: isLuxe ? "rgba(255,255,255,0.5)" : P.muted }}>{theme.tagline}</p>
                     </div>
                   </div>
                 </Link>
-
-                <div className="mt-2.5 sm:mt-3 px-0.5">
-                  <div className="flex items-center justify-between gap-1">
-                    <h3 className="font-display text-[13px] sm:text-[15px] tracking-tight group-hover:text-[#9a7b4f] transition-colors truncate" style={{ color: P.ink }}>{theme.name}</h3>
-                    <span className="text-[11px] sm:text-[13px] font-semibold flex-shrink-0" style={{ color: P.gold }}>{tierPrice(theme.tier)}</span>
-                  </div>
-                  <p className="mt-0.5 text-[10px] sm:text-[11px] truncate" style={{ color: P.muted }}>{theme.tagline}</p>
-                </div>
               </div>
             </SectionReveal>
-          ))}
+            );
+          })}
         </div>
 
         {filteredThemes.length === 0 && (
@@ -610,34 +664,31 @@ function Pricing({ cta }: { cta: string }) {
     {
       name: "Basic",
       price: prices.basic,
-      originalPrice: prices.basicOriginal,
-      tagline: "Everything you need, beautifully done",
+      tagline: "A beautiful invitation. No compromises.",
       popular: false,
       dark: false,
-      features: ["Choose from 15+ curated designs", "Your names, date & venue details", "Complete event schedule", "Photo gallery (up to 8 photos)", "Built-in RSVP collection", "WhatsApp & Instagram sharing", "Mobile-first responsive design", "Lifetime hosting — link never expires", "3 free revisions", "Delivered within 24 hours"],
-      ctaText: "Choose Basic",
+      features: ["15+ curated designs to choose from", "Your names, date & venue details", "Complete event schedule", "Photo gallery (up to 8 photos)", "Built-in RSVP collection", "WhatsApp & Instagram ready", "Mobile-first responsive design", "Lifetime hosting included", "3 free revisions", "Delivered within 24 hours"],
+      ctaText: "Start with Basic",
       ctaLink: "/builder",
     },
     {
       name: "Luxe",
       price: prices.luxe,
-      originalPrice: prices.luxeOriginal,
-      tagline: "For couples who want it all",
+      tagline: "The full cinematic experience.",
       popular: true,
       dark: true,
-      features: ["Everything in Basic, plus:", "Background music & sound", "Live countdown timer", "Your love story timeline", "Interactive venue map & directions", "Unlimited photo gallery", "Custom guest names", "Premium animations & transitions", "Unlimited revisions", "Same-day priority delivery"],
-      ctaText: "Choose Luxe",
+      features: ["Everything in Basic, plus:", "Background music & atmosphere", "Live countdown timer", "Your love story timeline", "Interactive venue map", "Unlimited photo gallery", "Premium animations & transitions", "Custom guest names", "Unlimited revisions", "Same-day priority delivery"],
+      ctaText: "Start with Luxe",
       ctaLink: "/builder",
     },
     {
       name: "Signature",
       price: prices.signature,
-      originalPrice: prices.signatureOriginal,
-      tagline: "Fully bespoke. Designed just for you.",
+      tagline: "One-of-one. Designed from scratch.",
       popular: false,
       dark: false,
-      features: ["Everything in Luxe, plus:", "Custom design from scratch", "Your own domain (your-names.com)", "Dedicated designer assigned", "Unlimited iterations", "Custom illustrations & motion", "Personalized guest portals", "Multi-page experience", "Wedding day itinerary page", "Thank-you & photo album pages"],
-      ctaText: "Inquire via WhatsApp",
+      features: ["Everything in Luxe, plus:", "Custom design — no templates", "Your own domain (your-names.com)", "Dedicated designer assigned", "Unlimited iterations until perfect", "Custom illustrations & motion", "Multi-page editorial experience", "Guest portal & RSVP dashboard", "Wedding day itinerary page", "2-week white-glove delivery"],
+      ctaText: "Book Consultation",
       ctaLink: cta,
     },
   ];
@@ -675,12 +726,12 @@ function Pricing({ cta }: { cta: string }) {
 
                 <p className="text-[10px] font-bold tracking-[0.25em] uppercase" style={{ color: plan.dark ? P.goldSoft : P.gold }}>{plan.name}</p>
 
-                <div className="mt-3 flex items-baseline gap-2">
-                  <span className="text-[12px] line-through opacity-40" style={{ color: plan.dark ? "#fff" : P.muted }}>{plan.originalPrice}</span>
+                <div className="mt-3">
                   <span className="font-display text-3xl tracking-tight" style={{ color: plan.dark ? "#fff" : P.ink }}>{plan.price}</span>
+                  <span className="ml-2 text-[11px]" style={{ color: plan.dark ? "rgba(255,255,255,0.4)" : P.muted }}>one-time</span>
                 </div>
 
-                <p className="mt-1 text-[11px]" style={{ color: plan.dark ? "rgba(255,255,255,0.5)" : P.muted }}>{plan.tagline}</p>
+                <p className="mt-1.5 text-[12px]" style={{ color: plan.dark ? "rgba(255,255,255,0.55)" : P.body }}>{plan.tagline}</p>
 
                 <div className="mt-5 flex-1 space-y-2">
                   {plan.features.map(f => (

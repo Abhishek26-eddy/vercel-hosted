@@ -16,6 +16,7 @@ export type PortfolioTheme = {
   category: string;
   family: ThemeFamily;
   badge?: string;
+  mood?: string;
   layoutStyle?: string;
   motionStyle?: string;
   typographyStyle?: string;
@@ -48,6 +49,7 @@ export const PORTFOLIO_THEMES: PortfolioTheme[] = [
     category: "Royal",
     family: "royal",
     badge: "Bespoke",
+    mood: "Regal · Cinematic",
     layoutStyle: "cinematic-scroll",
     motionStyle: "parallax-gold",
     typographyStyle: "serif-regal",
@@ -67,6 +69,7 @@ export const PORTFOLIO_THEMES: PortfolioTheme[] = [
     category: "Dramatic",
     family: "dramatic",
     badge: "Bespoke",
+    mood: "Dark · Orchestral",
     layoutStyle: "immersive-fullscreen",
     motionStyle: "constellation-drift",
     typographyStyle: "display-cinematic",
@@ -86,6 +89,7 @@ export const PORTFOLIO_THEMES: PortfolioTheme[] = [
     category: "Romantic",
     family: "romantic",
     badge: "Bespoke",
+    mood: "Botanical · Gallery",
     layoutStyle: "editorial-gallery",
     motionStyle: "petal-float",
     typographyStyle: "serif-botanical",
@@ -109,6 +113,7 @@ export const PORTFOLIO_THEMES: PortfolioTheme[] = [
     category: "Royal",
     family: "royal",
     badge: "Most Loved",
+    mood: "Opulent · Warm",
     layoutStyle: "parallax-sections",
     motionStyle: "gold-reveal",
     typographyStyle: "serif-regal",
@@ -128,6 +133,7 @@ export const PORTFOLIO_THEMES: PortfolioTheme[] = [
     category: "Romantic",
     family: "romantic",
     badge: "Signature",
+    mood: "Romantic · Cinematic",
     layoutStyle: "magazine-editorial",
     motionStyle: "fade-crossover",
     typographyStyle: "script-french",
@@ -146,6 +152,7 @@ export const PORTFOLIO_THEMES: PortfolioTheme[] = [
     tier: "luxe",
     category: "Rustic",
     family: "destination",
+    mood: "Rustic · Earthy",
     layoutStyle: "split-screen",
     motionStyle: "warm-pan",
     typographyStyle: "serif-rustic",
@@ -164,6 +171,7 @@ export const PORTFOLIO_THEMES: PortfolioTheme[] = [
     tier: "luxe",
     category: "Coastal",
     family: "destination",
+    mood: "Coastal · Dreamy",
     layoutStyle: "hero-cinematic",
     motionStyle: "wave-drift",
     typographyStyle: "sans-coastal",
@@ -183,6 +191,7 @@ export const PORTFOLIO_THEMES: PortfolioTheme[] = [
     category: "Dramatic",
     family: "festive",
     badge: "New",
+    mood: "Bold · Dramatic",
     layoutStyle: "bold-stacked",
     motionStyle: "theatrical-burst",
     typographyStyle: "display-bold",
@@ -201,6 +210,7 @@ export const PORTFOLIO_THEMES: PortfolioTheme[] = [
     tier: "luxe",
     category: "Dramatic",
     family: "dramatic",
+    mood: "Mystical · Enchanted",
     layoutStyle: "immersive-fullscreen",
     motionStyle: "firefly-particle",
     typographyStyle: "serif-enchanted",
@@ -219,6 +229,7 @@ export const PORTFOLIO_THEMES: PortfolioTheme[] = [
     tier: "luxe",
     category: "Romantic",
     family: "floral",
+    mood: "Poetic · Delicate",
     layoutStyle: "vertical-scroll",
     motionStyle: "petal-float",
     typographyStyle: "script-japanese",
@@ -242,6 +253,7 @@ export const PORTFOLIO_THEMES: PortfolioTheme[] = [
     category: "Floral",
     family: "floral",
     badge: "Bestseller",
+    mood: "Romantic · Timeless",
   },
   {
     slug: "ivory-monogram",
@@ -257,6 +269,7 @@ export const PORTFOLIO_THEMES: PortfolioTheme[] = [
     tier: "basic",
     category: "Editorial",
     family: "editorial",
+    mood: "Classic · Refined",
   },
   {
     slug: "modern-gold",
@@ -273,6 +286,7 @@ export const PORTFOLIO_THEMES: PortfolioTheme[] = [
     category: "Editorial",
     family: "editorial",
     badge: "Popular",
+    mood: "Bold · Contemporary",
   },
   {
     slug: "pastel-garden",
@@ -288,6 +302,7 @@ export const PORTFOLIO_THEMES: PortfolioTheme[] = [
     tier: "basic",
     category: "Floral",
     family: "floral",
+    mood: "Soft · Joyful",
   },
   {
     slug: "sage-minimal",
@@ -303,6 +318,7 @@ export const PORTFOLIO_THEMES: PortfolioTheme[] = [
     tier: "basic",
     category: "Romantic",
     family: "romantic",
+    mood: "Serene · Minimal",
   },
   {
     slug: "blush-romance",
@@ -318,6 +334,7 @@ export const PORTFOLIO_THEMES: PortfolioTheme[] = [
     tier: "basic",
     category: "Romantic",
     family: "romantic",
+    mood: "Intimate · Warm",
   },
   {
     slug: "heritage-cream",
@@ -333,6 +350,7 @@ export const PORTFOLIO_THEMES: PortfolioTheme[] = [
     tier: "basic",
     category: "Royal",
     family: "traditional",
+    mood: "Dignified · Heritage",
   },
   {
     slug: "sunset-mehendi",
@@ -348,6 +366,7 @@ export const PORTFOLIO_THEMES: PortfolioTheme[] = [
     tier: "basic",
     category: "Dramatic",
     family: "festive",
+    mood: "Vibrant · Festive",
   },
   {
     slug: "minimal-elegant",
@@ -363,6 +382,7 @@ export const PORTFOLIO_THEMES: PortfolioTheme[] = [
     tier: "basic",
     category: "Editorial",
     family: "editorial",
+    mood: "Quiet Luxury",
   },
   {
     slug: "soft-botanical",
@@ -378,6 +398,7 @@ export const PORTFOLIO_THEMES: PortfolioTheme[] = [
     tier: "basic",
     category: "Floral",
     family: "floral",
+    mood: "Earthy · Organic",
   },
   {
     slug: "traditional-red-gold",
@@ -394,6 +415,7 @@ export const PORTFOLIO_THEMES: PortfolioTheme[] = [
     category: "Royal",
     family: "traditional",
     badge: "Classic",
+    mood: "Auspicious · Bold",
   },
   {
     slug: "sky-blue-celebration",
@@ -409,6 +431,7 @@ export const PORTFOLIO_THEMES: PortfolioTheme[] = [
     tier: "basic",
     category: "Coastal",
     family: "destination",
+    mood: "Fresh · Uplifting",
   },
   {
     slug: "pearl-white",
@@ -424,6 +447,7 @@ export const PORTFOLIO_THEMES: PortfolioTheme[] = [
     tier: "basic",
     category: "Editorial",
     family: "editorial",
+    mood: "Pure · Elegant",
   },
   {
     slug: "lavender-story",
@@ -439,6 +463,7 @@ export const PORTFOLIO_THEMES: PortfolioTheme[] = [
     tier: "basic",
     category: "Romantic",
     family: "romantic",
+    mood: "Dreamy · Feminine",
   },
   {
     slug: "minimal-monsoon",
@@ -454,6 +479,7 @@ export const PORTFOLIO_THEMES: PortfolioTheme[] = [
     tier: "basic",
     category: "Romantic",
     family: "romantic",
+    mood: "Fresh · Poetic",
   },
   {
     slug: "boho-sundowner",
@@ -469,6 +495,7 @@ export const PORTFOLIO_THEMES: PortfolioTheme[] = [
     tier: "basic",
     category: "Rustic",
     family: "destination",
+    mood: "Free-spirited · Warm",
   },
   {
     slug: "beach-destination",
@@ -484,5 +511,6 @@ export const PORTFOLIO_THEMES: PortfolioTheme[] = [
     tier: "basic",
     category: "Coastal",
     family: "destination",
+    mood: "Coastal · Tropical",
   },
 ];
