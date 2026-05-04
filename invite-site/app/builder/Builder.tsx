@@ -809,9 +809,9 @@ function BuilderInner() {
    COMPONENTS
    ═══════════════════════════════════════════════════════════ */
 
-function StepWrapper({ children, key: k }: { children: React.ReactNode; key: string }) {
+function StepWrapper({ children }: { children: React.ReactNode }) {
   return (
-    <motion.div key={k} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.3 }}>
+    <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.3 }}>
       {children}
     </motion.div>
   );

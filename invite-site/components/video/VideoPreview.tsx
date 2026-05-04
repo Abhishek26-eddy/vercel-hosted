@@ -1,10 +1,23 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Play, Pause, Film } from "lucide-react";
 import type { PortfolioTheme } from "@/lib/portfolioThemes";
 import { getMotionProfile } from "./motionProfiles";
+import type { ThemeFamily } from "@/lib/portfolioThemes";
+
+/* ── Theme music — royalty-free ambient loops ────────────── */
+const THEME_MUSIC: Record<ThemeFamily, string> = {
+  royal:       "https://cdn.pixabay.com/audio/2024/11/28/audio_3e60bbaf91.mp3",
+  floral:      "https://cdn.pixabay.com/audio/2022/02/23/audio_ea70ad08e7.mp3",
+  editorial:   "https://cdn.pixabay.com/audio/2024/09/10/audio_6e1bab32e7.mp3",
+  destination: "https://cdn.pixabay.com/audio/2022/01/20/audio_d1718ab41b.mp3",
+  festive:     "https://cdn.pixabay.com/audio/2024/11/28/audio_3e60bbaf91.mp3",
+  traditional: "https://cdn.pixabay.com/audio/2024/11/28/audio_3e60bbaf91.mp3",
+  dramatic:    "https://cdn.pixabay.com/audio/2024/09/10/audio_6e1bab32e7.mp3",
+  romantic:    "https://cdn.pixabay.com/audio/2022/02/23/audio_ea70ad08e7.mp3",
+};
 
 /* ═══════════════════════════════════════════════════════════
    VideoPreview — 10-second theme-matched animated preview
@@ -149,6 +162,7 @@ export default function VideoPreview({ theme, groomName, brideName, weddingDate,
   const [playing, setPlaying] = useState(false);
   const [scene, setScene] = useState(0);
   const profile = getMotionProfile(theme.family);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const groom = groomName || theme.couple.split("&")[0]?.trim() || "Groom";
   const bride = brideName || theme.couple.split("&")[1]?.trim() || "Bride";
@@ -160,18 +174,44 @@ export default function VideoPreview({ theme, groomName, brideName, weddingDate,
   const resetAndPlay = useCallback(() => {
     setScene(0);
     setPlaying(true);
+    // Start music
+    try {
+      if (!audioRef.current) {
+        audioRef.current = new Audio(THEME_MUSIC[theme.family] || THEME_MUSIC.floral);
+        audioRef.current.volume = 0.35;
+        audioRef.current.loop = true;
+      }
+      audioRef.current.currentTime = 0;
+      audioRef.current.play().catch(() => {});
+    } catch {}
+  }, [theme.family]);
+
+  const stopAudio = useCallback(() => {
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+    }
   }, []);
 
   useEffect(() => {
-    if (!playing) return;
+    if (!playing) {
+      stopAudio();
+      return;
+    }
     if (scene >= totalScenes) {
       setPlaying(false);
       setScene(0);
+      stopAudio();
       return;
     }
     const timer = setTimeout(() => setScene((s) => s + 1), sceneDuration);
     return () => clearTimeout(timer);
-  }, [playing, scene]);
+  }, [playing, scene, stopAudio]);
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => stopAudio();
+  }, [stopAudio]);
 
   return (
     <div className="relative overflow-hidden rounded-xl sm:rounded-2xl" style={{ aspectRatio: "9/16", maxHeight: "480px", border: `1px solid ${theme.accent}30` }}>
@@ -208,7 +248,7 @@ export default function VideoPreview({ theme, groomName, brideName, weddingDate,
       )}
 
       {/* Play/Pause button */}
-      <button onClick={playing ? () => setPlaying(false) : resetAndPlay}
+      <button onClick={playing ? () => { setPlaying(false); stopAudio(); } : resetAndPlay}
         className="absolute bottom-3 right-3 z-20 flex h-10 w-10 items-center justify-center rounded-full backdrop-blur-md transition-transform hover:scale-110"
         style={{ background: `${theme.accent}40`, border: `1.5px solid ${theme.accent}60` }}
       >
