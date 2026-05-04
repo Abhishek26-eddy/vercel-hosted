@@ -22,10 +22,12 @@ type LocaleContextType = {
   t: (key: string) => string;
   price: (priceINR: number) => string;
   prices: {
-    essential: string;
-    signature: string;
-    essentialRaw: number;
-    signatureRaw: number;
+    basic: string;
+    luxe: string;
+    custom: string;
+    basicOriginal: string;
+    luxeOriginal: string;
+    customOriginal: string;
   };
   rates: Record<string, number>;
   ratesLoading: boolean;
@@ -91,12 +93,14 @@ export function LocaleProvider({ children }: { children: ReactNode }) {
     return formatPrice(converted, currency);
   };
 
-  // Pre-calculated prices with live rates
+  // Pre-calculated prices with live rates (3 tiers)
   const prices = {
-    essential: price(BASE_PRICES.essential),
-    signature: price(BASE_PRICES.signature),
-    essentialRaw: convertPrice(BASE_PRICES.essential, currency, rates),
-    signatureRaw: convertPrice(BASE_PRICES.signature, currency, rates),
+    basic: price(BASE_PRICES.basic),
+    luxe: price(BASE_PRICES.luxe),
+    custom: price(BASE_PRICES.custom),
+    basicOriginal: price(BASE_PRICES.basicOriginal),
+    luxeOriginal: price(BASE_PRICES.luxeOriginal),
+    customOriginal: price(BASE_PRICES.customOriginal),
   };
 
   return (

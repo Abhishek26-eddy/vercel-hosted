@@ -1,3 +1,5 @@
+export type ThemeTier = "basic" | "luxe" | "custom";
+
 export type PortfolioTheme = {
   slug: string;
   name: string;
@@ -9,6 +11,7 @@ export type PortfolioTheme = {
   image: string;
   accent: string;
   background: string;
+  tier: ThemeTier;
 };
 
 export const BRAND = {
@@ -21,7 +24,7 @@ export const BRAND = {
 
 export const PORTFOLIO_THEMES: PortfolioTheme[] = [
   // ─────────────────────────────────────────────────────────────
-  // INTERNATIONAL DESTINATION THEMES (Premium)
+  // LUXE THEMES
   // ─────────────────────────────────────────────────────────────
   {
     slug: "paris-romance",
@@ -36,6 +39,7 @@ export const PORTFOLIO_THEMES: PortfolioTheme[] = [
       "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=1200&q=85",
     accent: "#d4a574",
     background: "#faf8f5",
+    tier: "luxe",
   },
   {
     slug: "santorini-sunset",
@@ -50,6 +54,7 @@ export const PORTFOLIO_THEMES: PortfolioTheme[] = [
       "https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?auto=format&fit=crop&w=1200&q=85",
     accent: "#d4a574",
     background: "#ffffff",
+    tier: "luxe",
   },
   {
     slug: "tuscany-vineyard",
@@ -64,9 +69,10 @@ export const PORTFOLIO_THEMES: PortfolioTheme[] = [
       "https://images.unsplash.com/photo-1523531294919-4bcd7c65e216?auto=format&fit=crop&w=1200&q=85",
     accent: "#c67b5c",
     background: "#faf6f1",
+    tier: "luxe",
   },
   // ─────────────────────────────────────────────────────────────
-  // INDIAN THEMES
+  // BASIC THEMES
   // ─────────────────────────────────────────────────────────────
   {
     slug: "roses-luxury",
@@ -81,6 +87,7 @@ export const PORTFOLIO_THEMES: PortfolioTheme[] = [
       "https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=1200&q=85",
     accent: "#c9a14a",
     background: "#fff6f1",
+    tier: "basic",
   },
   {
     slug: "royal-palace",
@@ -95,6 +102,7 @@ export const PORTFOLIO_THEMES: PortfolioTheme[] = [
       "https://images.unsplash.com/photo-1596178065887-1198b6148b2b?auto=format&fit=crop&w=1200&q=85",
     accent: "#c9a14a",
     background: "#fdf4e3",
+    tier: "luxe",
   },
   {
     slug: "minimal-elegant",
@@ -109,6 +117,7 @@ export const PORTFOLIO_THEMES: PortfolioTheme[] = [
       "https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&w=1200&q=85",
     accent: "#b79862",
     background: "#f7f6f2",
+    tier: "basic",
   },
   {
     slug: "south-indian-temple",
@@ -123,5 +132,6 @@ export const PORTFOLIO_THEMES: PortfolioTheme[] = [
       "https://images.unsplash.com/photo-1518837695005-2083093ee35b?auto=format&fit=crop&w=1200&q=85",
     accent: "#5a8f5a",
     background: "#f5f9f4",
+    tier: "basic",
   },
 ];

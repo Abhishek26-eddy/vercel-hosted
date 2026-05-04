@@ -63,8 +63,8 @@ const HERO_IMG = "https://images.unsplash.com/photo-1519741497674-611481863552?a
 ───────────────────────────────────────────────────────────────── */
 
 const TRUST_STATS = [
-  { value: "3–5", label: "Days to perfect" },
-  { value: "∞", label: "Revisions" },
+  { value: "7", label: "Days to deliver" },
+  { value: "3", label: "Plans to choose" },
   { value: "100%", label: "Love it or refund" },
 ];
 
@@ -72,17 +72,17 @@ const WHY_CHOOSE = [
   {
     icon: HeartHandshake,
     title: "One Dedicated Designer",
-    desc: "A single designer walks with you from first conversation to final invitation. Intimate, personal, seamless.",
+    desc: "A single designer handles your invite from start to finish. Personal, seamless, and stress-free.",
   },
   {
     icon: Zap,
-    title: "Thoughtfully Fast",
-    desc: "Your first draft arrives within a day. We move quickly, but never rush the romance.",
+    title: "Ready in 7 Days",
+    desc: "First draft in 3-5 days. Final invite delivered within a week. Need it sooner? Just ask.",
   },
   {
     icon: RefreshCw,
-    title: "Until It's Perfect",
-    desc: "Refine as many times as you need. No limits, no extra charges, no compromise on your vision.",
+    title: "Open to Revisions",
+    desc: "We're open to iterations so your invite is exactly right. Basic includes 3, Luxe includes 5, Custom is unlimited.",
   },
   {
     icon: Shield,
@@ -109,27 +109,27 @@ const WHATS_INCLUDED = [
 const STEPS = [
   { 
     n: "01", 
-    title: "Share Your Vision", 
-    desc: "Tell us about your wedding — the theme, colors, story, and what makes your love unique.",
-    time: "15 min call or message"
+    title: "Choose a Template", 
+    desc: "Browse our collection, pick a design you love — Basic or Luxe. Or go fully Custom.",
+    time: "2 minutes"
   },
   { 
     n: "02", 
-    title: "Review First Draft", 
-    desc: "Within 24 hours, you'll receive a fully designed invite preview to review.",
-    time: "24 hours"
+    title: "Fill in Your Details", 
+    desc: "Add your names, wedding date, venue, events, photos, and personal touches.",
+    time: "10 minutes"
   },
   { 
     n: "03", 
-    title: "Refine Together", 
-    desc: "We'll iterate on every detail — colors, copy, photos, animations — until it's perfect.",
-    time: "2-3 days"
+    title: "Review & Refine", 
+    desc: "Preview your invite. Request changes — we refine until it's perfect.",
+    time: "3-5 days"
   },
   { 
     n: "04", 
-    title: "Launch & Share", 
-    desc: "Get your unique link and start sharing with guests. We handle hosting forever.",
-    time: "Same day"
+    title: "Share with Guests", 
+    desc: "Get your unique link and start sharing via WhatsApp, Instagram, or email. Hosting included forever.",
+    time: "Delivered in 7 days"
   },
 ];
 
@@ -150,32 +150,32 @@ const TESTIMONIALS = [
 
 const FAQ = [
   { 
-    q: "How long does the entire process take?", 
-    a: "Most couples receive their final invite within 3-5 days. We send the first draft within 24 hours of receiving your details, then refine based on your feedback. Rush delivery is available if you need it sooner." 
+    q: "What's the difference between Basic, Luxe, and Custom?", 
+    a: "Basic (₹2,499) gives you a beautiful template with your details, RSVP, and gallery. Luxe (₹3,499) adds background music, countdown timer, love story timeline, and more revisions. Custom (₹7,000) is fully bespoke — we design from scratch around your unique story." 
   },
   { 
-    q: "What if I don't like the first design?", 
-    a: "We offer unlimited revisions until you're completely satisfied. If after revisions you're still not happy with the direction, we offer a full refund — no questions asked." 
+    q: "How long does it take?", 
+    a: "First draft arrives in 3-5 days. Final invite delivered within 7 days. Need it faster? Message us and we'll do our best to rush it." 
+  },
+  { 
+    q: "How many revisions do I get?", 
+    a: "Basic includes 3 revisions, Luxe includes 5, and Custom comes with unlimited revisions. We want your invite to be perfect." 
   },
   { 
     q: "How do guests view the invitation?", 
-    a: "Each guest receives a unique URL (like yourwedding.thedigitalinviters.com/guest-name). They simply tap to open — no app downloads, no sign-ups. Works perfectly on WhatsApp, Instagram, email, or any platform." 
+    a: "Each guest receives a unique URL (like yourwedding.thedigitalinviters.com). They simply tap to open — no app downloads, no sign-ups. Works perfectly on WhatsApp, Instagram, email, or any platform." 
   },
   { 
     q: "Is hosting included? For how long?", 
-    a: "Yes, lifetime hosting is included in every package. Your invite stays live forever — a digital keepsake you and your guests can revisit anytime." 
+    a: "Yes, lifetime hosting is included in every plan. Your invite stays live forever — a digital keepsake you and your guests can revisit anytime." 
   },
   { 
     q: "Can I make changes after the invite is live?", 
-    a: "Absolutely. Need to update a venue, time, or add a new event? Just message us and we'll update it within hours — at no extra cost." 
-  },
-  { 
-    q: "Do you offer video invitations?", 
-    a: "Our invites are interactive web experiences with cinematic animations — more engaging than a video because guests can interact, RSVP, and explore. If you specifically need a video file, we can discuss options." 
+    a: "Absolutely. Need to update a venue, time, or add a new event? Just message us and we'll update it — no extra cost within your revision limit." 
   },
   {
     q: "Can I use my own custom domain?",
-    a: "Yes. Our Signature plan includes a custom domain like meera-and-aarav.com. We handle DNS setup and SSL certificates — your invite gets its own professional web address."
+    a: "Yes! Our Custom plan includes a personal domain like meera-and-aarav.com. We handle all the technical setup for you."
   },
 ];
 
@@ -260,14 +260,14 @@ function Nav({ cta }: { cta: string }) {
             <MessageCircle size={14} />
             {t("nav.whatsapp")}
           </a>
-          <a
-            href="#pricing"
+          <Link
+            href="/builder"
             className="group flex items-center gap-2 rounded-full px-5 py-2.5 text-[12px] font-medium tracking-wide transition-all duration-300 hover:gap-3"
             style={{ background: P.ink, color: P.bg }}
           >
             {t("nav.getStarted")}
             <ArrowRight size={14} className="transition-transform group-hover:translate-x-0.5" />
-          </a>
+          </Link>
         </div>
       </div>
     </header>
@@ -382,8 +382,8 @@ function Hero({ cta }: { cta: string }) {
 
             {/* CTA - more elegant, less button-heavy */}
             <motion.div variants={fadeUp} custom={4} className="mt-10 flex flex-wrap items-center gap-5">
-              <a
-                href="#pricing"
+              <Link
+                href="/builder"
                 className="group inline-flex items-center gap-3 text-[12px] font-medium tracking-wide transition-all duration-500"
                 style={{ color: P.ink }}
               >
@@ -399,8 +399,8 @@ function Hero({ cta }: { cta: string }) {
                   <ArrowRight size={16} />
                 </span>
                 <span className="font-semibold">{t("hero.cta")}</span>
-                <span className="font-bold" style={{ color: "#8B6914" }}>{prices.essential}</span>
-              </a>
+                <span className="font-bold" style={{ color: "#8B6914" }}>from {prices.basic}</span>
+              </Link>
               <Link
                 href="#collection"
                 className="text-[12px] tracking-wide transition-colors hover:text-[#9a7b4f]"
@@ -508,7 +508,32 @@ function WhyChooseUs() {
 /* ─────────────────────────────────────────────────────────────
    COLLECTION - Elegant, curated gallery
 ───────────────────────────────────────────────────────────────── */
+const TIER_CONFIG = {
+  basic: { label: "BASIC", color: "#6b7280", bg: "#f3f4f6" },
+  luxe: { label: "LUXE", color: "#92400e", bg: "#fef3c7" },
+  custom: { label: "PREMIUM", color: "#7c2d12", bg: "#fed7aa" },
+};
+
 function Collection() {
+  const { prices } = useLocale();
+  const [filter, setFilter] = useState<"all" | "basic" | "luxe">("all");
+  
+  const filteredThemes = filter === "all" 
+    ? PORTFOLIO_THEMES 
+    : PORTFOLIO_THEMES.filter(t => t.tier === filter);
+
+  const tierPrice = (tier: string) => {
+    if (tier === "basic") return prices.basic;
+    if (tier === "luxe") return prices.luxe;
+    return prices.custom;
+  };
+
+  const tierOriginal = (tier: string) => {
+    if (tier === "basic") return prices.basicOriginal;
+    if (tier === "luxe") return prices.luxeOriginal;
+    return prices.customOriginal;
+  };
+
   return (
     <section id="collection" className="px-6 py-24 sm:px-10 sm:py-32" style={{ background: P.bgAlt }}>
       <div className="mx-auto max-w-6xl">
@@ -517,7 +542,7 @@ function Collection() {
             <div className="flex items-center justify-center gap-3">
               <div className="h-px w-8" style={{ background: P.goldMuted }} />
               <p className="text-[10px] font-medium tracking-[0.35em] uppercase" style={{ color: P.gold }}>
-                The Collection
+                Choose Your Template
               </p>
               <div className="h-px w-8" style={{ background: P.goldMuted }} />
             </div>
@@ -525,71 +550,130 @@ function Collection() {
               className="mx-auto mt-6 max-w-xl font-display"
               style={{ color: P.ink, fontSize: "clamp(1.75rem, 4vw, 2.5rem)", lineHeight: 1.2 }}
             >
-              Signature themes
+              Browse & Customize
             </h2>
             <p className="mx-auto mt-4 max-w-md text-[14px] leading-[1.8]" style={{ color: P.body }}>
-              Each one is a fully working invitation. Find the style that speaks to you — we'll make it uniquely yours.
+              Pick a design you love, fill in your details, and share it with your guests. It's that simple.
             </p>
           </div>
         </SectionReveal>
 
-        <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {PORTFOLIO_THEMES.map((theme, i) => (
-            <SectionReveal key={theme.slug} delay={i * 0.08}>
-              <Link
-                href={`/${theme.slug}`}
-                className="group block overflow-hidden"
+        {/* Filter tabs */}
+        <SectionReveal delay={0.1}>
+          <div className="mt-10 flex items-center justify-center gap-3">
+            {(["all", "basic", "luxe"] as const).map((f) => (
+              <button
+                key={f}
+                onClick={() => setFilter(f)}
+                className="rounded-full px-5 py-2 text-[11px] font-medium tracking-wide transition-all"
+                style={{
+                  background: filter === f ? P.ink : "transparent",
+                  color: filter === f ? P.bg : P.muted,
+                  border: `1px solid ${filter === f ? P.ink : P.line}`,
+                }}
               >
-                {/* Image - more elegant aspect ratio and reveal */}
-                <div 
-                  className="relative aspect-[3/4] overflow-hidden rounded-xl"
-                  style={{ background: P.bgDeep }}
-                >
-                  <motion.div
-                    whileHover={{ scale: 1.03 }}
-                    transition={{ duration: 0.6 }}
-                    className="absolute inset-0 bg-cover bg-center"
-                    style={{ backgroundImage: `url(${theme.image})` }}
-                  />
-                  <div 
-                    className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-                    style={{ background: "linear-gradient(to top, rgba(20,18,16,0.6) 0%, transparent 60%)" }}
-                  />
-                  
-                  {/* Hover reveal content */}
-                  <div className="absolute inset-x-0 bottom-0 p-5 opacity-0 transition-all duration-500 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0">
-                    <p className="text-[10px] tracking-wide text-white/70">
-                      {theme.couple}
-                    </p>
-                    <p className="text-[10px] tracking-wide text-white/50">
-                      {theme.location}
-                    </p>
-                  </div>
-                </div>
+                {f === "all" ? "All Templates" : f === "basic" ? `Basic — ${prices.basic}` : `Luxe — ${prices.luxe}`}
+              </button>
+            ))}
+          </div>
+        </SectionReveal>
 
-                {/* Card info - cleaner, more elegant */}
-                <div className="mt-4">
-                  <h3 
-                    className="font-display text-lg tracking-tight transition-colors duration-300 group-hover:text-[#9a7b4f]" 
-                    style={{ color: P.ink }}
+        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {filteredThemes.map((theme, i) => {
+            const tier = TIER_CONFIG[theme.tier];
+            return (
+              <SectionReveal key={theme.slug} delay={i * 0.08}>
+                <Link
+                  href={`/builder?template=${theme.slug}`}
+                  className="group block overflow-hidden"
+                >
+                  <div 
+                    className="relative aspect-[3/4] overflow-hidden rounded-xl"
+                    style={{ background: P.bgDeep }}
                   >
-                    {theme.name}
-                  </h3>
-                  <p className="mt-1 text-[13px]" style={{ color: P.muted }}>
-                    {theme.tagline}
-                  </p>
-                </div>
-              </Link>
-            </SectionReveal>
-          ))}
+                    <motion.div
+                      whileHover={{ scale: 1.03 }}
+                      transition={{ duration: 0.6 }}
+                      className="absolute inset-0 bg-cover bg-center"
+                      style={{ backgroundImage: `url(${theme.image})` }}
+                    />
+                    <div 
+                      className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+                      style={{ background: "linear-gradient(to top, rgba(20,18,16,0.6) 0%, transparent 60%)" }}
+                    />
+                    
+                    {/* Tier badge */}
+                    <div className="absolute top-3 left-3">
+                      <span 
+                        className="rounded-full px-3 py-1 text-[9px] font-bold tracking-[0.15em]"
+                        style={{ background: tier.bg, color: tier.color }}
+                      >
+                        {tier.label}
+                      </span>
+                    </div>
+                    
+                    {/* Hover CTA */}
+                    <div className="absolute inset-x-0 bottom-0 p-5 opacity-0 transition-all duration-500 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0">
+                      <div 
+                        className="flex w-full items-center justify-center gap-2 rounded-full py-2.5 text-[11px] font-semibold tracking-wide"
+                        style={{ background: P.gold, color: "white" }}
+                      >
+                        CUSTOMIZE DESIGN
+                        <ArrowRight size={12} />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="mt-4">
+                    <h3 
+                      className="font-display text-lg tracking-tight transition-colors duration-300 group-hover:text-[#9a7b4f]" 
+                      style={{ color: P.ink }}
+                    >
+                      {theme.name}
+                    </h3>
+                    <p className="mt-1 text-[13px]" style={{ color: P.muted }}>
+                      {theme.tagline}
+                    </p>
+                    <div className="mt-2 flex items-center gap-2">
+                      <span className="text-[12px] line-through" style={{ color: P.muted }}>
+                        {tierOriginal(theme.tier)}
+                      </span>
+                      <span className="text-[14px] font-semibold" style={{ color: P.ink }}>
+                        {tierPrice(theme.tier)}
+                      </span>
+                    </div>
+                  </div>
+                </Link>
+              </SectionReveal>
+            );
+          })}
         </div>
 
-        {/* Collection note */}
+        {/* Custom design CTA */}
         <SectionReveal delay={0.3}>
           <div className="mt-16 text-center">
-            <p className="text-[14px]" style={{ color: P.body }}>
-              Don't see your style? <Link href="#cta" className="transition-colors hover:text-[#9a7b4f]" style={{ color: P.ink }}>We design custom themes too.</Link>
-            </p>
+            <div 
+              className="mx-auto max-w-lg rounded-2xl p-8"
+              style={{ background: P.noir }}
+            >
+              <p className="text-[10px] font-medium tracking-[0.3em] uppercase" style={{ color: P.goldSoft }}>
+                Custom Design
+              </p>
+              <h3 className="mt-3 font-display text-xl text-white">
+                Want something completely unique?
+              </h3>
+              <p className="mt-2 text-[13px]" style={{ color: "rgba(255,255,255,0.6)" }}>
+                Starting at {prices.custom} — fully bespoke, designed around your love story.
+              </p>
+              <Link
+                href="#cta"
+                className="mt-5 inline-flex items-center gap-2 rounded-full px-6 py-3 text-[12px] font-semibold tracking-wide"
+                style={{ background: P.gold, color: "white" }}
+              >
+                Begin Your Story
+                <ArrowRight size={13} />
+              </Link>
+            </div>
           </div>
         </SectionReveal>
       </div>
@@ -654,7 +738,7 @@ function Process() {
         <SectionReveal delay={0.4}>
           <div className="mt-12 text-center">
             <p className="text-[15px]" style={{ color: P.body }}>
-              <strong style={{ color: P.ink }}>Total timeline:</strong> 3-5 days from first message to final invite
+              <strong style={{ color: P.ink }}>Total timeline:</strong> 7 days from template selection to final invite
             </p>
           </div>
         </SectionReveal>
@@ -779,71 +863,85 @@ function Testimonials() {
 }
 
 /* ─────────────────────────────────────────────────────────────
-   PRICING - Tiered, premium positioning
+   PRICING - 3 Tiers: Basic, Luxe, Custom
 ───────────────────────────────────────────────────────────────── */
 const PLAN_FEATURES = {
-  essential: [
-    "Custom design from our collection",
-    "Animated hero with your names",
+  basic: [
+    "Choose from our template collection",
+    "Your names, date & venue details",
     "Complete event schedule",
     "Photo gallery (up to 8 photos)",
     "Built-in RSVP collection",
     "WhatsApp-optimized sharing",
     "Mobile-first responsive design",
     "Lifetime hosting",
-    "Up to 3 revisions included",
-    "First draft in 3-5 days",
+    "Up to 3 revisions",
     "Delivered in 7 days",
   ],
-  signature: [
-    "Everything in Essential",
-    "Fully bespoke design from scratch",
-    "Your love story timeline",
-    "Personalized guest names",
-    "Custom domain (your-names.com)",
+  luxe: [
+    "Everything in Basic",
+    "Background music",
     "Countdown timer",
     "Interactive venue map",
-    "Background music",
+    "Your love story timeline",
     "Unlimited photos",
-    "Unlimited revisions",
+    "Up to 5 revisions",
     "First draft in 3-5 days",
     "Delivered in 7 days",
   ],
-};
-
-// Payment links - Replace with your actual Razorpay payment links
-const PAYMENT_LINKS = {
-  essential: "https://razorpay.me/@thedigitalinviters?amount=799900", // ₹7,999
-  signature: "https://razorpay.me/@thedigitalinviters?amount=1499900", // ₹14,999
+  custom: [
+    "A design that belongs only to you",
+    "Your own domain (your-names.com)",
+    "Custom motion & interactions",
+    "Unlimited revisions",
+    "A curated photo gallery",
+    "Personalized guest names",
+    "Guest RSVP",
+    "Background music",
+    "Countdown timer & venue map",
+    "We call you within 24h to begin",
+  ],
 };
 
 function Pricing({ cta }: { cta: string }) {
-  const { prices, price, t } = useLocale();
-  
-  // Original prices (before discount) - ~20% higher
-  const originalEssential = price(9999);
-  const originalSignature = price(18999);
+  const { prices, t } = useLocale();
   
   const plans = [
     {
-      name: t("pricing.essential"),
-      price: prices.essential,
-      originalPrice: originalEssential,
-      tagline: t("pricing.essentialTag"),
-      popular: true, // Most couples choose this
-      discount: "20% OFF",
-      features: PLAN_FEATURES.essential,
-      paymentLink: PAYMENT_LINKS.essential,
+      name: "Basic",
+      price: prices.basic,
+      originalPrice: prices.basicOriginal,
+      tagline: "Perfect for simple celebrations",
+      popular: false,
+      discount: "37% OFF",
+      features: PLAN_FEATURES.basic,
+      ctaText: "Choose Template",
+      ctaLink: "/builder",
+      isExternal: false,
     },
     {
-      name: t("pricing.signature"),
-      price: prices.signature,
-      originalPrice: originalSignature,
-      tagline: t("pricing.signatureTag"),
+      name: "Luxe",
+      price: prices.luxe,
+      originalPrice: prices.luxeOriginal,
+      tagline: "Most couples choose this",
+      popular: true,
+      discount: "42% OFF",
+      features: PLAN_FEATURES.luxe,
+      ctaText: "Choose Template",
+      ctaLink: "/builder",
+      isExternal: false,
+    },
+    {
+      name: "Custom",
+      price: prices.custom,
+      originalPrice: prices.customOriginal,
+      tagline: "Fully bespoke, designed for you",
       popular: false,
-      discount: "21% OFF",
-      features: PLAN_FEATURES.signature,
-      paymentLink: PAYMENT_LINKS.signature,
+      discount: "30% OFF",
+      features: PLAN_FEATURES.custom,
+      ctaText: "Begin Your Story",
+      ctaLink: cta,
+      isExternal: true,
     },
   ];
 
@@ -862,12 +960,12 @@ function Pricing({ cta }: { cta: string }) {
               {t("pricing.title")}
             </h2>
             <p className="mx-auto mt-4 max-w-xl text-[15px] leading-relaxed" style={{ color: P.body }}>
-              {t("pricing.subtitle")}
+              One-time payment. No subscriptions. No hidden charges. Lifetime hosting included.
             </p>
           </div>
         </SectionReveal>
 
-        <div className="mt-16 grid gap-6 md:grid-cols-2 max-w-4xl mx-auto">
+        <div className="mt-16 grid gap-6 md:grid-cols-3 max-w-5xl mx-auto">
           {plans.map((plan, i) => (
             <SectionReveal key={plan.name} delay={i * 0.08}>
               <div 
@@ -884,7 +982,7 @@ function Pricing({ cta }: { cta: string }) {
                     style={{ background: P.gold, color: "white" }}
                   >
                     <Star size={10} fill="white" />
-                    {t("pricing.mostPopular")}
+                    Most Popular
                   </div>
                 )}
                 
@@ -895,14 +993,12 @@ function Pricing({ cta }: { cta: string }) {
                   >
                     {plan.name}
                   </p>
-                  {plan.discount && (
-                    <span 
-                      className="rounded-full px-2 py-0.5 text-[9px] font-bold tracking-wide"
-                      style={{ background: "#e8f5e9", color: "#2e7d32" }}
-                    >
-                      {plan.discount}
-                    </span>
-                  )}
+                  <span 
+                    className="rounded-full px-2 py-0.5 text-[9px] font-bold tracking-wide"
+                    style={{ background: plan.popular ? "rgba(255,255,255,0.15)" : "#e8f5e9", color: plan.popular ? "#4ade80" : "#2e7d32" }}
+                  >
+                    {plan.discount}
+                  </span>
                 </div>
                 <div className="mt-3 flex items-baseline gap-2">
                   <span 
@@ -912,29 +1008,29 @@ function Pricing({ cta }: { cta: string }) {
                     {plan.originalPrice}
                   </span>
                   <span 
-                    className="font-display text-4xl tracking-tight"
+                    className="font-display text-3xl tracking-tight"
                     style={{ color: plan.popular ? "#ffffff" : P.ink }}
                   >
                     {plan.price}
                   </span>
                 </div>
                 <p 
-                  className="mt-1 text-[13px]"
+                  className="mt-1 text-[12px]"
                   style={{ color: plan.popular ? "rgba(255,255,255,0.6)" : P.muted }}
                 >
                   {plan.tagline}
                 </p>
 
-                <div className="mt-6 flex-1 space-y-2.5">
+                <div className="mt-5 flex-1 space-y-2">
                   {plan.features.map((f) => (
                     <div key={f} className="flex items-start gap-2">
                       <Check 
-                        size={14} 
+                        size={13} 
                         className="mt-0.5 flex-shrink-0"
                         style={{ color: plan.popular ? P.goldSoft : P.gold }} 
                       />
                       <span 
-                        className="text-[13px] leading-snug"
+                        className="text-[12px] leading-snug"
                         style={{ color: plan.popular ? "rgba(255,255,255,0.85)" : P.body }}
                       >
                         {f}
@@ -943,19 +1039,19 @@ function Pricing({ cta }: { cta: string }) {
                   ))}
                 </div>
 
-                {/* Primary CTA - Pay Now */}
+                {/* Primary CTA */}
                 <a
-                  href={plan.paymentLink}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="group mt-8 flex w-full items-center justify-center gap-2 rounded-full py-3.5 text-[12px] font-semibold tracking-wide transition-all duration-300 hover:scale-[1.02]"
+                  href={plan.ctaLink}
+                  target={plan.isExternal ? "_blank" : undefined}
+                  rel={plan.isExternal ? "noreferrer" : undefined}
+                  className="group mt-7 flex w-full items-center justify-center gap-2 rounded-full py-3.5 text-[12px] font-semibold tracking-wide transition-all duration-300 hover:scale-[1.02]"
                   style={{ 
                     background: plan.popular ? P.gold : P.ink, 
                     color: plan.popular ? "white" : P.bg,
                   }}
                 >
-                  <CreditCard size={14} />
-                  Book Now — {plan.price}
+                  {plan.isExternal ? <MessageCircle size={14} /> : <CreditCard size={14} />}
+                  {plan.ctaText}
                   <ArrowRight size={13} className="transition-transform group-hover:translate-x-0.5" />
                 </a>
                 
@@ -964,32 +1060,21 @@ function Pricing({ cta }: { cta: string }) {
                   href={cta}
                   target="_blank"
                   rel="noreferrer"
-                  className="mt-3 flex w-full items-center justify-center gap-2 rounded-full py-2.5 text-[11px] font-medium tracking-wide transition-all border"
+                  className="mt-2.5 flex w-full items-center justify-center gap-2 rounded-full py-2 text-[10px] font-medium tracking-wide transition-all border"
                   style={{ 
-                    borderColor: plan.popular ? "rgba(255,255,255,0.3)" : P.line,
-                    color: plan.popular ? "rgba(255,255,255,0.8)" : P.muted,
+                    borderColor: plan.popular ? "rgba(255,255,255,0.2)" : P.line,
+                    color: plan.popular ? "rgba(255,255,255,0.7)" : P.muted,
                   }}
                 >
-                  <MessageCircle size={12} />
+                  <MessageCircle size={11} />
                   Have questions? Chat first
                 </a>
-                
-                {/* Secure Payment Badge */}
-                <div className="mt-4 flex items-center justify-center gap-1.5">
-                  <Lock size={10} style={{ color: plan.popular ? "rgba(255,255,255,0.5)" : P.muted }} />
-                  <span 
-                    className="text-[9px] tracking-wide"
-                    style={{ color: plan.popular ? "rgba(255,255,255,0.5)" : P.muted }}
-                  >
-                    Secure payment via Razorpay
-                  </span>
-                </div>
               </div>
             </SectionReveal>
           ))}
         </div>
 
-        {/* Guarantee + Custom domain note */}
+        {/* Guarantee */}
         <SectionReveal delay={0.3}>
           <div className="mx-auto mt-12 max-w-3xl text-center">
             <div 
@@ -1002,7 +1087,7 @@ function Pricing({ cta }: { cta: string }) {
               </span>
             </div>
             <p className="mt-4 text-[13px]" style={{ color: P.muted }}>
-              Custom domain (like <strong style={{ color: P.body }}>meera-and-aarav.com</strong>) included in Signature.
+              Secure payment via Razorpay · Custom domain included in Custom plan
             </p>
           </div>
         </SectionReveal>
@@ -1258,17 +1343,15 @@ export default function PortfolioHome() {
 
       {/* Premium Mobile Sticky CTA */}
       <div className="fixed bottom-0 inset-x-0 z-50 p-4 md:hidden" style={{ background: `linear-gradient(to top, ${P.bg} 80%, transparent)` }}>
-        <a
-          href={cta}
-          target="_blank"
-          rel="noreferrer"
+        <Link
+          href="/builder"
           className="flex w-full items-center justify-center gap-3 rounded-full py-4 text-[13px] font-medium tracking-wide shadow-lg"
           style={{ background: P.ink, color: P.bg }}
         >
-          <MessageCircle size={18} />
-          {t("cta.mobile")} — {prices.essential}
+          <Sparkles size={16} />
+          {t("cta.mobile")} — from {prices.basic}
           <ArrowRight size={14} />
-        </a>
+        </Link>
       </div>
     </main>
   );
