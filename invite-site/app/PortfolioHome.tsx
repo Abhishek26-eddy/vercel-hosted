@@ -380,12 +380,12 @@ function Catalogue() {
       <div className="mx-auto max-w-7xl">
         <SectionReveal>
           <div className="text-center">
-            <p className="text-[9px] sm:text-[10px] font-semibold tracking-[0.4em] uppercase" style={{ color: P.gold }}>Our Collection</p>
+            <p className="text-[9px] sm:text-[10px] font-semibold tracking-[0.4em] uppercase" style={{ color: P.gold }}>Curated Collection</p>
             <h2 className="mx-auto mt-4 sm:mt-5 max-w-xl font-display" style={{ color: P.ink, fontSize: "clamp(1.75rem, 5vw, 3rem)", lineHeight: 1.1 }}>
-              Find the design that <span className="font-script" style={{ color: P.gold }}>tells your story.</span>
+              Every design is <span className="font-script" style={{ color: P.gold }}>art-directed.</span>
             </h2>
             <p className="mx-auto mt-3 max-w-md text-[13px] sm:text-[14px] leading-[1.7]" style={{ color: P.body }}>
-              {PORTFOLIO_THEMES.filter(t => t.tier !== "signature").length} curated designs across {FAMILIES.length - 1} families. Every theme is individually art-directed.
+              {PORTFOLIO_THEMES.filter(t => t.tier !== "signature").length} hand-picked designs. Two tiers. Each one crafted to make your guests feel something.
             </p>
           </div>
         </SectionReveal>
@@ -623,9 +623,9 @@ function Testimonials() {
       <div className="mx-auto max-w-6xl">
         <SectionReveal>
           <div className="text-center">
-            <p className="text-[9px] sm:text-[10px] font-semibold tracking-[0.4em] uppercase" style={{ color: P.gold }}>Love Notes</p>
+            <p className="text-[9px] sm:text-[10px] font-semibold tracking-[0.4em] uppercase" style={{ color: P.gold }}>Real Couples, Real Words</p>
             <h2 className="mt-4 sm:mt-5 font-display" style={{ color: P.ink, fontSize: "clamp(1.75rem, 4.5vw, 2.5rem)", lineHeight: 1.15 }}>
-              From {TESTIMONIALS.length * 80}+ happy couples.
+              Trusted by <span className="font-script" style={{ color: P.gold }}>1,200+ couples</span> across India.
             </h2>
           </div>
         </SectionReveal>
@@ -641,8 +641,13 @@ function Testimonials() {
                   </div>
                   <p className="text-[13px] sm:text-[14px] leading-[1.8] italic flex-1" style={{ color: P.body }}>&ldquo;{t.quote}&rdquo;</p>
                   <div className="mt-4 pt-3" style={{ borderTop: `1px solid ${P.lineSoft}` }}>
-                    <p className="font-display text-[13px]" style={{ color: P.ink }}>{t.couple}</p>
-                    <p className="mt-0.5 text-[10px] sm:text-[11px]" style={{ color: P.muted }}>{t.loc} · {t.detail}</p>
+                    <div className="flex items-center justify-between gap-2">
+                      <div>
+                        <p className="font-display text-[13px]" style={{ color: P.ink }}>{t.couple}</p>
+                        <p className="mt-0.5 text-[10px] sm:text-[11px]" style={{ color: P.muted }}>{t.loc}</p>
+                      </div>
+                      <span className="rounded-full px-2 py-0.5 text-[8px] font-medium" style={{ background: `${P.gold}10`, color: P.gold }}>{t.detail}</span>
+                    </div>
                   </div>
                 </div>
               </SectionReveal>
@@ -698,8 +703,8 @@ function Pricing({ cta }: { cta: string }) {
       <div className="mx-auto max-w-6xl">
         <SectionReveal>
           <div className="text-center">
-            <p className="text-[9px] sm:text-[10px] font-semibold tracking-[0.4em] uppercase" style={{ color: P.gold }}>Pricing</p>
-            <h2 className="mt-4 sm:mt-5 font-display" style={{ color: P.ink, fontSize: "clamp(1.75rem, 5vw, 3rem)", lineHeight: 1.1 }}>
+            <p className="text-[9px] sm:text-[10px] font-semibold tracking-[0.4em] uppercase" style={{ color: P.gold }}>Simple, Transparent Pricing</p>
+            <h2 className="mt-4 sm:mt-5 font-display" style={{ color: P.ink, fontSize: "clamp(1.75rem, 4.5vw, 2.75rem)", lineHeight: 1.15 }}>
               Choose your <span className="font-script" style={{ color: P.gold }}>experience.</span>
             </h2>
             <p className="mx-auto mt-3 sm:mt-4 max-w-lg text-[13px] sm:text-[14px] leading-[1.8]" style={{ color: P.body }}>
