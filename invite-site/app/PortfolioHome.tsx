@@ -25,6 +25,7 @@ import {
   X,
   Play,
   Film,
+  Eye,
 } from "lucide-react";
 import SectionReveal from "@/components/portfolio/SectionReveal";
 import { BRAND, PORTFOLIO_THEMES } from "@/lib/portfolioThemes";
@@ -479,6 +480,9 @@ function Catalogue() {
                       </div>
                     </div>
                   </Link>
+                  <Link href={`/preview/${theme.slug}`} className="mt-1.5 flex items-center justify-center gap-1 rounded-lg py-1.5 text-[9px] sm:text-[10px] font-medium transition-colors hover:bg-[#f4f0ea]" style={{ color: P.muted }}>
+                    <Eye size={10} /> Preview
+                  </Link>
                 </div>
               </SectionReveal>
               );
@@ -545,6 +549,9 @@ function Catalogue() {
                         )}
                       </div>
                     </div>
+                  </Link>
+                  <Link href={`/preview/${theme.slug}`} className="mt-1.5 flex items-center justify-center gap-1 rounded-lg py-1.5 text-[9px] sm:text-[10px] font-medium transition-colors hover:bg-[#f4f0ea]" style={{ color: P.muted }}>
+                    <Eye size={10} /> Preview
                   </Link>
                 </div>
               </SectionReveal>
@@ -613,6 +620,9 @@ function Catalogue() {
                       )}
                     </div>
                   </div>
+                </Link>
+                <Link href={`/preview/${theme.slug}`} className="mt-1.5 flex items-center justify-center gap-1 rounded-lg py-1.5 text-[9px] sm:text-[10px] font-medium transition-colors hover:bg-[#f4f0ea]" style={{ color: P.muted }}>
+                  <Eye size={10} /> Preview
                 </Link>
               </div>
             </SectionReveal>

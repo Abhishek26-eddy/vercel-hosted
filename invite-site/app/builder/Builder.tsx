@@ -28,6 +28,7 @@ import {
 } from "lucide-react";
 import { PORTFOLIO_THEMES, BRAND } from "@/lib/portfolioThemes";
 import { useLocale } from "@/components/LocaleProvider";
+import VideoPreview from "@/components/video/VideoPreview";
 import { BASE_PRICES } from "@/lib/i18n";
 
 /* ── Palette ────────────────────────────────────────────── */
@@ -86,6 +87,8 @@ function BuilderInner() {
   const [upiCopied, setUpiCopied] = useState(false);
   const [designFilter, setDesignFilter] = useState<"all" | "basic" | "luxe">("all");
   const [videoAddon, setVideoAddon] = useState(false);
+  const [orderId, setOrderId] = useState<string | null>(null);
+  const [orderSaving, setOrderSaving] = useState(false);
   const [details, setDetails] = useState<WeddingDetails>({
     groomName: "", brideName: "", weddingDate: "",
     venue: "", venueAddress: "", city: "",
@@ -144,8 +147,48 @@ function BuilderInner() {
   // UPI payment link
   const upiLink = `upi://pay?pa=${BRAND.upiId}&pn=The%20Digital%20Inviters&am=${totalINR}&cu=INR&tn=${tierLabel}%20Wedding%20Invite${videoAddon ? "%20%2B%20Video" : ""}%20-%20${encodeURIComponent(details.groomName)}%20%26%20${encodeURIComponent(details.brideName)}`;
 
-  // After payment — send order via WhatsApp
-  const handlePaymentDone = () => {
+  // After payment — save order to backend + send via WhatsApp
+  const handlePaymentDone = async () => {
+    setOrderSaving(true);
+
+    // Save to backend
+    try {
+      const res = await fetch("/api/orders", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          groomName: details.groomName,
+          brideName: details.brideName,
+          weddingDate: details.weddingDate || null,
+          venue: details.venue,
+          venueAddress: details.venueAddress,
+          city: details.city,
+          groomFamily: details.groomFamily,
+          brideFamily: details.brideFamily,
+          dressCode: details.dressCode,
+          musicPreference: details.musicPreference,
+          rsvpContact: details.rsvpContact,
+          loveStory: details.loveStory,
+          message: details.message,
+          events: activeEvents.filter(e => e.date),
+          phone: details.phone,
+          email: details.email,
+          themeSlug: selectedTheme?.slug,
+          themeName: selectedTheme?.name,
+          tier,
+          videoAddon,
+          basePriceInr: tierPriceINR,
+          addonPriceInr: videoAddon ? BASE_PRICES.videoAddon : 0,
+          totalPriceInr: totalINR,
+        }),
+      });
+      const json = await res.json();
+      if (json.order?.id) setOrderId(json.order.id);
+    } catch (err) {
+      console.error("Failed to save order:", err);
+    }
+
+    // Send WhatsApp notification
     const orderLines = [
       `*New Order — ${tierLabel}${videoAddon ? " + Video" : ""} (₹${totalINR})*`,
       `Template: ${selectedTheme?.name}`,
@@ -167,6 +210,7 @@ function BuilderInner() {
     const encoded = encodeURIComponent(orderLines);
     window.open(`https://wa.me/${BRAND.whatsappNumber}?text=${encoded}`, "_blank");
     setPaymentDone(true);
+    setOrderSaving(false);
   };
 
   const copyUpi = () => {
@@ -493,6 +537,21 @@ function BuilderInner() {
                 </button>
               </div>
 
+              {/* Video preview when add-on selected */}
+              {videoAddon && selectedTheme && (
+                <div className="mx-auto max-w-2xl mb-6 sm:mb-8">
+                  <p className="text-[9px] font-bold tracking-[0.2em] uppercase mb-3 text-center" style={{ color: P.gold }}>Your Video Preview</p>
+                  <div className="mx-auto" style={{ maxWidth: 280 }}>
+                    <VideoPreview theme={selectedTheme} groomName={details.groomName} brideName={details.brideName}
+                      weddingDate={details.weddingDate} venue={details.venue || undefined}
+                    />
+                  </div>
+                  <p className="mt-2 text-[10px] text-center" style={{ color: P.muted }}>
+                    Tap play for a 10-second preview · Final video will be 30-60s
+                  </p>
+                </div>
+              )}
+
               <FullInvitePreview details={details} theme={selectedTheme} tier={tier} />
 
               <div className="mt-8 sm:mt-10 flex flex-col items-center gap-3 sm:gap-4">
@@ -612,13 +671,13 @@ function BuilderInner() {
                   <p className="text-center text-[10px] sm:text-[11px] leading-relaxed" style={{ color: P.body }}>
                     Once you&apos;ve completed payment, tap below to confirm. We&apos;ll begin crafting your invite immediately.
                   </p>
-                  <button onClick={handlePaymentDone}
-                    className="group flex w-full items-center justify-center gap-2 rounded-full py-3 sm:py-3.5 text-[11px] sm:text-[12px] font-semibold tracking-wide transition-all hover:scale-[1.01]"
+                  <button onClick={handlePaymentDone} disabled={orderSaving}
+                    className="group flex w-full items-center justify-center gap-2 rounded-full py-3 sm:py-3.5 text-[11px] sm:text-[12px] font-semibold tracking-wide transition-all hover:scale-[1.01] disabled:opacity-60"
                     style={{ background: P.ink, color: P.bg }}
                   >
                     <CheckCircle2 size={13} />
-                    I&apos;ve Paid — Confirm My Order
-                    <ArrowRight size={11} className="transition-transform group-hover:translate-x-0.5" />
+                    {orderSaving ? "Placing Order..." : "I've Paid — Confirm My Order"}
+                    {!orderSaving && <ArrowRight size={11} className="transition-transform group-hover:translate-x-0.5" />}
                   </button>
                 </div>
 
@@ -654,6 +713,11 @@ function BuilderInner() {
                   <CheckCircle2 size={32} style={{ color: P.gold }} />
                 </div>
                 <h2 className="mt-5 sm:mt-6 font-display text-2xl sm:text-3xl" style={{ color: P.ink }}>Order confirmed!</h2>
+                {orderId && (
+                  <p className="mt-2 text-[10px] font-mono tracking-wide" style={{ color: P.muted }}>
+                    Order ID: {orderId.slice(0, 8).toUpperCase()}
+                  </p>
+                )}
                 <p className="mt-2 sm:mt-3 text-[13px] sm:text-[14px] leading-[1.8]" style={{ color: P.body }}>
                   Thank you, {details.groomName} &amp; {details.brideName}. Your <strong>{selectedTheme?.name}</strong> ({tierLabel}{videoAddon ? " + Video" : ""}) invitation is now being crafted by our design team.
                 </p>
