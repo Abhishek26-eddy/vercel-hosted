@@ -1,4 +1,5 @@
 export type ThemeTier = "basic" | "luxe" | "signature";
+export type ThemeFamily = "floral" | "royal" | "editorial" | "destination" | "festive" | "traditional" | "dramatic" | "romantic";
 
 export type PortfolioTheme = {
   slug: string;
@@ -13,7 +14,11 @@ export type PortfolioTheme = {
   background: string;
   tier: ThemeTier;
   category: string;
+  family: ThemeFamily;
   badge?: string;
+  layoutStyle?: string;
+  motionStyle?: string;
+  typographyStyle?: string;
 };
 
 export const BRAND = {
@@ -41,7 +46,11 @@ export const PORTFOLIO_THEMES: PortfolioTheme[] = [
     background: "#0d0907",
     tier: "signature",
     category: "Royal",
+    family: "royal",
     badge: "Bespoke",
+    layoutStyle: "cinematic-scroll",
+    motionStyle: "parallax-gold",
+    typographyStyle: "serif-regal",
   },
   {
     slug: "midnight-symphony",
@@ -56,7 +65,11 @@ export const PORTFOLIO_THEMES: PortfolioTheme[] = [
     background: "#0a0e1a",
     tier: "signature",
     category: "Dramatic",
+    family: "dramatic",
     badge: "Bespoke",
+    layoutStyle: "immersive-fullscreen",
+    motionStyle: "constellation-drift",
+    typographyStyle: "display-cinematic",
   },
   {
     slug: "eternal-rose-house",
@@ -71,7 +84,11 @@ export const PORTFOLIO_THEMES: PortfolioTheme[] = [
     background: "#faf5f2",
     tier: "signature",
     category: "Romantic",
+    family: "romantic",
     badge: "Bespoke",
+    layoutStyle: "editorial-gallery",
+    motionStyle: "petal-float",
+    typographyStyle: "serif-botanical",
   },
 
   // ═══════════════════════════════════════════
@@ -90,7 +107,11 @@ export const PORTFOLIO_THEMES: PortfolioTheme[] = [
     background: "#fdf4e3",
     tier: "luxe",
     category: "Royal",
+    family: "royal",
     badge: "Most Loved",
+    layoutStyle: "parallax-sections",
+    motionStyle: "gold-reveal",
+    typographyStyle: "serif-regal",
   },
   {
     slug: "paris-romance",
@@ -105,7 +126,11 @@ export const PORTFOLIO_THEMES: PortfolioTheme[] = [
     background: "#faf8f5",
     tier: "luxe",
     category: "Romantic",
+    family: "romantic",
     badge: "Signature",
+    layoutStyle: "magazine-editorial",
+    motionStyle: "fade-crossover",
+    typographyStyle: "script-french",
   },
   {
     slug: "tuscany-vineyard",
@@ -120,6 +145,10 @@ export const PORTFOLIO_THEMES: PortfolioTheme[] = [
     background: "#faf6f1",
     tier: "luxe",
     category: "Rustic",
+    family: "destination",
+    layoutStyle: "split-screen",
+    motionStyle: "warm-pan",
+    typographyStyle: "serif-rustic",
   },
   {
     slug: "santorini-sunset",
@@ -134,6 +163,10 @@ export const PORTFOLIO_THEMES: PortfolioTheme[] = [
     background: "#ffffff",
     tier: "luxe",
     category: "Coastal",
+    family: "destination",
+    layoutStyle: "hero-cinematic",
+    motionStyle: "wave-drift",
+    typographyStyle: "sans-coastal",
   },
   {
     slug: "bollywood-sangeet",
@@ -148,7 +181,11 @@ export const PORTFOLIO_THEMES: PortfolioTheme[] = [
     background: "#1a0a2e",
     tier: "luxe",
     category: "Dramatic",
+    family: "festive",
     badge: "New",
+    layoutStyle: "bold-stacked",
+    motionStyle: "theatrical-burst",
+    typographyStyle: "display-bold",
   },
   {
     slug: "enchanted-forest",
@@ -163,6 +200,10 @@ export const PORTFOLIO_THEMES: PortfolioTheme[] = [
     background: "#0f1a0f",
     tier: "luxe",
     category: "Dramatic",
+    family: "dramatic",
+    layoutStyle: "immersive-fullscreen",
+    motionStyle: "firefly-particle",
+    typographyStyle: "serif-enchanted",
   },
   {
     slug: "cherry-blossom",
@@ -177,6 +218,10 @@ export const PORTFOLIO_THEMES: PortfolioTheme[] = [
     background: "#fff5f7",
     tier: "luxe",
     category: "Romantic",
+    family: "floral",
+    layoutStyle: "vertical-scroll",
+    motionStyle: "petal-float",
+    typographyStyle: "script-japanese",
   },
 
   // ═══════════════════════════════════════════
@@ -195,6 +240,7 @@ export const PORTFOLIO_THEMES: PortfolioTheme[] = [
     background: "#fff6f1",
     tier: "basic",
     category: "Floral",
+    family: "floral",
     badge: "Bestseller",
   },
   {
@@ -210,6 +256,7 @@ export const PORTFOLIO_THEMES: PortfolioTheme[] = [
     background: "#fdfcf8",
     tier: "basic",
     category: "Editorial",
+    family: "editorial",
   },
   {
     slug: "modern-gold",
@@ -224,6 +271,7 @@ export const PORTFOLIO_THEMES: PortfolioTheme[] = [
     background: "#1a1a1a",
     tier: "basic",
     category: "Editorial",
+    family: "editorial",
     badge: "Popular",
   },
   {
@@ -239,6 +287,7 @@ export const PORTFOLIO_THEMES: PortfolioTheme[] = [
     background: "#faf8fc",
     tier: "basic",
     category: "Floral",
+    family: "floral",
   },
   {
     slug: "sage-minimal",
@@ -253,6 +302,7 @@ export const PORTFOLIO_THEMES: PortfolioTheme[] = [
     background: "#f7f9f5",
     tier: "basic",
     category: "Romantic",
+    family: "romantic",
   },
   {
     slug: "blush-romance",
@@ -267,6 +317,7 @@ export const PORTFOLIO_THEMES: PortfolioTheme[] = [
     background: "#fdf5f3",
     tier: "basic",
     category: "Romantic",
+    family: "romantic",
   },
   {
     slug: "heritage-cream",
@@ -281,6 +332,7 @@ export const PORTFOLIO_THEMES: PortfolioTheme[] = [
     background: "#faf5e8",
     tier: "basic",
     category: "Royal",
+    family: "traditional",
   },
   {
     slug: "sunset-mehendi",
@@ -295,6 +347,7 @@ export const PORTFOLIO_THEMES: PortfolioTheme[] = [
     background: "#fdf5ef",
     tier: "basic",
     category: "Dramatic",
+    family: "festive",
   },
   {
     slug: "minimal-elegant",
@@ -309,6 +362,7 @@ export const PORTFOLIO_THEMES: PortfolioTheme[] = [
     background: "#f7f6f2",
     tier: "basic",
     category: "Editorial",
+    family: "editorial",
   },
   {
     slug: "soft-botanical",
@@ -323,6 +377,7 @@ export const PORTFOLIO_THEMES: PortfolioTheme[] = [
     background: "#f5f9f4",
     tier: "basic",
     category: "Floral",
+    family: "floral",
   },
   {
     slug: "traditional-red-gold",
@@ -337,6 +392,7 @@ export const PORTFOLIO_THEMES: PortfolioTheme[] = [
     background: "#8b1a2b",
     tier: "basic",
     category: "Royal",
+    family: "traditional",
     badge: "Classic",
   },
   {
@@ -352,6 +408,7 @@ export const PORTFOLIO_THEMES: PortfolioTheme[] = [
     background: "#f0f8ff",
     tier: "basic",
     category: "Coastal",
+    family: "destination",
   },
   {
     slug: "pearl-white",
@@ -366,6 +423,7 @@ export const PORTFOLIO_THEMES: PortfolioTheme[] = [
     background: "#ffffff",
     tier: "basic",
     category: "Editorial",
+    family: "editorial",
   },
   {
     slug: "lavender-story",
@@ -380,6 +438,7 @@ export const PORTFOLIO_THEMES: PortfolioTheme[] = [
     background: "#f8f5fd",
     tier: "basic",
     category: "Romantic",
+    family: "romantic",
   },
   {
     slug: "minimal-monsoon",
@@ -394,6 +453,7 @@ export const PORTFOLIO_THEMES: PortfolioTheme[] = [
     background: "#f4f8f4",
     tier: "basic",
     category: "Romantic",
+    family: "romantic",
   },
   {
     slug: "boho-sundowner",
@@ -408,6 +468,7 @@ export const PORTFOLIO_THEMES: PortfolioTheme[] = [
     background: "#faf5ef",
     tier: "basic",
     category: "Rustic",
+    family: "destination",
   },
   {
     slug: "beach-destination",
@@ -422,5 +483,6 @@ export const PORTFOLIO_THEMES: PortfolioTheme[] = [
     background: "#f0f4f8",
     tier: "basic",
     category: "Coastal",
+    family: "destination",
   },
 ];
