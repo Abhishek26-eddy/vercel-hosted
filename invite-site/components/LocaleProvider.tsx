@@ -24,10 +24,8 @@ type LocaleContextType = {
   prices: {
     basic: string;
     luxe: string;
-    custom: string;
     basicOriginal: string;
     luxeOriginal: string;
-    customOriginal: string;
   };
   rates: Record<string, number>;
   ratesLoading: boolean;
@@ -93,14 +91,12 @@ export function LocaleProvider({ children }: { children: ReactNode }) {
     return formatPrice(converted, currency);
   };
 
-  // Pre-calculated prices with live rates (3 tiers)
+  // Pre-calculated prices with live rates (2 tiers)
   const prices = {
     basic: price(BASE_PRICES.basic),
     luxe: price(BASE_PRICES.luxe),
-    custom: price(BASE_PRICES.custom),
     basicOriginal: price(BASE_PRICES.basicOriginal),
     luxeOriginal: price(BASE_PRICES.luxeOriginal),
-    customOriginal: price(BASE_PRICES.customOriginal),
   };
 
   return (

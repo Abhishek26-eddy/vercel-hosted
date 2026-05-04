@@ -89,15 +89,12 @@ export const LANGUAGES: Language[] = [
   { code: "ar", name: "Arabic", nativeName: "العربية" },
 ];
 
-// Base prices in INR (3 tiers)
+// Base prices in INR (2 tiers)
 export const BASE_PRICES = {
-  basic: 2499,      // Basic templates - self-serve
-  luxe: 3499,       // Luxe templates - with music, countdown etc.
-  custom: 7000,     // Fully custom bespoke design
-  // Original prices before discount (shown as strikethrough)
-  basicOriginal: 3999,
+  basic: 1499,
+  luxe: 3499,
+  basicOriginal: 2999,
   luxeOriginal: 5999,
-  customOriginal: 9999,
 };
 
 // Convert price from INR to target currency using dynamic rates
@@ -147,10 +144,8 @@ export const translations: Record<string, Record<string, string>> = {
     "pricing.subtitle": "One-time payment. No subscriptions. No hidden charges. Lifetime hosting included in every plan.",
     "pricing.basic": "Basic",
     "pricing.luxe": "Luxe",
-    "pricing.custom": "Custom",
-    "pricing.basicTag": "Perfect for simple celebrations",
-    "pricing.luxeTag": "Most couples choose this",
-    "pricing.customTag": "Fully bespoke, designed for you",
+    "pricing.basicTag": "Everything you need, beautifully done",
+    "pricing.luxeTag": "For couples who want it all",
     "pricing.mostPopular": "Most Popular",
     "pricing.getStarted": "Get Started",
     "footer.crafted": "Crafted with intention",
@@ -176,10 +171,8 @@ export const translations: Record<string, Record<string, string>> = {
     "pricing.subtitle": "एक बार भुगतान। कोई सदस्यता नहीं। कोई छिपे शुल्क नहीं। आजीवन होस्टिंग शामिल।",
     "pricing.basic": "बेसिक",
     "pricing.luxe": "लक्स",
-    "pricing.custom": "कस्टम",
-    "pricing.basicTag": "सरल समारोहों के लिए",
-    "pricing.luxeTag": "अधिकांश जोड़े यह चुनते हैं",
-    "pricing.customTag": "पूरी तरह बेस्पोक",
+    "pricing.basicTag": "सब कुछ सुंदर तरीके से",
+    "pricing.luxeTag": "जोड़ों के लिए जो सब चाहते हैं",
     "pricing.mostPopular": "सबसे लोकप्रिय",
     "pricing.getStarted": "शुरू करें",
     "footer.crafted": "इरादे से तैयार",
@@ -205,10 +198,8 @@ export const translations: Record<string, Record<string, string>> = {
     "pricing.subtitle": "Pago único. Sin suscripciones. Sin cargos ocultos. Alojamiento de por vida incluido.",
     "pricing.basic": "Básico",
     "pricing.luxe": "Luxe",
-    "pricing.custom": "Personalizado",
-    "pricing.basicTag": "Para celebraciones sencillas",
-    "pricing.luxeTag": "La mayoría elige esto",
-    "pricing.customTag": "Diseño totalmente a medida",
+    "pricing.basicTag": "Todo lo que necesitas, bellamente hecho",
+    "pricing.luxeTag": "Para parejas que lo quieren todo",
     "pricing.mostPopular": "Más Popular",
     "pricing.getStarted": "Comenzar",
     "footer.crafted": "Creado con intención",
@@ -234,10 +225,8 @@ export const translations: Record<string, Record<string, string>> = {
     "pricing.subtitle": "Paiement unique. Pas d'abonnement. Pas de frais cachés. Hébergement à vie inclus.",
     "pricing.basic": "Basique",
     "pricing.luxe": "Luxe",
-    "pricing.custom": "Sur Mesure",
-    "pricing.basicTag": "Pour les célébrations simples",
-    "pricing.luxeTag": "Le choix le plus populaire",
-    "pricing.customTag": "Design entièrement sur mesure",
+    "pricing.basicTag": "Tout ce qu'il faut, magnifiquement fait",
+    "pricing.luxeTag": "Pour les couples qui veulent tout",
     "pricing.mostPopular": "Plus Populaire",
     "pricing.getStarted": "Commencer",
     "footer.crafted": "Créé avec intention",
@@ -263,10 +252,8 @@ export const translations: Record<string, Record<string, string>> = {
     "pricing.subtitle": "Einmalige Zahlung. Kein Abo. Keine versteckten Kosten. Lebenslange Hosting inklusive.",
     "pricing.basic": "Basic",
     "pricing.luxe": "Luxe",
-    "pricing.custom": "Individuell",
-    "pricing.basicTag": "Für einfache Feiern",
-    "pricing.luxeTag": "Die beliebteste Wahl",
-    "pricing.customTag": "Komplett maßgeschneidert",
+    "pricing.basicTag": "Alles was Sie brauchen, wunderschön",
+    "pricing.luxeTag": "Für Paare die alles wollen",
     "pricing.mostPopular": "Am Beliebtesten",
     "pricing.getStarted": "Loslegen",
     "footer.crafted": "Mit Absicht gestaltet",
@@ -292,10 +279,8 @@ export const translations: Record<string, Record<string, string>> = {
     "pricing.subtitle": "دفعة واحدة. بدون اشتراكات. بدون رسوم خفية. استضافة مدى الحياة مشمولة.",
     "pricing.basic": "أساسي",
     "pricing.luxe": "فاخر",
-    "pricing.custom": "مخصص",
-    "pricing.basicTag": "للاحتفالات البسيطة",
-    "pricing.luxeTag": "الخيار الأكثر شعبية",
-    "pricing.customTag": "تصميم حصري بالكامل",
+    "pricing.basicTag": "كل ما تحتاجه بجمال",
+    "pricing.luxeTag": "للأزواج الذين يريدون كل شيء",
     "pricing.mostPopular": "الأكثر شعبية",
     "pricing.getStarted": "ابدأ الآن",
     "footer.crafted": "صُنع بعناية",

@@ -21,22 +21,24 @@ import {
   X,
   MapPin,
   Clock,
+  CheckCircle2,
+  Copy,
 } from "lucide-react";
 import { PORTFOLIO_THEMES, BRAND } from "@/lib/portfolioThemes";
 import { useLocale } from "@/components/LocaleProvider";
+import { BASE_PRICES } from "@/lib/i18n";
 
 /* ── Palette ────────────────────────────────────────────── */
 const P = {
-  bg: "#faf8f4", bgAlt: "#f5f1eb", bgDeep: "#ede8e0", surface: "#fffcfa",
-  ink: "#1a1816", body: "#5c5650", muted: "#9a9189",
-  gold: "#a68b5b", goldSoft: "#c9b896", goldMuted: "#e5dcc8",
-  line: "#ebe7e0", lineSoft: "#f5f3ef", noir: "#141210",
+  bg: "#faf8f4", bgAlt: "#f4f0ea", bgDeep: "#eae5dc", surface: "#fffdfb",
+  ink: "#1a1816", body: "#57504a", muted: "#9a9189",
+  gold: "#9c7f54", goldSoft: "#bfa97c", goldMuted: "#e0d6c4",
+  line: "#e8e3db", lineSoft: "#f2efe9", noir: "#110f0d",
 };
 
-const TIER_CONFIG = {
-  basic: { label: "BASIC", color: "#6b7280", bg: "#f3f4f6", features: ["RSVP", "Gallery", "Events", "WhatsApp sharing"] },
-  luxe: { label: "LUXE", color: "#92400e", bg: "#fef3c7", features: ["Everything in Basic", "Background music", "Countdown", "Love story", "Venue map"] },
-  custom: { label: "PREMIUM", color: "#7c2d12", bg: "#fed7aa", features: [] },
+const TIER_CONFIG: Record<string, { label: string; color: string; bg: string }> = {
+  basic: { label: "BASIC", color: "#6b7280", bg: "#f3f4f6" },
+  luxe: { label: "LUXE", color: "#92400e", bg: "#fef3c7" },
 };
 
 type WeddingDetails = {
@@ -58,7 +60,7 @@ const STEPS = [
   { id: "details", label: "Details", icon: User },
   { id: "events", label: "Events", icon: Calendar },
   { id: "preview", label: "Preview", icon: Eye },
-  { id: "checkout", label: "Checkout", icon: CreditCard },
+  { id: "checkout", label: "Pay", icon: CreditCard },
 ];
 
 /* ══════════════════════════════════════════════════════════
@@ -68,12 +70,13 @@ function BuilderInner() {
   const searchParams = useSearchParams();
   const initialTemplate = searchParams.get("template") || "";
 
-  const { prices } = useLocale();
-  const cta = `${BRAND.whatsappBase}Hi%2C%20I%27d%20like%20to%20discuss%20a%20custom%20wedding%20invitation.`;
+  const { prices, price } = useLocale();
+  const cta = `${BRAND.whatsappBase}Hi%2C%20I%27d%20like%20to%20discuss%20a%20wedding%20invitation.`;
 
   const [step, setStep] = useState(initialTemplate ? 1 : 0);
   const [selectedTemplate, setSelectedTemplate] = useState(initialTemplate);
-  const [showFullPreview, setShowFullPreview] = useState(false);
+  const [paymentDone, setPaymentDone] = useState(false);
+  const [upiCopied, setUpiCopied] = useState(false);
   const [details, setDetails] = useState<WeddingDetails>({
     groomName: "", brideName: "", weddingDate: "",
     venue: "", venueAddress: "", city: "",
@@ -90,7 +93,8 @@ function BuilderInner() {
   const selectedTheme = PORTFOLIO_THEMES.find((t) => t.slug === selectedTemplate);
   const tier = selectedTheme?.tier || "basic";
   const tierLabel = TIER_CONFIG[tier]?.label || "BASIC";
-  const tierPrice = tier === "basic" ? prices.basic : tier === "luxe" ? prices.luxe : prices.custom;
+  const tierPrice = tier === "luxe" ? prices.luxe : prices.basic;
+  const tierPriceINR = tier === "luxe" ? BASE_PRICES.luxe : BASE_PRICES.basic;
 
   const updateDetail = (key: keyof WeddingDetails, value: string) => {
     setDetails((prev) => ({ ...prev, [key]: value }));
@@ -121,11 +125,13 @@ function BuilderInner() {
     return true;
   };
 
-  // Razorpay checkout — opens payment in a new tab
-  const handleCheckout = () => {
-    // Build the order message for WhatsApp confirmation after payment
+  // UPI payment link
+  const upiLink = `upi://pay?pa=${BRAND.upiId}&pn=The%20Digital%20Inviters&am=${tierPriceINR}&cu=INR&tn=${tierLabel}%20Wedding%20Invite%20-%20${encodeURIComponent(details.groomName)}%20%26%20${encodeURIComponent(details.brideName)}`;
+
+  // After payment — send order via WhatsApp
+  const handlePaymentDone = () => {
     const orderLines = [
-      `*New Order — ${tierLabel} (${tierPrice})*`,
+      `*New Order — ${tierLabel} (₹${tierPriceINR})*`,
       `Template: ${selectedTheme?.name}`,
       `Couple: ${details.groomName} & ${details.brideName}`,
       `Date: ${fmtDate(details.weddingDate)}`,
@@ -133,28 +139,35 @@ function BuilderInner() {
       `Events: ${activeEvents.filter(e => e.date).map(e => e.name).join(", ")}`,
       details.phone ? `Phone: ${details.phone}` : "",
       details.email ? `Email: ${details.email}` : "",
+      ``,
+      `Payment: ₹${tierPriceINR} via UPI`,
     ].filter(Boolean).join("\n");
 
     const encoded = encodeURIComponent(orderLines);
-    // Open WhatsApp with order details — Razorpay link will be sent back
     window.open(`https://wa.me/${BRAND.whatsappNumber}?text=${encoded}`, "_blank");
+    setPaymentDone(true);
+  };
+
+  const copyUpi = () => {
+    navigator.clipboard.writeText(BRAND.upiId);
+    setUpiCopied(true);
+    setTimeout(() => setUpiCopied(false), 2000);
   };
 
   return (
     <main className="min-h-screen" style={{ background: P.bg, color: P.ink }}>
       {/* ─── Top bar ─── */}
-      <header className="sticky top-0 z-50 px-4 py-3 flex items-center justify-between" style={{ background: `${P.bg}F8`, backdropFilter: "blur(12px)", borderBottom: `1px solid ${P.line}` }}>
+      <header className="sticky top-0 z-50 px-4 py-3 flex items-center justify-between" style={{ background: `${P.bg}F0`, backdropFilter: "blur(16px)", borderBottom: `1px solid ${P.line}` }}>
         <Link href="/" className="flex items-center gap-2 text-[12px] font-medium" style={{ color: P.muted }}>
           <ArrowLeft size={14} /> Back
         </Link>
         <div className="flex items-center gap-2">
-          <Sparkles size={14} style={{ color: P.gold }} />
-          <span className="font-display text-lg" style={{ color: P.ink }}>Invite Builder</span>
+          <Heart size={13} strokeWidth={1.5} style={{ color: P.gold }} />
+          <span className="font-display text-lg" style={{ color: P.ink }}>Create Invitation</span>
         </div>
-        {selectedTheme && (
+        {selectedTheme ? (
           <span className="text-[11px] font-semibold" style={{ color: P.gold }}>{tierPrice}</span>
-        )}
-        {!selectedTheme && <div className="w-12" />}
+        ) : <div className="w-12" />}
       </header>
 
       {/* ─── Stepper ─── */}
@@ -162,8 +175,7 @@ function BuilderInner() {
         <div className="flex items-center justify-center gap-0.5 min-w-max mx-auto">
           {STEPS.map((s, i) => (
             <div key={s.id} className="flex items-center">
-              <button
-                onClick={() => i <= step && setStep(i)}
+              <button onClick={() => i <= step && setStep(i)}
                 className="flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[10px] font-medium tracking-wide transition-all"
                 style={{
                   background: i === step ? P.ink : i < step ? `${P.gold}20` : "transparent",
@@ -188,13 +200,11 @@ function BuilderInner() {
           {step === 0 && (
             <StepWrapper key="template">
               <h2 className="font-display text-2xl" style={{ color: P.ink }}>Pick a design you love</h2>
-              <p className="mt-2 text-[14px]" style={{ color: P.body }}>
-                Your invite is generated instantly with your details. No waiting.
-              </p>
+              <p className="mt-2 text-[14px]" style={{ color: P.body }}>Each design is customizable with your details, events, and photos.</p>
               <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
                 {PORTFOLIO_THEMES.map((theme) => {
                   const tc = TIER_CONFIG[theme.tier];
-                  const tp = theme.tier === "basic" ? prices.basic : prices.luxe;
+                  const tp = theme.tier === "luxe" ? prices.luxe : prices.basic;
                   const sel = selectedTemplate === theme.slug;
                   return (
                     <button key={theme.slug} onClick={() => setSelectedTemplate(theme.slug)}
@@ -204,10 +214,10 @@ function BuilderInner() {
                       <div className="relative aspect-[4/3] overflow-hidden">
                         <div className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105" style={{ backgroundImage: `url(${theme.image})` }} />
                         <div className="absolute top-2 left-2">
-                          <span className="rounded-full px-2.5 py-0.5 text-[9px] font-bold tracking-[0.1em]" style={{ background: tc.bg, color: tc.color }}>{tc.label}</span>
+                          <span className="rounded-full px-2.5 py-0.5 text-[9px] font-bold tracking-[0.1em]" style={{ background: tc?.bg, color: tc?.color }}>{tc?.label}</span>
                         </div>
+                        {theme.badge && <div className="absolute top-2 right-2"><span className="rounded-full px-2 py-0.5 text-[8px] font-bold tracking-[0.08em] shadow" style={{ background: "white", color: P.ink }}>{theme.badge}</span></div>}
                         {sel && <div className="absolute top-2 right-2 flex h-6 w-6 items-center justify-center rounded-full" style={{ background: P.gold }}><Check size={12} color="white" /></div>}
-                        {/* Hover: preview link */}
                         <Link href={`/${theme.slug}`} target="_blank" onClick={(e) => e.stopPropagation()}
                           className="absolute bottom-2 right-2 flex items-center gap-1 rounded-full px-2.5 py-1 text-[9px] font-medium opacity-0 group-hover:opacity-100 transition-opacity"
                           style={{ background: "rgba(0,0,0,0.7)", color: "white" }}
@@ -272,7 +282,7 @@ function BuilderInner() {
               <div className="grid gap-8 lg:grid-cols-[1fr_380px]">
                 <div>
                   <h2 className="font-display text-2xl" style={{ color: P.ink }}>Add your ceremonies</h2>
-                  <p className="mt-2 text-[14px]" style={{ color: P.body }}>Remove any that don't apply. Add more if needed.</p>
+                  <p className="mt-2 text-[14px]" style={{ color: P.body }}>Remove any that don&apos;t apply. Add more if needed.</p>
                   <div className="mt-6 space-y-3">
                     {details.events.map((event, i) => (
                       <div key={i} className="rounded-xl p-4 space-y-3" style={{ background: P.surface, border: `1px solid ${P.lineSoft}` }}>
@@ -305,36 +315,31 @@ function BuilderInner() {
           {step === 3 && (
             <StepWrapper key="preview">
               <div className="text-center mb-8">
-                <h2 className="font-display text-2xl" style={{ color: P.ink }}>Here's your invite</h2>
+                <h2 className="font-display text-2xl" style={{ color: P.ink }}>Here&apos;s your invite</h2>
                 <p className="mt-2 text-[14px]" style={{ color: P.body }}>
-                  This is exactly what your guests will see. Happy with it? Proceed to checkout.
+                  This is what your guests will see. Happy? Proceed to payment.
                 </p>
               </div>
-              {/* Full-width invite preview */}
               <FullInvitePreview details={details} theme={selectedTheme} tier={tier} />
               <div className="mt-8 flex flex-col items-center gap-3">
                 <button onClick={() => setStep(4)}
                   className="group flex items-center gap-2 rounded-full px-8 py-4 text-[13px] font-semibold tracking-wide transition-all hover:scale-[1.02]"
                   style={{ background: P.gold, color: "white" }}
                 >
-                  Looks great — Proceed to Checkout
+                  Looks great — Pay {tierPrice}
                   <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
                 </button>
-                <button onClick={() => setStep(1)} className="text-[12px] font-medium" style={{ color: P.muted }}>
-                  Edit my details
-                </button>
+                <button onClick={() => setStep(1)} className="text-[12px] font-medium" style={{ color: P.muted }}>Edit my details</button>
               </div>
             </StepWrapper>
           )}
 
-          {/* ═══ STEP 4: CHECKOUT ═══ */}
-          {step === 4 && (
+          {/* ═══ STEP 4: UPI CHECKOUT ═══ */}
+          {step === 4 && !paymentDone && (
             <StepWrapper key="checkout">
               <div className="mx-auto max-w-lg">
-                <h2 className="font-display text-2xl text-center" style={{ color: P.ink }}>Complete Your Order</h2>
-                <p className="mt-2 text-center text-[14px]" style={{ color: P.body }}>
-                  Pay securely. Your invite link is generated instantly.
-                </p>
+                <h2 className="font-display text-2xl text-center" style={{ color: P.ink }}>Complete Payment</h2>
+                <p className="mt-2 text-center text-[14px]" style={{ color: P.body }}>Pay via UPI. We&apos;ll finalize your invite within 24 hours.</p>
 
                 {/* Order summary */}
                 <div className="mt-8 rounded-xl p-5 space-y-3" style={{ background: P.surface, border: `1px solid ${P.lineSoft}` }}>
@@ -346,7 +351,7 @@ function BuilderInner() {
                         <span className="rounded-full px-2 py-0.5 text-[8px] font-bold tracking-[0.1em]" style={{ background: TIER_CONFIG[tier]?.bg, color: TIER_CONFIG[tier]?.color }}>{tierLabel}</span>
                       </div>
                     </div>
-                    <span className="font-display text-xl" style={{ color: P.ink }}>{tierPrice}</span>
+                    <span className="font-display text-xl" style={{ color: P.ink }}>₹{tierPriceINR}</span>
                   </div>
 
                   <div className="pt-3 space-y-1.5" style={{ borderTop: `1px solid ${P.lineSoft}` }}>
@@ -357,36 +362,50 @@ function BuilderInner() {
                   </div>
 
                   <div className="pt-3 flex items-center justify-between" style={{ borderTop: `1px solid ${P.lineSoft}` }}>
-                    <span className="text-[14px] font-medium" style={{ color: P.body }}>Total</span>
-                    <span className="font-display text-2xl" style={{ color: P.ink }}>{tierPrice}</span>
+                    <span className="text-[14px] font-semibold" style={{ color: P.body }}>Total</span>
+                    <span className="font-display text-2xl" style={{ color: P.ink }}>₹{tierPriceINR}</span>
                   </div>
                 </div>
 
-                {/* What you get */}
-                <div className="mt-4 rounded-xl p-5 space-y-2.5" style={{ background: `${P.gold}08`, border: `1px solid ${P.gold}20` }}>
-                  <p className="text-[10px] font-medium tracking-[0.15em] uppercase" style={{ color: P.gold }}>What you get</p>
-                  {[
-                    "Your invite link — ready to share on WhatsApp, Instagram, email",
-                    "RSVP collection from guests",
-                    tier === "luxe" ? "Background music, countdown, love story & venue map" : "Photo gallery & event schedule",
-                    "Lifetime hosting — your link never expires",
-                    "Free edits if you need to change a date or venue",
-                  ].map((s, i) => (
-                    <div key={i} className="flex items-start gap-2">
-                      <Check size={12} className="mt-0.5 flex-shrink-0" style={{ color: P.gold }} />
-                      <span className="text-[12px]" style={{ color: P.body }}>{s}</span>
+                {/* UPI Payment section */}
+                <div className="mt-6 rounded-xl p-6 space-y-5" style={{ background: `${P.gold}08`, border: `1px solid ${P.gold}20` }}>
+                  <p className="text-[10px] font-semibold tracking-[0.2em] uppercase text-center" style={{ color: P.gold }}>Pay via UPI</p>
+
+                  {/* UPI ID with copy */}
+                  <div className="flex items-center justify-between rounded-lg p-3" style={{ background: P.surface, border: `1px solid ${P.lineSoft}` }}>
+                    <div>
+                      <p className="text-[9px] font-medium tracking-wide uppercase" style={{ color: P.muted }}>UPI ID</p>
+                      <p className="mt-0.5 text-[14px] font-mono font-semibold" style={{ color: P.ink }}>{BRAND.upiId}</p>
                     </div>
-                  ))}
+                    <button onClick={copyUpi} className="flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[10px] font-semibold transition-all" style={{ background: upiCopied ? "#dcfce7" : P.bgDeep, color: upiCopied ? "#16a34a" : P.ink }}>
+                      {upiCopied ? <><Check size={11} /> Copied</> : <><Copy size={11} /> Copy</>}
+                    </button>
+                  </div>
+
+                  {/* Pay now button — opens UPI app */}
+                  <a href={upiLink}
+                    className="group flex w-full items-center justify-center gap-2 rounded-full py-4 text-[14px] font-semibold tracking-wide transition-all hover:scale-[1.02]"
+                    style={{ background: P.ink, color: P.bg }}
+                  >
+                    <Lock size={14} />
+                    Pay ₹{tierPriceINR} via UPI App
+                    <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
+                  </a>
+
+                  <p className="text-center text-[11px] leading-relaxed" style={{ color: P.muted }}>
+                    Tap above to open your UPI app (GPay, PhonePe, Paytm).
+                    <br />Or scan QR / enter UPI ID manually in any UPI app.
+                  </p>
                 </div>
 
-                {/* Pay button */}
-                <button onClick={handleCheckout}
-                  className="group mt-6 flex w-full items-center justify-center gap-2 rounded-full py-4 text-[14px] font-semibold tracking-wide transition-all hover:scale-[1.02]"
-                  style={{ background: P.ink, color: P.bg }}
+                {/* After payment */}
+                <button onClick={handlePaymentDone}
+                  className="group mt-4 flex w-full items-center justify-center gap-2 rounded-full py-3.5 text-[13px] font-semibold tracking-wide transition-all"
+                  style={{ background: "#25D366", color: "white" }}
                 >
-                  <Lock size={14} />
-                  Pay {tierPrice} — Get Your Invite
-                  <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
+                  <CheckCircle2 size={15} />
+                  I&apos;ve Paid — Confirm via WhatsApp
+                  <ArrowRight size={13} className="transition-transform group-hover:translate-x-0.5" />
                 </button>
 
                 <div className="mt-3 flex items-center justify-center gap-4">
@@ -396,7 +415,7 @@ function BuilderInner() {
                   </div>
                   <div className="flex items-center gap-1">
                     <Lock size={10} style={{ color: P.muted }} />
-                    <span className="text-[9px]" style={{ color: P.muted }}>Razorpay Protected</span>
+                    <span className="text-[9px]" style={{ color: P.muted }}>100% Refund Guarantee</span>
                   </div>
                 </div>
 
@@ -406,6 +425,45 @@ function BuilderInner() {
                 >
                   <MessageCircle size={12} /> Have questions? Chat with us
                 </a>
+              </div>
+            </StepWrapper>
+          )}
+
+          {/* ═══ CONFIRMATION ═══ */}
+          {step === 4 && paymentDone && (
+            <StepWrapper key="confirmed">
+              <div className="mx-auto max-w-lg text-center py-10">
+                <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full" style={{ background: `${P.gold}15` }}>
+                  <CheckCircle2 size={40} style={{ color: P.gold }} />
+                </div>
+                <h2 className="mt-6 font-display text-3xl" style={{ color: P.ink }}>Order Confirmed!</h2>
+                <p className="mt-3 text-[15px] leading-[1.8]" style={{ color: P.body }}>
+                  Thank you, {details.groomName} & {details.brideName}. We&apos;ve received your order and will finalize your <strong>{selectedTheme?.name}</strong> invite within 24 hours.
+                </p>
+
+                <div className="mt-8 rounded-xl p-5 text-left space-y-3" style={{ background: P.surface, border: `1px solid ${P.lineSoft}` }}>
+                  <p className="text-[10px] font-semibold tracking-[0.15em] uppercase" style={{ color: P.gold }}>What happens next</p>
+                  {[
+                    "We verify your payment and start building your invite.",
+                    "Your unique invite link will be sent via WhatsApp within 24 hours.",
+                    "Share the link with your guests — it works on all platforms.",
+                    "Need edits? Just message us anytime. Free edits included.",
+                  ].map((s, i) => (
+                    <div key={i} className="flex items-start gap-2.5">
+                      <span className="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full text-[10px] font-bold" style={{ background: `${P.gold}15`, color: P.gold }}>{i + 1}</span>
+                      <span className="text-[13px] leading-relaxed" style={{ color: P.body }}>{s}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center">
+                  <Link href="/" className="flex items-center justify-center gap-2 rounded-full px-6 py-3 text-[12px] font-semibold tracking-wide" style={{ background: P.ink, color: P.bg }}>
+                    <Heart size={13} /> Back to Home
+                  </Link>
+                  <a href={cta} target="_blank" rel="noreferrer" className="flex items-center justify-center gap-2 rounded-full px-6 py-3 text-[12px] font-medium border" style={{ borderColor: P.line, color: P.muted }}>
+                    <MessageCircle size={13} /> Message Us
+                  </a>
+                </div>
               </div>
             </StepWrapper>
           )}
@@ -523,96 +581,182 @@ function LivePreview({ details, theme }: { details: WeddingDetails; theme?: (typ
   );
 }
 
-/* ── Full invite preview (Step 3) ──────────────────────── */
+/* ── Full invite preview (Step 3) — Premium quality matching actual invites ─── */
 function FullInvitePreview({ details, theme, tier }: { details: WeddingDetails; theme?: (typeof PORTFOLIO_THEMES)[0]; tier: string }) {
   const activeEvents = details.events.filter(e => e.name && e.date);
-  const accent = theme?.accent || P.gold;
+  const allNamedEvents = details.events.filter(e => e.name);
+  const eventsToShow = activeEvents.length > 0 ? activeEvents : allNamedEvents;
+  const accent = theme?.accent || "#c9a87c";
+  const bgColor = theme?.background || "#faf8f5";
+  const isDark = bgColor.replace("#", "").match(/.{2}/g)?.reduce((sum, c) => sum + parseInt(c, 16), 0)! < 384;
+  const inkColor = isDark ? "#faf8f5" : "#1a1816";
+  const bodyColor = isDark ? "rgba(255,255,255,0.75)" : "#5c5650";
+  const mutedColor = isDark ? "rgba(255,255,255,0.5)" : "#9a9189";
+  const surfaceBg = isDark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.03)";
+  const cardBorder = isDark ? `rgba(255,255,255,0.12)` : `rgba(0,0,0,0.06)`;
 
   return (
-    <div className="mx-auto max-w-2xl rounded-2xl overflow-hidden" style={{ border: `1px solid ${P.lineSoft}`, boxShadow: "0 20px 80px rgba(0,0,0,0.08)" }}>
-      {/* Hero */}
-      <div className="relative h-72 sm:h-96 bg-cover bg-center" style={{ backgroundImage: theme ? `url(${theme.image})` : "linear-gradient(135deg, #e8d4d0, #c9a87c)" }}>
-        <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-8" style={{ background: "linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.55))" }}>
-          <p className="text-[10px] tracking-[0.4em] uppercase text-white/60 font-medium">Together with their families</p>
-          <h2 className="mt-4 font-display text-4xl sm:text-5xl text-white leading-tight">
+    <div className="mx-auto max-w-2xl overflow-hidden rounded-2xl shadow-2xl" style={{ background: bgColor }}>
+
+      {/* ─── HERO — Full-screen cinematic like Royal Palace / South Indian Temple ─── */}
+      <section className="relative overflow-hidden" style={{ minHeight: "480px" }}>
+        <div className="absolute inset-0 bg-cover bg-center scale-105" style={{ backgroundImage: theme ? `url(${theme.image})` : "linear-gradient(135deg, #2c2420, #1a1210)" }} />
+        <div className="absolute inset-0" style={{ background: `linear-gradient(180deg, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.35) 40%, ${bgColor}F0 100%)` }} />
+        
+        {/* Decorative dots pattern */}
+        <div className="pointer-events-none absolute inset-0 opacity-[0.04]" style={{ backgroundImage: `radial-gradient(circle at 1px 1px, ${accent} 1px, transparent 1px)`, backgroundSize: "20px 20px" }} />
+
+        <div className="relative z-10 flex min-h-[480px] flex-col items-center justify-center px-6 text-center">
+          {/* Decorative icon */}
+          <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full border-2 backdrop-blur-md" style={{ borderColor: `${accent}60`, background: "rgba(255,255,255,0.08)" }}>
+            <Heart size={22} style={{ color: accent }} />
+          </div>
+
+          {/* Eyebrow */}
+          <p className="text-[9px] font-semibold uppercase tracking-[0.55em]" style={{ color: accent }}>
+            Together With Their Families
+          </p>
+
+          {/* Names — large serif like the real invites */}
+          <h1 className="mt-6 font-serif leading-[1]" style={{ color: "#ffffff", fontSize: "clamp(2.5rem, 8vw, 4.5rem)" }}>
             {details.groomName || "Groom"}
-            <span className="block font-script text-2xl sm:text-3xl mt-1" style={{ color: accent }}>&</span>
+          </h1>
+          <span className="my-2 block font-serif italic" style={{ color: accent, fontSize: "clamp(1.5rem, 5vw, 2.5rem)" }}>&amp;</span>
+          <h1 className="font-serif leading-[1]" style={{ color: "#ffffff", fontSize: "clamp(2.5rem, 8vw, 4.5rem)" }}>
             {details.brideName || "Bride"}
-          </h2>
-          <p className="mt-4 text-[11px] tracking-[0.3em] uppercase text-white/70">{fmtDate(details.weddingDate)}</p>
-          <p className="mt-2 text-[12px] text-white/50 flex items-center gap-1"><MapPin size={10} /> {details.venue}{details.city ? `, ${details.city}` : ""}</p>
-        </div>
-      </div>
+          </h1>
 
-      {/* Events schedule */}
-      <div className="px-8 py-8" style={{ background: P.surface }}>
-        <p className="text-[10px] font-medium tracking-[0.3em] uppercase text-center mb-6" style={{ color: accent }}>Celebrations</p>
-        <div className="space-y-4">
-          {(activeEvents.length > 0 ? activeEvents : details.events.filter(e => e.name)).map((e, i) => (
-            <div key={i} className="flex items-center gap-4 p-4 rounded-xl" style={{ background: P.bgAlt }}>
-              <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full" style={{ background: `${accent}15`, color: accent }}>
-                <Calendar size={16} />
-              </div>
-              <div className="flex-1">
-                <p className="text-[14px] font-medium" style={{ color: P.ink }}>{e.name}</p>
-                {e.venue && <p className="text-[11px] mt-0.5" style={{ color: P.muted }}>{e.venue}</p>}
-              </div>
-              <div className="text-right">
-                <p className="text-[12px] font-medium" style={{ color: P.body }}>
-                  {e.date ? new Date(e.date).toLocaleDateString("en-IN", { month: "short", day: "numeric" }) : "TBD"}
+          {/* Decorative divider */}
+          <div className="mt-8 flex items-center gap-3">
+            <span className="h-px w-10" style={{ background: accent }} />
+            <Sparkles size={12} style={{ color: accent }} />
+            <span className="h-px w-10" style={{ background: accent }} />
+          </div>
+
+          {/* Date & Location */}
+          <p className="mt-5 text-[10px] font-medium uppercase tracking-[0.4em] text-white/80">
+            {fmtDate(details.weddingDate) || "Your Wedding Date"}
+          </p>
+          <p className="mt-2 flex items-center gap-1.5 text-[11px] text-white/60">
+            <MapPin size={10} />
+            {details.venue || "Venue"}{details.city ? `, ${details.city}` : ""}
+          </p>
+        </div>
+      </section>
+
+      {/* ─── EVENTS — Dark section like Royal Palace ─── */}
+      <section className="relative overflow-hidden px-6 py-14 sm:px-10" style={{ background: isDark ? surfaceBg : P.noir }}>
+        {/* Dot pattern */}
+        <div className="pointer-events-none absolute inset-0 opacity-[0.06]" style={{ backgroundImage: `radial-gradient(circle at 1px 1px, ${accent} 1px, transparent 1px)`, backgroundSize: "22px 22px" }} />
+        
+        <div className="relative z-10">
+          <div className="mb-10 text-center">
+            <p className="text-[9px] font-semibold uppercase tracking-[0.5em]" style={{ color: accent }}>Celebrations</p>
+            <h2 className="mt-3 font-serif text-3xl sm:text-4xl" style={{ color: isDark ? inkColor : "#faf8f5" }}>Wedding Festivities</h2>
+          </div>
+
+          <div className="grid gap-4 sm:grid-cols-2">
+            {eventsToShow.map((e, i) => (
+              <div key={i} className="relative overflow-hidden rounded-2xl border p-5 backdrop-blur" style={{ borderColor: `${accent}40`, background: isDark ? "rgba(255,255,255,0.04)" : "rgba(255,255,255,0.06)" }}>
+                <div className="flex items-center gap-3">
+                  <div className="flex h-9 w-9 items-center justify-center rounded-full" style={{ background: `${accent}20` }}>
+                    <Calendar size={14} style={{ color: accent }} />
+                  </div>
+                  <h3 className="font-serif text-xl" style={{ color: isDark ? inkColor : "#faf8f5" }}>{e.name}</h3>
+                </div>
+                <p className="mt-2 text-[10px] font-medium uppercase tracking-[0.35em]" style={{ color: accent }}>
+                  {e.date ? new Date(e.date).toLocaleDateString("en-IN", { weekday: "short", month: "short", day: "numeric" }) : "TBD"}
+                  {e.time ? ` · ${e.time}` : ""}
                 </p>
-                {e.time && <p className="text-[10px] flex items-center justify-end gap-1 mt-0.5" style={{ color: P.muted }}><Clock size={9} />{e.time}</p>}
+                {e.venue && <p className="mt-2 flex items-center gap-1 text-[11px]" style={{ color: isDark ? mutedColor : "rgba(255,255,255,0.6)" }}><MapPin size={9} />{e.venue}</p>}
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
-      </div>
+      </section>
 
-      {/* Love story (Luxe only) */}
+      {/* ─── LOVE STORY (Luxe) — like the real story section with cards ─── */}
       {tier === "luxe" && details.loveStory && (
-        <div className="px-8 py-8 text-center" style={{ background: P.bgAlt }}>
-          <Heart size={20} className="mx-auto mb-3" style={{ color: accent }} />
-          <p className="text-[10px] font-medium tracking-[0.3em] uppercase mb-4" style={{ color: accent }}>Our Story</p>
-          <p className="text-[14px] leading-relaxed italic max-w-md mx-auto" style={{ color: P.body }}>{details.loveStory}</p>
-        </div>
+        <section className="px-6 py-14 sm:px-10" style={{ background: bgColor }}>
+          <div className="mx-auto max-w-lg text-center">
+            <Heart size={22} className="mx-auto mb-4" style={{ color: accent }} />
+            <p className="text-[9px] font-semibold uppercase tracking-[0.5em]" style={{ color: accent }}>Our Story</p>
+            <p className="mx-auto mt-5 font-serif text-2xl italic leading-relaxed sm:text-3xl" style={{ color: inkColor }}>
+              &ldquo;{details.loveStory}&rdquo;
+            </p>
+            <div className="mx-auto mt-8 h-px w-20" style={{ background: accent }} />
+          </div>
+        </section>
       )}
 
-      {/* Personal message */}
+      {/* ─── PERSONAL MESSAGE ─── */}
       {details.message && (
-        <div className="px-8 py-6 text-center" style={{ background: P.surface, borderTop: `1px solid ${P.lineSoft}` }}>
-          <p className="text-[14px] leading-relaxed italic" style={{ color: P.body }}>"{details.message}"</p>
-          <p className="mt-2 text-[12px] font-medium" style={{ color: P.ink }}>— {details.groomName} & {details.brideName}</p>
-        </div>
+        <section className="px-6 py-10 text-center sm:px-10" style={{ background: surfaceBg }}>
+          <p className="mx-auto max-w-md font-serif text-lg italic leading-relaxed" style={{ color: bodyColor }}>
+            &ldquo;{details.message}&rdquo;
+          </p>
+          <p className="mt-4 text-[11px] font-medium" style={{ color: inkColor }}>
+            — {details.groomName} & {details.brideName}
+          </p>
+        </section>
       )}
 
-      {/* Luxe extras indicator */}
+      {/* ─── VENUE — cinematic overlay like Royal Palace venue ─── */}
+      {details.venue && (
+        <section className="relative overflow-hidden" style={{ minHeight: "200px" }}>
+          <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: theme ? `url(${theme.image})` : "none", filter: "brightness(0.4)" }} />
+          <div className="absolute inset-0" style={{ background: "rgba(0,0,0,0.6)" }} />
+          <div className="relative z-10 flex min-h-[200px] flex-col items-center justify-center px-6 py-10 text-center">
+            <p className="text-[9px] font-semibold uppercase tracking-[0.5em]" style={{ color: accent }}>Venue</p>
+            <h3 className="mt-3 font-serif text-2xl sm:text-3xl text-white">{details.venue}</h3>
+            {details.venueAddress && <p className="mt-2 text-[11px] text-white/60">{details.venueAddress}</p>}
+            <p className="mt-3 flex items-center gap-1.5 text-[10px] uppercase tracking-[0.3em] text-white/70">
+              <MapPin size={10} /> {details.city || "Location"}
+            </p>
+            <div className="mt-5 rounded-full border px-5 py-2 text-[10px] font-bold uppercase tracking-[0.25em]" style={{ borderColor: accent, color: accent }}>
+              Open in Maps
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* ─── LUXE EXTRAS BADGE ─── */}
       {tier === "luxe" && (
-        <div className="px-8 py-4 flex items-center justify-center gap-6" style={{ background: P.bgAlt }}>
+        <div className="flex items-center justify-center gap-6 px-6 py-5" style={{ background: surfaceBg, borderTop: `1px solid ${cardBorder}` }}>
           {[
-            { icon: Music, label: "Music" },
+            { icon: Music, label: "Background Music" },
             { icon: Clock, label: "Countdown" },
             { icon: MapPin, label: "Venue Map" },
           ].map(({ icon: Icon, label }) => (
-            <div key={label} className="flex items-center gap-1.5 text-[10px]" style={{ color: P.muted }}>
-              <Icon size={12} style={{ color: accent }} /> {label}
+            <div key={label} className="flex items-center gap-1.5 text-[9px] font-medium uppercase tracking-wide" style={{ color: mutedColor }}>
+              <Icon size={11} style={{ color: accent }} /> {label}
             </div>
           ))}
         </div>
       )}
 
-      {/* RSVP section */}
-      <div className="px-8 py-6 text-center" style={{ background: P.ink }}>
-        <p className="text-[10px] tracking-[0.3em] uppercase text-white/50 mb-3">RSVP</p>
-        <p className="text-[14px] text-white/80">Will you join us?</p>
-        <div className="mt-4 flex justify-center gap-3">
-          <div className="rounded-full px-6 py-2 text-[12px] font-medium" style={{ background: accent, color: "white" }}>Accept with Joy</div>
-          <div className="rounded-full px-6 py-2 text-[12px] font-medium border" style={{ borderColor: "rgba(255,255,255,0.3)", color: "white" }}>Decline</div>
+      {/* ─── RSVP — like the real invites ─── */}
+      <section className="px-6 py-12 text-center sm:px-10" style={{ background: isDark ? surfaceBg : P.noir }}>
+        <p className="text-[9px] font-semibold uppercase tracking-[0.5em]" style={{ color: accent }}>RSVP</p>
+        <h3 className="mt-3 font-serif text-2xl sm:text-3xl" style={{ color: isDark ? inkColor : "#faf8f5" }}>We&apos;d be honoured.</h3>
+        <p className="mx-auto mt-3 max-w-sm text-[12px] leading-relaxed" style={{ color: isDark ? mutedColor : "rgba(255,255,255,0.6)" }}>
+          Kindly let us know if you can join us for this celebration of love.
+        </p>
+        <div className="mt-6 flex justify-center gap-3">
+          <div className="rounded-full px-7 py-2.5 text-[11px] font-bold uppercase tracking-[0.2em] shadow-lg transition hover:-translate-y-0.5" style={{ background: accent, color: "white" }}>
+            Joyfully Accept
+          </div>
+          <div className="rounded-full px-7 py-2.5 text-[11px] font-bold uppercase tracking-[0.2em] border" style={{ borderColor: isDark ? `${accent}50` : "rgba(255,255,255,0.25)", color: isDark ? inkColor : "white" }}>
+            Regretfully Decline
+          </div>
         </div>
-      </div>
+      </section>
 
-      {/* Footer */}
-      <div className="px-8 py-4 text-center text-[10px]" style={{ background: P.noir, color: "rgba(255,255,255,0.4)" }}>
-        Made with love · The Digital Inviters
+      {/* ─── FOOTER ─── */}
+      <div className="py-5 text-center" style={{ background: isDark ? "rgba(0,0,0,0.3)" : "#0d0b0a" }}>
+        <p className="text-[9px] uppercase tracking-[0.3em]" style={{ color: "rgba(255,255,255,0.35)" }}>
+          Made with love · The Digital Inviters
+        </p>
       </div>
     </div>
   );

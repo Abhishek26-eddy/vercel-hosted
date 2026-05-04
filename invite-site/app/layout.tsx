@@ -41,7 +41,7 @@ export const metadata: Metadata = {
     template: "%s | The Digital Inviters",
   },
   description:
-    "Digital wedding invitations starting at ₹2,499. Choose a template, fill in your details, and share. Built-in RSVP, lifetime hosting, delivered in 7 days.",
+    "Boutique digital wedding invitations starting at ₹1,499. Choose a design, fill in your details, and share. Built-in RSVP, lifetime hosting, delivered in 24 hours.",
   keywords: [
     "digital wedding invitation",
     "digital wedding invitation India",
@@ -66,7 +66,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "The Digital Inviters — Boutique Digital Wedding Invitations",
     description:
-      "Digital wedding invitations starting at ₹2,499. Choose a template, customize, and share. Built-in RSVP and lifetime hosting.",
+      "Boutique digital wedding invitations starting at ₹1,499. Choose a design, customize, and share. Built-in RSVP and lifetime hosting.",
     type: "website",
     url: "https://thedigitalinviters.vercel.app",
     siteName: "The Digital Inviters",
@@ -83,7 +83,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "The Digital Inviters — Boutique Digital Wedding Invitations",
     description:
-      "Digital wedding invitations starting at ₹2,499. Choose a template, customize, and share.",
+      "Boutique digital wedding invitations starting at ₹1,499. Choose a design, customize, and share.",
     images: ["https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=85"],
   },
   robots: {
