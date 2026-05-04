@@ -94,6 +94,7 @@ export const BASE_PRICES = {
   basic: 1499,
   luxe: 3499,
   signature: 9999,
+  videoAddon: 999,
   basicOriginal: 2999,
   luxeOriginal: 5999,
   signatureOriginal: 14999,

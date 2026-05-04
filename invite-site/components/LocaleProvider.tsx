@@ -25,6 +25,7 @@ type LocaleContextType = {
     basic: string;
     luxe: string;
     signature: string;
+    videoAddon: string;
     basicOriginal: string;
     luxeOriginal: string;
     signatureOriginal: string;
@@ -98,6 +99,7 @@ export function LocaleProvider({ children }: { children: ReactNode }) {
     basic: price(BASE_PRICES.basic),
     luxe: price(BASE_PRICES.luxe),
     signature: price(BASE_PRICES.signature),
+    videoAddon: price(BASE_PRICES.videoAddon),
     basicOriginal: price(BASE_PRICES.basicOriginal),
     luxeOriginal: price(BASE_PRICES.luxeOriginal),
     signatureOriginal: price(BASE_PRICES.signatureOriginal),

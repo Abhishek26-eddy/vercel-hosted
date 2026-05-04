@@ -23,6 +23,8 @@ import {
   Smartphone,
   Menu,
   X,
+  Play,
+  Film,
 } from "lucide-react";
 import SectionReveal from "@/components/portfolio/SectionReveal";
 import { BRAND, PORTFOLIO_THEMES } from "@/lib/portfolioThemes";
@@ -91,6 +93,7 @@ const FAQ = [
   { q: "What's your revision policy?", a: "Basic includes 3 free revisions. Luxe includes unlimited revisions until you're delighted. Signature comes with a dedicated designer and unlimited iterations." },
   { q: "What if I'm not happy with the result?", a: "Your satisfaction is our priority. If the invite doesn't feel right, we'll rework it. If we still can't get it right, full refund — no questions asked." },
   { q: "Can I upgrade later?", a: "Yes! If you start with Basic and decide you want Luxe features later, just pay the difference. We'll upgrade your invite seamlessly." },
+  { q: "What is the video invite add-on?", a: "For ₹999 extra, we create a 30-60 second cinematic video version of your invitation — same design language, perfect for WhatsApp groups and family sharing. Available with any plan." },
 ];
 
 /* ─── Motion ─── */
@@ -208,12 +211,12 @@ function Hero() {
             </motion.h1>
 
             <motion.p variants={fadeUp} custom={2} className="mt-5 sm:mt-6 max-w-md text-[14px] sm:text-[15px] leading-[1.85]" style={{ color: P.body }}>
-              We craft bespoke digital invitations that capture the essence of your story. Every detail, every animation — designed to move the people you love.
+              Choose from 25+ curated designs, customize in minutes, and share a stunning digital invitation — all in under 10 minutes. Or go Luxe for a richer, more cinematic experience.
             </motion.p>
 
             <motion.div variants={fadeUp} custom={3} className="mt-8 sm:mt-10 flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-5">
               <Link href="#catalogue" className="group inline-flex items-center justify-center gap-3 rounded-full px-7 py-3.5 text-[12px] sm:text-[13px] font-semibold tracking-[0.04em] transition-all duration-500 hover:gap-4" style={{ background: P.ink, color: P.bg }}>
-                Explore Collection
+                Browse Designs
                 <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
               </Link>
               <span className="text-[13px] font-medium text-center sm:text-left" style={{ color: P.gold }}>Starting from {prices.basic}</span>
@@ -424,8 +427,135 @@ function Catalogue() {
           </div>
         </SectionReveal>
 
-        {/* Collection grid — 2 cols mobile, 3 tablet, 4 desktop */}
-        <div className="mt-8 sm:mt-12 grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-3 xl:grid-cols-4">
+        {/* Collection — separated by tier when viewing "All": Basic first, then Luxe */}
+        {activeTier === "all" && filteredThemes.some(t => t.tier === "basic") && (
+          <SectionReveal delay={0.1}>
+            <div className="mt-10 sm:mt-14 mb-4 sm:mb-6">
+              <div className="flex items-center gap-4 mb-3">
+                <div className="flex-1 h-px" style={{ background: P.line }} />
+                <span className="text-[9px] sm:text-[10px] font-bold tracking-[0.35em] uppercase" style={{ color: P.muted }}>Basic Collection</span>
+                <div className="flex-1 h-px" style={{ background: P.line }} />
+              </div>
+              <p className="text-center text-[11px] sm:text-[12px]" style={{ color: P.body }}>Ready to start in 10 minutes. Choose, customize, pay, and share.</p>
+            </div>
+          </SectionReveal>
+        )}
+
+        {(activeTier === "all" || activeTier === "basic") && (
+          <div className="grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-3 xl:grid-cols-4">
+            {(activeTier === "all" ? filteredThemes.filter(t => t.tier === "basic") : filteredThemes.filter(t => t.tier === "basic")).map((theme, i) => {
+              const tb = tierBadge(theme.tier);
+              return (
+              <SectionReveal key={theme.slug} delay={i * 0.03}>
+                <div className="group">
+                  <Link href={`/builder?template=${theme.slug}`} className="block">
+                    <div className="relative overflow-hidden rounded-xl sm:rounded-2xl" style={{ background: P.bgDeep, border: `1px solid ${P.lineSoft}` }}>
+                      <div className="relative aspect-[3/4] overflow-hidden">
+                        <motion.div whileHover={{ scale: 1.04 }} transition={{ duration: 0.7 }}
+                          className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${theme.image})` }}
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
+                        <div className="absolute top-2 left-2 sm:top-3 sm:left-3 flex flex-col gap-1">
+                          <span className="rounded-full px-2 py-0.5 text-[6px] sm:text-[7px] font-bold tracking-[0.12em]" style={{ background: tb.bg, color: tb.color, border: `1px solid ${P.line}` }}>{tb.label}</span>
+                          {theme.badge && <span className="rounded-full px-2 py-0.5 text-[6px] sm:text-[7px] font-bold tracking-[0.08em] shadow-sm backdrop-blur-sm" style={{ background: "rgba(255,255,255,0.92)", color: P.ink }}>{theme.badge}</span>}
+                        </div>
+                        {theme.mood && (
+                          <div className="absolute bottom-2 left-2 sm:bottom-3 sm:left-3">
+                            <span className="rounded-full px-2 py-0.5 text-[7px] sm:text-[8px] font-medium tracking-wide backdrop-blur-md" style={{ background: "rgba(0,0,0,0.45)", color: "rgba(255,255,255,0.85)" }}>{theme.mood}</span>
+                          </div>
+                        )}
+                        <div className="absolute inset-x-0 bottom-0 p-3 sm:p-4 opacity-0 translate-y-2 transition-all duration-500 group-hover:opacity-100 group-hover:translate-y-0 hidden sm:block">
+                          <div className="flex w-full items-center justify-center gap-2 rounded-full py-2.5 text-[10px] font-semibold tracking-wide shadow-lg backdrop-blur-sm" style={{ background: "rgba(255,255,255,0.95)", color: P.ink }}>
+                            Start in 10 min <ArrowRight size={11} />
+                          </div>
+                        </div>
+                      </div>
+                      <div className="p-2.5 sm:p-3.5" style={{ background: P.surface }}>
+                        <div className="flex items-center justify-between gap-1">
+                          <h3 className="font-display text-[12px] sm:text-[14px] tracking-tight truncate" style={{ color: P.ink }}>{theme.name}</h3>
+                          <span className="text-[10px] sm:text-[12px] font-semibold flex-shrink-0" style={{ color: P.gold }}>{tierPrice(theme.tier)}</span>
+                        </div>
+                        <p className="mt-0.5 text-[9px] sm:text-[11px] italic truncate" style={{ color: P.muted }}>{theme.tagline}</p>
+                      </div>
+                    </div>
+                  </Link>
+                </div>
+              </SectionReveal>
+              );
+            })}
+          </div>
+        )}
+
+        {activeTier === "all" && filteredThemes.some(t => t.tier === "luxe") && (
+          <SectionReveal delay={0.1}>
+            <div className="mt-14 sm:mt-20 mb-4 sm:mb-6">
+              <div className="flex items-center gap-4 mb-3">
+                <div className="flex-1 h-px" style={{ background: P.goldMuted }} />
+                <div className="flex items-center gap-2.5">
+                  <Sparkles size={11} style={{ color: P.gold }} />
+                  <span className="text-[9px] sm:text-[10px] font-bold tracking-[0.35em] uppercase" style={{ color: P.gold }}>Luxe Collection</span>
+                </div>
+                <div className="flex-1 h-px" style={{ background: P.goldMuted }} />
+              </div>
+              <p className="text-center text-[11px] sm:text-[12px]" style={{ color: P.body }}>Crafted with more emotion and detail. More customization, more polish, more elegance.</p>
+            </div>
+          </SectionReveal>
+        )}
+
+        {(activeTier === "all" || activeTier === "luxe") && (
+          <div className={`grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-3 xl:grid-cols-4 ${activeTier === "luxe" ? "mt-8 sm:mt-12" : ""}`}>
+            {(activeTier === "all" ? filteredThemes.filter(t => t.tier === "luxe") : filteredThemes.filter(t => t.tier === "luxe")).map((theme, i) => {
+              const tb = tierBadge(theme.tier);
+              return (
+              <SectionReveal key={theme.slug} delay={i * 0.03}>
+                <div className="group">
+                  <Link href={`/builder?template=${theme.slug}`} className="block">
+                    <div className="relative overflow-hidden rounded-xl sm:rounded-2xl" style={{ background: P.bgDeep, border: `1px solid ${P.goldMuted}` }}>
+                      <div className="relative aspect-[3/4] overflow-hidden">
+                        <motion.div whileHover={{ scale: 1.04 }} transition={{ duration: 0.7 }}
+                          className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${theme.image})` }}
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
+                        <div className="absolute top-2 left-2 sm:top-3 sm:left-3 flex flex-col gap-1">
+                          <span className="rounded-full px-2 py-0.5 text-[6px] sm:text-[7px] font-bold tracking-[0.12em]" style={{ background: tb.bg, color: tb.color }}>{tb.label}</span>
+                          {theme.badge && <span className="rounded-full px-2 py-0.5 text-[6px] sm:text-[7px] font-bold tracking-[0.08em] shadow-sm backdrop-blur-sm" style={{ background: "rgba(255,255,255,0.92)", color: P.ink }}>{theme.badge}</span>}
+                        </div>
+                        {theme.mood && (
+                          <div className="absolute bottom-2 left-2 sm:bottom-3 sm:left-3">
+                            <span className="rounded-full px-2 py-0.5 text-[7px] sm:text-[8px] font-medium tracking-wide backdrop-blur-md" style={{ background: "rgba(0,0,0,0.45)", color: "rgba(255,255,255,0.85)" }}>{theme.mood}</span>
+                          </div>
+                        )}
+                        <div className="absolute inset-x-0 bottom-0 p-3 sm:p-4 opacity-0 translate-y-2 transition-all duration-500 group-hover:opacity-100 group-hover:translate-y-0 hidden sm:block">
+                          <div className="flex w-full items-center justify-center gap-2 rounded-full py-2.5 text-[10px] font-semibold tracking-wide shadow-lg backdrop-blur-sm" style={{ background: "rgba(255,255,255,0.95)", color: P.ink }}>
+                            Customize in Luxe <ArrowRight size={11} />
+                          </div>
+                        </div>
+                      </div>
+                      <div className="p-2.5 sm:p-3.5" style={{ background: P.ink }}>
+                        <div className="flex items-center justify-between gap-1">
+                          <h3 className="font-display text-[12px] sm:text-[14px] tracking-tight truncate" style={{ color: "#fff" }}>{theme.name}</h3>
+                          <span className="text-[10px] sm:text-[12px] font-semibold flex-shrink-0" style={{ color: P.goldSoft }}>{tierPrice(theme.tier)}</span>
+                        </div>
+                        <p className="mt-0.5 text-[9px] sm:text-[11px] italic truncate" style={{ color: "rgba(255,255,255,0.5)" }}>{theme.tagline}</p>
+                        {theme.typographyStyle && (
+                          <div className="mt-1.5 flex items-center gap-1.5 flex-wrap">
+                            {theme.layoutStyle && <span className="rounded px-1.5 py-0.5 text-[6px] sm:text-[7px] tracking-wide uppercase" style={{ background: "rgba(255,255,255,0.08)", color: "rgba(255,255,255,0.4)" }}>{theme.layoutStyle.replace(/-/g, " ")}</span>}
+                            {theme.typographyStyle && <span className="rounded px-1.5 py-0.5 text-[6px] sm:text-[7px] tracking-wide uppercase" style={{ background: "rgba(255,255,255,0.08)", color: "rgba(255,255,255,0.4)" }}>{theme.typographyStyle.replace(/-/g, " ")}</span>}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </Link>
+                </div>
+              </SectionReveal>
+              );
+            })}
+          </div>
+        )}
+
+        {/* Remaining themes when a specific tier filter is active (not "all") — show only that tier's themes already handled above */}
+
+        <div className={`grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-3 xl:grid-cols-4 ${activeTier !== "all" ? "hidden" : "hidden"}`}>
           {filteredThemes.map((theme, i) => {
             const isLuxe = theme.tier === "luxe";
             const tb = tierBadge(theme.tier);
@@ -475,6 +605,12 @@ function Catalogue() {
                         <span className="text-[10px] sm:text-[12px] font-semibold flex-shrink-0" style={{ color: isLuxe ? P.goldSoft : P.gold }}>{tierPrice(theme.tier)}</span>
                       </div>
                       <p className="mt-0.5 text-[9px] sm:text-[11px] italic truncate" style={{ color: isLuxe ? "rgba(255,255,255,0.5)" : P.muted }}>{theme.tagline}</p>
+                      {isLuxe && theme.typographyStyle && (
+                        <div className="mt-1.5 flex items-center gap-1.5 flex-wrap">
+                          {theme.layoutStyle && <span className="rounded px-1.5 py-0.5 text-[6px] sm:text-[7px] tracking-wide uppercase" style={{ background: "rgba(255,255,255,0.08)", color: "rgba(255,255,255,0.4)" }}>{theme.layoutStyle.replace(/-/g, " ")}</span>}
+                          {theme.typographyStyle && <span className="rounded px-1.5 py-0.5 text-[6px] sm:text-[7px] tracking-wide uppercase" style={{ background: "rgba(255,255,255,0.08)", color: "rgba(255,255,255,0.4)" }}>{theme.typographyStyle.replace(/-/g, " ")}</span>}
+                        </div>
+                      )}
                     </div>
                   </div>
                 </Link>
@@ -489,6 +625,78 @@ function Catalogue() {
             <p className="text-[13px] sm:text-[14px]" style={{ color: P.muted }}>No designs match this filter. Try a different combination.</p>
           </div>
         )}
+      </div>
+    </section>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────
+   VIDEO INVITE ADD-ON — Premium upsell
+───────────────────────────────────────────────────────────────── */
+function VideoInviteAddon() {
+  const { prices } = useLocale();
+
+  return (
+    <section className="px-5 py-20 sm:px-10 sm:py-28" style={{ background: P.bg }}>
+      <div className="mx-auto max-w-5xl">
+        <SectionReveal>
+          <div className="overflow-hidden rounded-2xl sm:rounded-3xl" style={{ background: P.noir }}>
+            <div className="grid lg:grid-cols-2">
+              {/* Visual side */}
+              <div className="relative overflow-hidden" style={{ minHeight: "320px" }}>
+                <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url(https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=800&q=85)" }} />
+                <div className="absolute inset-0" style={{ background: "linear-gradient(135deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.6) 100%)" }} />
+                <div className="relative z-10 flex h-full min-h-[320px] flex-col items-center justify-center p-8 text-center">
+                  <div className="flex h-16 w-16 items-center justify-center rounded-full" style={{ background: `${P.gold}30`, border: `2px solid ${P.gold}60` }}>
+                    <Play size={24} fill={P.goldSoft} style={{ color: P.goldSoft }} />
+                  </div>
+                  <p className="mt-5 text-[9px] font-bold tracking-[0.35em] uppercase" style={{ color: P.goldSoft }}>30-60 second video</p>
+                  <p className="mt-2 font-display text-xl sm:text-2xl text-white">Matching your invite theme</p>
+                  <p className="mt-2 text-[11px]" style={{ color: "rgba(255,255,255,0.5)" }}>Perfect for WhatsApp &amp; family groups</p>
+                </div>
+              </div>
+
+              {/* Content side */}
+              <div className="p-6 sm:p-8 lg:p-10 flex flex-col justify-center">
+                <div className="flex items-center gap-2 mb-4">
+                  <Film size={14} style={{ color: P.goldSoft }} />
+                  <span className="text-[8px] sm:text-[9px] font-bold tracking-[0.3em] uppercase" style={{ color: P.goldSoft }}>New</span>
+                </div>
+                <h3 className="font-display text-xl sm:text-2xl text-white leading-tight">
+                  Turn your invite into a<br />
+                  <span className="font-script" style={{ color: P.goldSoft }}>shareable video.</span>
+                </h3>
+                <p className="mt-3 text-[12px] sm:text-[13px] leading-[1.8]" style={{ color: "rgba(255,255,255,0.55)" }}>
+                  Get a beautifully animated video version of your wedding invitation — same design language, same elegance. Ideal for WhatsApp sharing, family groups, and social media.
+                </p>
+
+                <div className="mt-5 space-y-2.5">
+                  {[
+                    "Matches your selected invite design",
+                    "30-60 second cinematic animation",
+                    "Optimized for WhatsApp & Instagram",
+                    "Delivered with your invite link",
+                  ].map(item => (
+                    <div key={item} className="flex items-center gap-2">
+                      <Check size={10} style={{ color: P.goldSoft }} />
+                      <span className="text-[11px]" style={{ color: "rgba(255,255,255,0.7)" }}>{item}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="mt-6 flex items-center gap-4 flex-wrap">
+                  <span className="font-display text-xl text-white">+{prices.videoAddon}</span>
+                  <span className="text-[10px]" style={{ color: "rgba(255,255,255,0.4)" }}>add-on with any plan</span>
+                </div>
+
+                <Link href="/builder" className="group mt-5 inline-flex items-center gap-2 rounded-full px-6 py-3 text-[11px] font-semibold tracking-wide transition-all hover:scale-[1.02]" style={{ background: P.gold, color: "white" }}>
+                  <Play size={11} /> Add Video to Your Invite
+                  <ArrowRight size={11} className="transition-transform group-hover:translate-x-0.5" />
+                </Link>
+              </div>
+            </div>
+          </div>
+        </SectionReveal>
       </div>
     </section>
   );
@@ -672,8 +880,8 @@ function Pricing({ cta }: { cta: string }) {
       tagline: "A beautiful invitation. No compromises.",
       popular: false,
       dark: false,
-      features: ["15+ curated designs to choose from", "Your names, date & venue details", "Complete event schedule", "Photo gallery (up to 8 photos)", "Built-in RSVP collection", "WhatsApp & Instagram ready", "Mobile-first responsive design", "Lifetime hosting included", "3 free revisions", "Delivered within 24 hours"],
-      ctaText: "Start with Basic",
+      features: ["15+ curated designs to choose from", "Your names, date & venue details", "Complete event schedule", "Photo gallery (up to 8 photos)", "Built-in RSVP collection", "WhatsApp & Instagram ready", "Mobile-first responsive design", "Lifetime hosting included", "3 free revisions", "Delivered within 24 hours", "Video invite add-on available"],
+      ctaText: "Start in 10 Minutes",
       ctaLink: "/builder",
     },
     {
@@ -682,8 +890,8 @@ function Pricing({ cta }: { cta: string }) {
       tagline: "The full cinematic experience.",
       popular: true,
       dark: true,
-      features: ["Everything in Basic, plus:", "Background music & atmosphere", "Live countdown timer", "Your love story timeline", "Interactive venue map", "Unlimited photo gallery", "Premium animations & transitions", "Custom guest names", "Unlimited revisions", "Same-day priority delivery"],
-      ctaText: "Start with Luxe",
+      features: ["Everything in Basic, plus:", "Background music & atmosphere", "Live countdown timer", "Your love story timeline", "Interactive venue map", "Unlimited photo gallery", "Premium animations & transitions", "Custom guest names", "Unlimited revisions", "Same-day priority delivery", "Video invite add-on available"],
+      ctaText: "Customize in Luxe",
       ctaLink: "/builder",
     },
     {
@@ -910,8 +1118,9 @@ export default function PortfolioHome() {
     <main className="relative" style={{ background: P.bg, color: P.ink }}>
       <Nav />
       <Hero />
-      <SignatureShowcase />
       <Catalogue />
+      <SignatureShowcase />
+      <VideoInviteAddon />
       <WhatsIncluded />
       <HowItWorks />
       <Testimonials />
