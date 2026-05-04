@@ -92,18 +92,18 @@ const WHY_CHOOSE = [
 ];
 
 const WHATS_INCLUDED = [
-  "Fully custom design based on your theme",
-  "Animated hero with your names & date",
-  "Your love story timeline",
+  "Choose from 7+ premium templates",
+  "Your names, date & venue — beautifully laid out",
   "Event schedule with all ceremonies",
-  "Interactive venue map & directions",
   "Photo gallery section",
-  "Built-in RSVP collection",
-  "Personalized guest names",
-  "WhatsApp-optimized sharing",
-  "Lifetime hosting included",
+  "Built-in RSVP collection from guests",
+  "WhatsApp & Instagram optimized sharing",
   "Mobile-first responsive design",
-  "Countdown timer to your wedding",
+  "Lifetime hosting — your link never expires",
+  "Free edits if dates or venues change",
+  "Love story, music & countdown (Luxe)",
+  "Venue map & directions (Luxe)",
+  "Instant delivery after payment",
 ];
 
 const STEPS = [
