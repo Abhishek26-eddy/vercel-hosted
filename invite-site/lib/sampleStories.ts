@@ -82,12 +82,12 @@ export const SAMPLE_STORIES: SampleStory[] = [
     groomFamily: "Son of Sunil & Rimma Malhotra",
     brideFamily: "Daughter of Jagdeep & Genevieve Advani",
     galleryImages: [
+      "https://images.unsplash.com/photo-1609921212029-bb5a28e60960?auto=format&fit=crop&w=800&q=85",
       "https://images.unsplash.com/photo-1477587458883-47145ed94245?auto=format&fit=crop&w=800&q=85",
-      "https://images.unsplash.com/photo-1596178065887-1198b6148b2b?auto=format&fit=crop&w=800&q=85",
       "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=85",
-      "https://images.unsplash.com/photo-1583089892943-e02e5b017b6a?auto=format&fit=crop&w=800&q=85",
+      "https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=800&q=85",
       "https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=800&q=85",
-      "https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&w=800&q=85",
+      "https://images.unsplash.com/photo-1587474260584-136574528ed5?auto=format&fit=crop&w=800&q=85",
     ],
     events: [
       {
@@ -149,11 +149,11 @@ export const SAMPLE_STORIES: SampleStory[] = [
     brideFamily: "Daughter of Prakash Padukone & Ujjala Padukone",
     galleryImages: [
       "https://images.unsplash.com/photo-1531685250784-7569952593d2?auto=format&fit=crop&w=800&q=85",
-      "https://images.unsplash.com/photo-1516483638261-f4dbaf036963?auto=format&fit=crop&w=800&q=85",
+      "https://images.unsplash.com/photo-1562074896-f36ef6fc1ede?auto=format&fit=crop&w=800&q=85",
       "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=85",
-      "https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&w=800&q=85",
-      "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=800&q=85",
+      "https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?auto=format&fit=crop&w=800&q=85",
       "https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=800&q=85",
+      "https://images.unsplash.com/photo-1516483638261-f4dbaf036963?auto=format&fit=crop&w=800&q=85",
     ],
     events: [
       {
@@ -207,10 +207,10 @@ export const SAMPLE_STORIES: SampleStory[] = [
     groomFamily: "Son of Late Prem Kohli & Saroj Kohli",
     brideFamily: "Daughter of Col. Ajay Kumar Sharma & Ashima Sharma",
     galleryImages: [
-      "https://images.unsplash.com/photo-1523531294919-4bcd7c65e216?auto=format&fit=crop&w=800&q=85",
-      "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=85",
+      "https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?auto=format&fit=crop&w=800&q=85",
+      "https://images.unsplash.com/photo-1568819317551-31051b37f69f?auto=format&fit=crop&w=800&q=85",
       "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=85",
-      "https://images.unsplash.com/photo-1470072768013-bf9532fb3c6e?auto=format&fit=crop&w=800&q=85",
+      "https://images.unsplash.com/photo-1523531294919-4bcd7c65e216?auto=format&fit=crop&w=800&q=85",
       "https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=800&q=85",
       "https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&w=800&q=85",
     ],
@@ -325,10 +325,10 @@ export const SAMPLE_STORIES: SampleStory[] = [
     groomFamily: "Son of Paul Kevin Jonas Sr. & Denise Miller Jonas",
     brideFamily: "Daughter of Dr. Ashok Chopra & Dr. Madhu Chopra",
     galleryImages: [
+      "https://images.unsplash.com/photo-1570168007204-dfb528c6958f?auto=format&fit=crop&w=800&q=85",
       "https://images.unsplash.com/photo-1583089892943-e02e5b017b6a?auto=format&fit=crop&w=800&q=85",
-      "https://images.unsplash.com/photo-1596178065887-1198b6148b2b?auto=format&fit=crop&w=800&q=85",
       "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=85",
-      "https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&w=800&q=85",
+      "https://images.unsplash.com/photo-1596178065887-1198b6148b2b?auto=format&fit=crop&w=800&q=85",
       "https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=800&q=85",
       "https://images.unsplash.com/photo-1477587458883-47145ed94245?auto=format&fit=crop&w=800&q=85",
     ],
