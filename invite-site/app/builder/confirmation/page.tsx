@@ -4,6 +4,7 @@ import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { CheckCircle2, Heart, MessageCircle, ArrowRight, Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
+import { Suspense } from "react";
 import { BRAND } from "@/lib/portfolioThemes";
 
 const P = {
@@ -17,7 +18,7 @@ const P = {
   line: "rgba(0,0,0,0.06)",
 };
 
-export default function ConfirmationPage() {
+function ConfirmationContent() {
   const searchParams = useSearchParams();
   const orderId = searchParams.get("orderId");
   const tier = searchParams.get("tier");
@@ -154,5 +155,20 @@ export default function ConfirmationPage() {
         </motion.p>
       </div>
     </main>
+  );
+}
+
+export default function ConfirmationPage() {
+  return (
+    <Suspense fallback={
+      <main className="min-h-screen flex items-center justify-center" style={{ background: P.bg }}>
+        <div className="flex flex-col items-center gap-3">
+          <Heart size={32} style={{ color: P.gold }} className="animate-pulse" />
+          <p className="text-[12px]" style={{ color: P.muted }}>Loading...</p>
+        </div>
+      </main>
+    }>
+      <ConfirmationContent />
+    </Suspense>
   );
 }
