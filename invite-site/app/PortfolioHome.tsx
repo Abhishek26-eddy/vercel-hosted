@@ -96,7 +96,7 @@ const FAQ = [
   { q: "What's your revision policy?", a: "Basic includes 3 free design revisions. Luxe includes unlimited revisions until you're delighted. Signature comes with a dedicated designer and unlimited iterations." },
   { q: "What if I'm not happy with the result?", a: "Your satisfaction is our priority. If the invite doesn't feel right, we'll rework it. If we still can't get it right, full refund — no questions asked." },
   { q: "Can I upgrade later?", a: "Yes! If you start with Basic and decide you want Luxe features later, just pay the difference. We'll upgrade your invite seamlessly." },
-  { q: "What is the video invite add-on?", a: "For ₹999 extra, we create a 30-60 second cinematic video version of your invitation — same design language, perfect for WhatsApp groups and family sharing. Available with any plan." },
+  { q: "What is the video invite add-on?", a: "Video invites are now ₹399 as an add-on with Basic, and included free in every Luxe package. We create a 30-60 second cinematic animated video — same design language as your invite — perfect for WhatsApp groups, Instagram stories, and family sharing." },
 ];
 
 /* ─── Motion ─── */
@@ -698,7 +698,7 @@ function VideoInviteAddon() {
 
                 <div className="mt-6 flex items-center gap-4 flex-wrap">
                   <span className="font-display text-xl text-white">+{prices.videoAddon}</span>
-                  <span className="text-[10px]" style={{ color: "rgba(255,255,255,0.4)" }}>add-on with any plan</span>
+                  <span className="text-[10px]" style={{ color: "rgba(255,255,255,0.4)" }}>add-on for Basic · included free in Luxe</span>
                 </div>
 
                 <Link href="/builder" className="group mt-5 inline-flex items-center gap-2 rounded-full px-6 py-3 text-[11px] font-semibold tracking-wide transition-all hover:scale-[1.02]" style={{ background: P.gold, color: "white" }}>
@@ -892,7 +892,8 @@ function Pricing({ cta }: { cta: string }) {
       tagline: "A beautiful invitation. No compromises.",
       popular: false,
       dark: false,
-      features: ["15+ curated designs to choose from", "Your names, date & venue details", "Complete event schedule", "Photo gallery (up to 8 photos)", "Built-in RSVP collection", "WhatsApp & Instagram ready", "Mobile-first responsive design", "Lifetime hosting included", "3 free revisions", "Delivered within 24 hours", "Video invite add-on available"],
+      features: ["15+ curated designs to choose from", "Your names, date & venue details", "Complete event schedule", "Photo gallery (up to 8 photos)", "Built-in RSVP collection", "WhatsApp & Instagram ready", "Mobile-first responsive design", "Lifetime hosting included", "3 free revisions", "Delivered within 24 hours", "Video invite add-on (+₹399)"],
+      videoNote: "Add a cinematic video for just +₹399",
       ctaText: "Start in 10 Minutes",
       ctaLink: "/builder",
     },
@@ -902,7 +903,8 @@ function Pricing({ cta }: { cta: string }) {
       tagline: "The full cinematic experience.",
       popular: true,
       dark: true,
-      features: ["Everything in Basic, plus:", "Background music & atmosphere", "Live countdown timer", "Your love story timeline", "Interactive venue map", "Unlimited photo gallery", "Premium animations & transitions", "Custom guest names", "Unlimited revisions", "Same-day priority delivery", "Video invite add-on available"],
+      features: ["Everything in Basic, plus:", "Background music & atmosphere", "Live countdown timer", "Your love story timeline", "Interactive venue map", "Unlimited photo gallery", "Premium animations & transitions", "Custom guest names", "Unlimited revisions", "Same-day priority delivery", "✦ Cinematic video invite — included free"],
+      videoNote: "Video invite is included at no extra cost",
       ctaText: "Customize in Luxe",
       ctaLink: "/builder",
     },

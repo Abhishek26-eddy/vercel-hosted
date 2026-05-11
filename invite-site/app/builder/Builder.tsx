@@ -109,7 +109,10 @@ function BuilderInner() {
   const tierLabel = TIER_CONFIG[tier]?.label || "BASIC";
   const tierPrice = tier === "luxe" ? prices.luxe : prices.basic;
   const tierPriceINR = tier === "luxe" ? BASE_PRICES.luxe : BASE_PRICES.basic;
-  const totalINR = tierPriceINR + (videoAddon ? BASE_PRICES.videoAddon : 0);
+  const isLuxe = tier === "luxe";
+  const videoIncludedFree = isLuxe;
+  const effectiveVideoAddon = videoIncludedFree ? true : videoAddon;
+  const totalINR = tierPriceINR + (!videoIncludedFree && videoAddon ? BASE_PRICES.videoAddon : 0);
 
   const filteredDesigns = PORTFOLIO_THEMES
     .filter(t => t.tier !== "signature")
@@ -176,9 +179,9 @@ function BuilderInner() {
           themeSlug: selectedTheme?.slug,
           themeName: selectedTheme?.name,
           tier,
-          videoAddon,
+          videoAddon: effectiveVideoAddon,
           basePriceInr: tierPriceINR,
-          addonPriceInr: videoAddon ? BASE_PRICES.videoAddon : 0,
+          addonPriceInr: !videoIncludedFree && videoAddon ? BASE_PRICES.videoAddon : 0,
           totalPriceInr: totalINR,
         }),
       });
@@ -247,9 +250,9 @@ function BuilderInner() {
           themeSlug: selectedTheme?.slug,
           themeName: selectedTheme?.name,
           tier,
-          videoAddon,
+          videoAddon: effectiveVideoAddon,
           basePriceInr: tierPriceINR,
-          addonPriceInr: videoAddon ? BASE_PRICES.videoAddon : 0,
+          addonPriceInr: !videoIncludedFree && videoAddon ? BASE_PRICES.videoAddon : 0,
           totalPriceInr: totalINR,
           orderStatus: "new_inquiry",
           paymentStatus: "pending",
@@ -566,29 +569,49 @@ function BuilderInner() {
               </div>
 
               {/* Video Invite Add-On */}
-              <div className="mx-auto max-w-2xl mb-6 sm:mb-8 rounded-xl sm:rounded-2xl overflow-hidden" style={{ border: `1px solid ${videoAddon ? P.gold : P.lineSoft}`, transition: "border-color 0.3s" }}>
-                <button onClick={() => setVideoAddon(!videoAddon)} className="w-full text-left p-4 sm:p-5 flex items-center gap-3 sm:gap-4" style={{ background: videoAddon ? `${P.gold}08` : P.surface }}>
-                  <div className="flex h-10 w-10 sm:h-11 sm:w-11 flex-shrink-0 items-center justify-center rounded-full" style={{ background: videoAddon ? `${P.gold}18` : P.bgDeep }}>
-                    <Film size={16} style={{ color: videoAddon ? P.gold : P.muted }} />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2">
-                      <p className="font-display text-[13px] sm:text-[15px]" style={{ color: P.ink }}>Video Invite Add-on</p>
-                      <span className="rounded-full px-2 py-0.5 text-[7px] font-bold tracking-[0.15em] uppercase" style={{ background: `${P.gold}15`, color: P.gold }}>New</span>
+              {videoIncludedFree ? (
+                <div className="mx-auto max-w-2xl mb-6 sm:mb-8 rounded-xl sm:rounded-2xl overflow-hidden" style={{ border: `1px solid ${P.gold}`, background: `${P.gold}08` }}>
+                  <div className="p-4 sm:p-5 flex items-center gap-3 sm:gap-4">
+                    <div className="flex h-10 w-10 sm:h-11 sm:w-11 flex-shrink-0 items-center justify-center rounded-full" style={{ background: `${P.gold}18` }}>
+                      <Film size={16} style={{ color: P.gold }} />
                     </div>
-                    <p className="mt-0.5 text-[10px] sm:text-[11px]" style={{ color: P.muted }}>30-60s cinematic video for WhatsApp &amp; social media</p>
-                  </div>
-                  <div className="flex items-center gap-2 flex-shrink-0">
-                    <span className="font-display text-[14px] sm:text-base" style={{ color: P.gold }}>+{prices.videoAddon}</span>
-                    <div className="flex h-5 w-5 items-center justify-center rounded-md" style={{ background: videoAddon ? P.gold : P.bgDeep, border: videoAddon ? "none" : `1.5px solid ${P.line}`, transition: "all 0.2s" }}>
-                      {videoAddon && <Check size={12} color="white" strokeWidth={3} />}
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2">
+                        <p className="font-display text-[13px] sm:text-[15px]" style={{ color: P.ink }}>Video Invite</p>
+                        <span className="rounded-full px-2 py-0.5 text-[7px] font-bold tracking-[0.15em] uppercase" style={{ background: `${P.gold}20`, color: P.gold }}>Included in Luxe</span>
+                      </div>
+                      <p className="mt-0.5 text-[10px] sm:text-[11px]" style={{ color: P.muted }}>30-60s cinematic video — part of your Luxe package</p>
+                    </div>
+                    <div className="flex h-6 w-6 items-center justify-center rounded-full flex-shrink-0" style={{ background: P.gold }}>
+                      <Check size={13} color="white" strokeWidth={3} />
                     </div>
                   </div>
-                </button>
-              </div>
+                </div>
+              ) : (
+                <div className="mx-auto max-w-2xl mb-6 sm:mb-8 rounded-xl sm:rounded-2xl overflow-hidden" style={{ border: `1px solid ${videoAddon ? P.gold : P.lineSoft}`, transition: "border-color 0.3s" }}>
+                  <button onClick={() => setVideoAddon(!videoAddon)} className="w-full text-left p-4 sm:p-5 flex items-center gap-3 sm:gap-4" style={{ background: videoAddon ? `${P.gold}08` : P.surface }}>
+                    <div className="flex h-10 w-10 sm:h-11 sm:w-11 flex-shrink-0 items-center justify-center rounded-full" style={{ background: videoAddon ? `${P.gold}18` : P.bgDeep }}>
+                      <Film size={16} style={{ color: videoAddon ? P.gold : P.muted }} />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2">
+                        <p className="font-display text-[13px] sm:text-[15px]" style={{ color: P.ink }}>Video Invite Add-on</p>
+                        <span className="rounded-full px-2 py-0.5 text-[7px] font-bold tracking-[0.15em] uppercase" style={{ background: `${P.gold}15`, color: P.gold }}>+₹399</span>
+                      </div>
+                      <p className="mt-0.5 text-[10px] sm:text-[11px]" style={{ color: P.muted }}>30-60s cinematic video for WhatsApp &amp; social media</p>
+                    </div>
+                    <div className="flex items-center gap-2 flex-shrink-0">
+                      <span className="font-display text-[14px] sm:text-base" style={{ color: P.gold }}>+{prices.videoAddon}</span>
+                      <div className="flex h-5 w-5 items-center justify-center rounded-md" style={{ background: videoAddon ? P.gold : P.bgDeep, border: videoAddon ? "none" : `1.5px solid ${P.line}`, transition: "all 0.2s" }}>
+                        {videoAddon && <Check size={12} color="white" strokeWidth={3} />}
+                      </div>
+                    </div>
+                  </button>
+                </div>
+              )}
 
-              {/* Video preview when add-on selected */}
-              {videoAddon && selectedTheme && (
+              {/* Video preview when add-on selected or included in Luxe */}
+              {effectiveVideoAddon && selectedTheme && (
                 <div className="mx-auto max-w-2xl mb-6 sm:mb-8">
                   <p className="text-[9px] font-bold tracking-[0.2em] uppercase mb-3 text-center" style={{ color: P.gold }}>Your Video Preview</p>
                   <div className="mx-auto" style={{ maxWidth: 280 }}>
@@ -666,12 +689,17 @@ function BuilderInner() {
                       <span style={{ color: P.body }}>{tierLabel} Invite</span>
                       <span className="font-medium" style={{ color: P.ink }}>₹{tierPriceINR}</span>
                     </div>
-                    {videoAddon && (
+                    {videoIncludedFree ? (
+                      <div className="flex justify-between text-[11px] sm:text-[12px]">
+                        <span className="flex items-center gap-1" style={{ color: P.body }}><Film size={10} style={{ color: P.gold }} /> Video Invite</span>
+                        <span className="font-medium" style={{ color: P.gold }}>Included</span>
+                      </div>
+                    ) : videoAddon ? (
                       <div className="flex justify-between text-[11px] sm:text-[12px]">
                         <span className="flex items-center gap-1" style={{ color: P.body }}><Film size={10} style={{ color: P.gold }} /> Video Add-on</span>
                         <span className="font-medium" style={{ color: P.ink }}>₹{BASE_PRICES.videoAddon}</span>
                       </div>
-                    )}
+                    ) : null}
                   </div>
 
                   <div className="pt-3 flex items-center justify-between" style={{ borderTop: `1px solid ${P.lineSoft}` }}>
