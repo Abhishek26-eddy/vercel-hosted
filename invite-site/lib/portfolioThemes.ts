@@ -24,7 +24,7 @@ export type PortfolioTheme = {
 
 export const BRAND = {
   name: "The Digital Inviters",
-  tagline: "Boutique digital wedding invitations, crafted with love",
+  tagline: "Where every invitation tells a love story",
   whatsappNumber: "917240345334",
   whatsappBase: "https://wa.me/917240345334?text=",
   upiId: "abhishekprajapatiad-1@okhdfcbank",

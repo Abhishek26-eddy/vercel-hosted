@@ -32,8 +32,8 @@ export async function POST(req: NextRequest) {
         base_price_inr: body.basePriceInr,
         addon_price_inr: body.addonPriceInr || 0,
         total_price_inr: body.totalPriceInr,
-        payment_status: "pending",
-        order_status: "new",
+        payment_status: body.paymentStatus || "pending",
+        order_status: body.orderStatus || "new",
       })
       .select()
       .single();

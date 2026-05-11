@@ -219,6 +219,56 @@ function BuilderInner() {
     setTimeout(() => setUpiCopied(false), 2000);
   };
 
+  // For Basic tier: submit inquiry without payment
+  const handleSubmitBasicOrder = async () => {
+    setOrderSaving(true);
+
+    try {
+      const res = await fetch("/api/orders", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          groomName: details.groomName,
+          brideName: details.brideName,
+          weddingDate: details.weddingDate || null,
+          venue: details.venue,
+          venueAddress: details.venueAddress,
+          city: details.city,
+          groomFamily: details.groomFamily,
+          brideFamily: details.brideFamily,
+          dressCode: details.dressCode,
+          musicPreference: details.musicPreference,
+          rsvpContact: details.rsvpContact,
+          loveStory: details.loveStory,
+          message: details.message,
+          events: activeEvents.filter(e => e.date),
+          phone: details.phone,
+          email: details.email,
+          themeSlug: selectedTheme?.slug,
+          themeName: selectedTheme?.name,
+          tier,
+          videoAddon,
+          basePriceInr: tierPriceINR,
+          addonPriceInr: videoAddon ? BASE_PRICES.videoAddon : 0,
+          totalPriceInr: totalINR,
+          orderStatus: "new_inquiry",
+          paymentStatus: "pending",
+        }),
+      });
+      const json = await res.json();
+      if (json.order?.id) {
+        setOrderId(json.order.id);
+        // Redirect to confirmation page
+        window.location.href = `/builder/confirmation?orderId=${json.order.id}&tier=${tier}`;
+      }
+    } catch (err) {
+      console.error("Failed to save order:", err);
+      alert("Something went wrong. Please try again or contact us.");
+    } finally {
+      setOrderSaving(false);
+    }
+  };
+
   return (
     <main className="min-h-screen" style={{ background: P.bg, color: P.ink }}>
       {/* ─── Top bar ─── */}
@@ -555,14 +605,25 @@ function BuilderInner() {
               <FullInvitePreview details={details} theme={selectedTheme} tier={tier} />
 
               <div className="mt-8 sm:mt-10 flex flex-col items-center gap-3 sm:gap-4">
-                <button onClick={() => setStep(4)}
-                  className="group flex w-full sm:w-auto items-center justify-center gap-2.5 sm:gap-3 rounded-full px-8 sm:px-10 py-3.5 sm:py-4 text-[12px] sm:text-[13px] font-semibold tracking-wide transition-all hover:scale-[1.02] shadow-lg"
-                  style={{ background: P.gold, color: "white" }}
-                >
-                  <Lock size={13} />
-                  Approve &amp; Proceed to Payment — ₹{totalINR}
-                  <ArrowRight size={13} className="transition-transform group-hover:translate-x-1" />
-                </button>
+                {tier === "basic" ? (
+                  <button onClick={handleSubmitBasicOrder} disabled={orderSaving}
+                    className="group flex w-full sm:w-auto items-center justify-center gap-2.5 sm:gap-3 rounded-full px-8 sm:px-10 py-3.5 sm:py-4 text-[12px] sm:text-[13px] font-semibold tracking-wide transition-all hover:scale-[1.02] shadow-lg disabled:opacity-60"
+                    style={{ background: P.gold, color: "white" }}
+                  >
+                    <CheckCircle2 size={13} />
+                    {orderSaving ? "Submitting..." : "Submit Your Details"}
+                    {!orderSaving && <ArrowRight size={13} className="transition-transform group-hover:translate-x-1" />}
+                  </button>
+                ) : (
+                  <button onClick={() => setStep(4)}
+                    className="group flex w-full sm:w-auto items-center justify-center gap-2.5 sm:gap-3 rounded-full px-8 sm:px-10 py-3.5 sm:py-4 text-[12px] sm:text-[13px] font-semibold tracking-wide transition-all hover:scale-[1.02] shadow-lg"
+                    style={{ background: P.gold, color: "white" }}
+                  >
+                    <Lock size={13} />
+                    Approve &amp; Proceed to Payment — ₹{totalINR}
+                    <ArrowRight size={13} className="transition-transform group-hover:translate-x-1" />
+                  </button>
+                )}
                 <button onClick={() => setStep(1)} className="flex items-center gap-1 text-[11px] sm:text-[12px] font-medium transition-colors hover:text-[#9a7b4f]" style={{ color: P.muted }}>
                   <ArrowLeft size={11} /> Edit my details
                 </button>
@@ -570,8 +631,8 @@ function BuilderInner() {
             </StepWrapper>
           )}
 
-          {/* ═══ STEP 4: Boutique Payment ═══ */}
-          {step === 4 && !paymentDone && (
+          {/* ═══ STEP 4: Boutique Payment (Luxe/Signature only) ═══ */}
+          {step === 4 && !paymentDone && tier !== "basic" && (
             <StepWrapper key="payment">
               <div className="mx-auto max-w-lg">
                 <div className="text-center mb-6 sm:mb-8">

@@ -30,6 +30,7 @@ import {
 import SectionReveal from "@/components/portfolio/SectionReveal";
 import { BRAND, PORTFOLIO_THEMES } from "@/lib/portfolioThemes";
 import type { ThemeFamily } from "@/lib/portfolioThemes";
+import { getStoryBySlug } from "@/lib/sampleStories";
 import { LocaleSelectors } from "@/components/LocaleSelectors";
 import { useLocale } from "@/components/LocaleProvider";
 
@@ -86,12 +87,13 @@ const STATS = [
 ];
 
 const FAQ = [
-  { q: "What's the difference between Basic, Luxe, and Signature?", a: "Basic (₹1,499) gives you a beautifully designed invite with your details, event schedule, RSVP, and photo gallery — everything you need. Luxe (₹3,499) adds background music, countdown timer, love story, venue map, custom guest names, and premium animations. Signature (₹9,999) is fully bespoke — custom design, domain, unlimited revisions, and a dedicated designer." },
-  { q: "How does the process work?", a: "Choose a design from our collection, fill in your wedding details, preview your invite, and pay via UPI. We finalize and deliver your unique shareable link within 24 hours (Basic) or same day (Luxe)." },
+  { q: "What's the difference between Basic, Luxe, and Signature?", a: "Basic (₹1,499) is our designer-assisted service — choose a design, submit your details, and we craft a beautifully personalized invite for you. Luxe (₹3,499) adds cinematic features like background music, love story sections, premium animations, and same-day delivery. Signature (₹9,999) is fully bespoke — custom design from scratch, dedicated designer, and unlimited creative freedom." },
+  { q: "How does the process work?", a: "Choose a design you love from our collection, fill in your wedding details and story, then submit. For Basic, we'll review your details and reach out to finalize customizations — payment happens after we confirm everything. For Luxe/Signature, secure your booking immediately and we begin crafting right away." },
+  { q: "Do I need to design it myself?", a: "Not at all. You choose a design concept, share your details and story, and our team crafts the final invite for you. This isn't a DIY builder — it's a boutique design service. We handle all the creative work while keeping you involved in approvals." },
   { q: "How do guests view the invitation?", a: "Each guest receives a unique URL. They simply tap to open — no app downloads, no sign-ups. Works beautifully on WhatsApp, Instagram, email, or any platform." },
   { q: "Is hosting included?", a: "Yes, lifetime hosting is included in every plan at no extra cost. Your invite stays live forever — a digital keepsake for you and your guests." },
   { q: "Can I make changes after it's live?", a: "Absolutely. Need to update a venue, date, or add a new event? Just message us. Free edits are included in all plans." },
-  { q: "What's your revision policy?", a: "Basic includes 3 free revisions. Luxe includes unlimited revisions until you're delighted. Signature comes with a dedicated designer and unlimited iterations." },
+  { q: "What's your revision policy?", a: "Basic includes 3 free design revisions. Luxe includes unlimited revisions until you're delighted. Signature comes with a dedicated designer and unlimited iterations." },
   { q: "What if I'm not happy with the result?", a: "Your satisfaction is our priority. If the invite doesn't feel right, we'll rework it. If we still can't get it right, full refund — no questions asked." },
   { q: "Can I upgrade later?", a: "Yes! If you start with Basic and decide you want Luxe features later, just pay the difference. We'll upgrade your invite seamlessly." },
   { q: "What is the video invite add-on?", a: "For ₹999 extra, we create a 30-60 second cinematic video version of your invitation — same design language, perfect for WhatsApp groups and family sharing. Available with any plan." },
@@ -212,15 +214,15 @@ function Hero() {
             </motion.h1>
 
             <motion.p variants={fadeUp} custom={2} className="mt-5 sm:mt-6 max-w-md text-[14px] sm:text-[15px] leading-[1.85]" style={{ color: P.body }}>
-              Choose from 25+ curated designs, customize in minutes, and share a stunning digital invitation — all in under 10 minutes. Or go Luxe for a richer, more cinematic experience.
+              From our curated collection of cinematic designs, choose one that speaks to your heart. Share your story. We'll craft a bespoke digital invitation that feels like you.
             </motion.p>
 
             <motion.div variants={fadeUp} custom={3} className="mt-8 sm:mt-10 flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-5">
               <Link href="#catalogue" className="group inline-flex items-center justify-center gap-3 rounded-full px-7 py-3.5 text-[12px] sm:text-[13px] font-semibold tracking-[0.04em] transition-all duration-500 hover:gap-4" style={{ background: P.ink, color: P.bg }}>
-                Browse Designs
+                Explore Our Collection
                 <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
               </Link>
-              <span className="text-[13px] font-medium text-center sm:text-left" style={{ color: P.gold }}>Starting from {prices.basic}</span>
+              <span className="text-[13px] font-medium text-center sm:text-left" style={{ color: P.gold }}>Bespoke designs from {prices.basic}</span>
             </motion.div>
           </motion.div>
         </div>
@@ -476,7 +478,7 @@ function Catalogue() {
                           <h3 className="font-display text-[12px] sm:text-[14px] tracking-tight truncate" style={{ color: P.ink }}>{theme.name}</h3>
                           <span className="text-[10px] sm:text-[12px] font-semibold flex-shrink-0" style={{ color: P.gold }}>{tierPrice(theme.tier)}</span>
                         </div>
-                        <p className="mt-0.5 text-[9px] sm:text-[11px] italic truncate" style={{ color: P.muted }}>{theme.tagline}</p>
+                        <p className="mt-0.5 text-[9px] sm:text-[10px] leading-[1.5] line-clamp-2" style={{ color: P.muted }}>{getStoryBySlug(theme.slug)?.cardTeaser || theme.tagline}</p>
                       </div>
                     </div>
                   </Link>
@@ -540,7 +542,7 @@ function Catalogue() {
                           <h3 className="font-display text-[12px] sm:text-[14px] tracking-tight truncate" style={{ color: "#fff" }}>{theme.name}</h3>
                           <span className="text-[10px] sm:text-[12px] font-semibold flex-shrink-0" style={{ color: P.goldSoft }}>{tierPrice(theme.tier)}</span>
                         </div>
-                        <p className="mt-0.5 text-[9px] sm:text-[11px] italic truncate" style={{ color: "rgba(255,255,255,0.5)" }}>{theme.tagline}</p>
+                        <p className="mt-0.5 text-[9px] sm:text-[10px] leading-[1.5] line-clamp-2" style={{ color: "rgba(255,255,255,0.5)" }}>{getStoryBySlug(theme.slug)?.cardTeaser || theme.tagline}</p>
                         {theme.typographyStyle && (
                           <div className="mt-1.5 flex items-center gap-1.5 flex-wrap">
                             {theme.layoutStyle && <span className="rounded px-1.5 py-0.5 text-[6px] sm:text-[7px] tracking-wide uppercase" style={{ background: "rgba(255,255,255,0.08)", color: "rgba(255,255,255,0.4)" }}>{theme.layoutStyle.replace(/-/g, " ")}</span>}
@@ -611,7 +613,7 @@ function Catalogue() {
                         <h3 className="font-display text-[12px] sm:text-[14px] tracking-tight truncate" style={{ color: isLuxe ? "#fff" : P.ink }}>{theme.name}</h3>
                         <span className="text-[10px] sm:text-[12px] font-semibold flex-shrink-0" style={{ color: isLuxe ? P.goldSoft : P.gold }}>{tierPrice(theme.tier)}</span>
                       </div>
-                      <p className="mt-0.5 text-[9px] sm:text-[11px] italic truncate" style={{ color: isLuxe ? "rgba(255,255,255,0.5)" : P.muted }}>{theme.tagline}</p>
+                      <p className="mt-0.5 text-[9px] sm:text-[10px] leading-[1.5] line-clamp-2" style={{ color: isLuxe ? "rgba(255,255,255,0.5)" : P.muted }}>{getStoryBySlug(theme.slug)?.cardTeaser || theme.tagline}</p>
                       {isLuxe && theme.typographyStyle && (
                         <div className="mt-1.5 flex items-center gap-1.5 flex-wrap">
                           {theme.layoutStyle && <span className="rounded px-1.5 py-0.5 text-[6px] sm:text-[7px] tracking-wide uppercase" style={{ background: "rgba(255,255,255,0.08)", color: "rgba(255,255,255,0.4)" }}>{theme.layoutStyle.replace(/-/g, " ")}</span>}
