@@ -30,7 +30,7 @@ import {
 import SectionReveal from "@/components/portfolio/SectionReveal";
 import { BRAND, PORTFOLIO_THEMES } from "@/lib/portfolioThemes";
 import type { ThemeFamily } from "@/lib/portfolioThemes";
-import { getStoryBySlug } from "@/lib/sampleStories";
+import { getStoryBySlug, getStoryPreviewFit, getStoryPreviewImage, getStoryPreviewPosition } from "@/lib/sampleStories";
 import { LocaleSelectors } from "@/components/LocaleSelectors";
 import { useLocale } from "@/components/LocaleProvider";
 
@@ -98,6 +98,55 @@ const FAQ = [
   { q: "Can I upgrade later?", a: "Yes! If you start with Basic and decide you want Luxe features later, just pay the difference. We'll upgrade your invite seamlessly." },
   { q: "What is the video invite add-on?", a: "Video invites are now ₹399 as an add-on with Basic, and included free in every Luxe package. We create a 30-60 second cinematic animated video — same design language as your invite — perfect for WhatsApp groups, Instagram stories, and family sharing." },
 ];
+
+function getThemeCardImage(themeSlug: string, fallbackImage: string) {
+  return getStoryPreviewImage(themeSlug, fallbackImage);
+}
+
+function getThemeCardPosition(themeSlug: string) {
+  return getStoryPreviewPosition(themeSlug);
+}
+
+function getThemeCardFit(themeSlug: string) {
+  return getStoryPreviewFit(themeSlug);
+}
+
+function ThemeCardArtwork({
+  themeSlug,
+  fallbackImage,
+  hoverScaleClass = "",
+  containInset = "0.9rem",
+}: {
+  themeSlug: string;
+  fallbackImage: string;
+  hoverScaleClass?: string;
+  containInset?: string;
+}) {
+  const previewImage = getThemeCardImage(themeSlug, fallbackImage);
+  const previewPosition = getThemeCardPosition(themeSlug);
+  const previewFit = getThemeCardFit(themeSlug);
+
+  return (
+    <>
+      <div
+        className="absolute inset-0 scale-110 bg-cover bg-center opacity-75 blur-2xl"
+        style={{
+          backgroundImage: `url(${previewImage})`,
+          backgroundPosition: previewPosition,
+        }}
+      />
+      <div
+        className={`absolute bg-center bg-no-repeat ${hoverScaleClass}`}
+        style={{
+          inset: previewFit === "contain" ? containInset : "0px",
+          backgroundImage: `url(${previewImage})`,
+          backgroundPosition: previewPosition,
+          backgroundSize: previewFit,
+        }}
+      />
+    </>
+  );
+}
 
 /* ─── Motion ─── */
 const fadeUp = {
@@ -287,8 +336,11 @@ function SignatureShowcase() {
             <SectionReveal delay={0.15}>
               <div className="mt-14 sm:mt-20 group relative overflow-hidden rounded-2xl sm:rounded-3xl" style={{ border: "1px solid rgba(156,127,84,0.2)" }}>
                 <div className="relative aspect-[16/10] sm:aspect-[21/9] overflow-hidden">
-                  <motion.div whileHover={{ scale: 1.03 }} transition={{ duration: 1.2 }}
-                    className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${signatureThemes[0].image})` }}
+                  <ThemeCardArtwork
+                    themeSlug={signatureThemes[0].slug}
+                    fallbackImage={signatureThemes[0].image}
+                    hoverScaleClass="transition-transform duration-[1200ms] group-hover:scale-[1.03]"
+                    containInset="1.25rem"
                   />
                   <div className="absolute inset-0" style={{ background: "linear-gradient(135deg, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.3) 40%, rgba(0,0,0,0.6) 100%)" }} />
                   <div className="absolute top-4 left-4 sm:top-6 sm:left-8">
@@ -317,8 +369,10 @@ function SignatureShowcase() {
                 <SectionReveal key={theme.slug} delay={0.2 + i * 0.1}>
                   <div className="group relative overflow-hidden rounded-xl sm:rounded-2xl" style={{ border: "1px solid rgba(156,127,84,0.18)" }}>
                     <div className="relative aspect-[4/5] sm:aspect-[3/4] overflow-hidden">
-                      <motion.div whileHover={{ scale: 1.04 }} transition={{ duration: 0.8 }}
-                        className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${theme.image})` }}
+                      <ThemeCardArtwork
+                        themeSlug={theme.slug}
+                        fallbackImage={theme.image}
+                        hoverScaleClass="transition-transform duration-700 group-hover:scale-[1.04]"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
                       <div className="absolute top-3 left-3 sm:top-4 sm:left-4">
@@ -454,8 +508,10 @@ function Catalogue() {
                   <Link href={`/builder?template=${theme.slug}`} className="block">
                     <div className="relative overflow-hidden rounded-xl sm:rounded-2xl" style={{ background: P.bgDeep, border: `1px solid ${P.lineSoft}` }}>
                       <div className="relative aspect-[3/4] overflow-hidden">
-                        <motion.div whileHover={{ scale: 1.04 }} transition={{ duration: 0.7 }}
-                          className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${theme.image})` }}
+                        <ThemeCardArtwork
+                          themeSlug={theme.slug}
+                          fallbackImage={theme.image}
+                          hoverScaleClass="transition-transform duration-700 group-hover:scale-[1.04]"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
                         <div className="absolute top-2 left-2 sm:top-3 sm:left-3 flex flex-col gap-1">
@@ -483,7 +539,7 @@ function Catalogue() {
                     </div>
                   </Link>
                   <Link href={`/preview/${theme.slug}`} className="mt-1.5 flex items-center justify-center gap-1 rounded-lg py-1.5 text-[9px] sm:text-[10px] font-medium transition-colors hover:bg-[#f4f0ea]" style={{ color: P.muted }}>
-                    <Eye size={10} /> Preview
+                    <Eye size={10} /> View Invite
                   </Link>
                 </div>
               </SectionReveal>
@@ -518,8 +574,10 @@ function Catalogue() {
                   <Link href={`/builder?template=${theme.slug}`} className="block">
                     <div className="relative overflow-hidden rounded-xl sm:rounded-2xl" style={{ background: P.bgDeep, border: `1px solid ${P.goldMuted}` }}>
                       <div className="relative aspect-[3/4] overflow-hidden">
-                        <motion.div whileHover={{ scale: 1.04 }} transition={{ duration: 0.7 }}
-                          className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${theme.image})` }}
+                        <ThemeCardArtwork
+                          themeSlug={theme.slug}
+                          fallbackImage={theme.image}
+                          hoverScaleClass="transition-transform duration-700 group-hover:scale-[1.04]"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
                         <div className="absolute top-2 left-2 sm:top-3 sm:left-3 flex flex-col gap-1">
@@ -553,7 +611,7 @@ function Catalogue() {
                     </div>
                   </Link>
                   <Link href={`/preview/${theme.slug}`} className="mt-1.5 flex items-center justify-center gap-1 rounded-lg py-1.5 text-[9px] sm:text-[10px] font-medium transition-colors hover:bg-[#f4f0ea]" style={{ color: P.muted }}>
-                    <Eye size={10} /> Preview
+                    <Eye size={10} /> View Invite
                   </Link>
                 </div>
               </SectionReveal>
@@ -575,8 +633,10 @@ function Catalogue() {
                   <div className="relative overflow-hidden rounded-xl sm:rounded-2xl" style={{ background: P.bgDeep, border: isLuxe ? `1px solid ${P.goldMuted}` : `1px solid ${P.lineSoft}` }}>
                     {/* Image */}
                     <div className="relative aspect-[3/4] overflow-hidden">
-                      <motion.div whileHover={{ scale: 1.04 }} transition={{ duration: 0.7 }}
-                        className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${theme.image})` }}
+                      <ThemeCardArtwork
+                        themeSlug={theme.slug}
+                        fallbackImage={theme.image}
+                        hoverScaleClass="transition-transform duration-700 group-hover:scale-[1.04]"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
 
@@ -624,7 +684,7 @@ function Catalogue() {
                   </div>
                 </Link>
                 <Link href={`/preview/${theme.slug}`} className="mt-1.5 flex items-center justify-center gap-1 rounded-lg py-1.5 text-[9px] sm:text-[10px] font-medium transition-colors hover:bg-[#f4f0ea]" style={{ color: P.muted }}>
-                  <Eye size={10} /> Preview
+                  <Eye size={10} /> View Invite
                 </Link>
               </div>
             </SectionReveal>

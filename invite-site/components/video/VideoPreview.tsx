@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Play, Pause, Film } from "lucide-react";
 import type { PortfolioTheme } from "@/lib/portfolioThemes";
+import { getStoryPreviewFit, getStoryPreviewImage, getStoryPreviewPosition } from "@/lib/sampleStories";
 import { getMotionProfile } from "./motionProfiles";
 import type { ThemeFamily } from "@/lib/portfolioThemes";
 
@@ -163,6 +164,9 @@ export default function VideoPreview({ theme, groomName, brideName, weddingDate,
   const [scene, setScene] = useState(0);
   const profile = getMotionProfile(theme.family);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const previewImage = getStoryPreviewImage(theme.slug, theme.image);
+  const previewPosition = getStoryPreviewPosition(theme.slug);
+  const previewFit = getStoryPreviewFit(theme.slug);
 
   const groom = groomName || theme.couple.split("&")[0]?.trim() || "Groom";
   const bride = brideName || theme.couple.split("&")[1]?.trim() || "Bride";
@@ -216,8 +220,19 @@ export default function VideoPreview({ theme, groomName, brideName, weddingDate,
   return (
     <div className="relative overflow-hidden rounded-xl sm:rounded-2xl" style={{ aspectRatio: "9/16", maxHeight: "480px", border: `1px solid ${theme.accent}30` }}>
       {/* Background */}
-      <motion.div className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: `url(${theme.image})`, filter: profile.colorFilter }}
+      <motion.div className="absolute inset-0 scale-110 bg-cover bg-center blur-2xl"
+        style={{ backgroundImage: `url(${previewImage})`, backgroundPosition: previewPosition, filter: profile.colorFilter, opacity: 0.78 }}
+        animate={playing && profile.bgMotion === "slow-zoom" ? { scale: [1.08, 1.16] } : profile.bgMotion === "drift" ? { x: [0, -15, 0] } : profile.bgMotion === "pan-left" ? { x: [0, -30] } : {}}
+        transition={{ duration: 10, ease: "easeInOut" }}
+      />
+      <motion.div className="absolute bg-center bg-no-repeat"
+        style={{
+          inset: previewFit === "contain" ? "0.75rem" : "0px",
+          backgroundImage: `url(${previewImage})`,
+          backgroundPosition: previewPosition,
+          backgroundSize: previewFit,
+          filter: profile.colorFilter,
+        }}
         animate={playing && profile.bgMotion === "slow-zoom" ? { scale: [1, 1.08] } : profile.bgMotion === "drift" ? { x: [0, -15, 0] } : profile.bgMotion === "pan-left" ? { x: [0, -30] } : {}}
         transition={{ duration: 10, ease: "easeInOut" }}
       />

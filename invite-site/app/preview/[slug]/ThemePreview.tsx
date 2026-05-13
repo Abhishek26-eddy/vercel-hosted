@@ -3,324 +3,642 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import {
-  Heart, MapPin, Calendar, Sparkles,
-  ArrowRight, MessageCircle, Camera, Users, Scroll,
+  ArrowRight,
+  Calendar,
+  Camera,
+  Clock,
+  Heart,
+  MapPin,
+  MessageCircle,
+  Scroll,
+  Sparkles,
+  Users,
 } from "lucide-react";
 import type { PortfolioTheme } from "@/lib/portfolioThemes";
 import { BRAND } from "@/lib/portfolioThemes";
 import { getStoryBySlug } from "@/lib/sampleStories";
 
-/* ── Helpers ──────────────────────────────────────────────── */
-const fadeUp = (d: number) => ({
+const fadeUp = (delay = 0) => ({
   initial: { opacity: 0, y: 28 },
-  animate: { opacity: 1, y: 0, transition: { duration: 0.8, delay: d } },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.9, delay, ease: [0.22, 1, 0.36, 1] as const },
 });
 
 function isDarkBg(hex: string) {
-  const c = hex.replace("#", "");
-  const rgb = c.match(/.{2}/g)?.map((h) => parseInt(h, 16)) || [0, 0, 0];
+  const cleaned = hex.replace("#", "");
+  const rgb = cleaned.match(/.{2}/g)?.map((chunk) => parseInt(chunk, 16)) || [0, 0, 0];
   return rgb[0] * 0.299 + rgb[1] * 0.587 + rgb[2] * 0.114 < 128;
 }
 
-/* ── Fallback sample data for themes without stories ────── */
+function parseEventDate(dateString: string) {
+  if (/^\d{4}-\d{2}-\d{2}$/.test(dateString)) {
+    return new Date(`${dateString}T12:00:00`);
+  }
+
+  const normalized = dateString
+    .replace(/\b(\d{1,2})(st|nd|rd|th)\b/g, "$1")
+    .replace(/,/g, "");
+  const parsed = new Date(normalized);
+
+  if (Number.isNaN(parsed.getTime())) {
+    return null;
+  }
+
+  return parsed;
+}
+
+function formatEventDate(dateString: string, options: Intl.DateTimeFormatOptions) {
+  const parsed = parseEventDate(dateString);
+  if (!parsed) {
+    return dateString;
+  }
+
+  return parsed.toLocaleDateString("en-IN", options);
+}
+
+function buildMapsUrl(query: string) {
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
+}
+
+function groupEventsByDate(events: Array<{
+  name: string;
+  date: string;
+  time: string;
+  venue: string;
+  description?: string;
+}>) {
+  return events.reduce<Array<{
+    key: string;
+    label: string;
+    items: typeof events;
+  }>>((groups, event) => {
+    const parsed = parseEventDate(event.date);
+    const key = parsed ? parsed.toISOString().slice(0, 10) : event.date;
+    const label = formatEventDate(event.date, {
+      weekday: "long",
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    });
+
+    const currentGroup = groups[groups.length - 1];
+    if (currentGroup && currentGroup.key === key) {
+      currentGroup.items.push(event);
+      return groups;
+    }
+
+    groups.push({ key, label, items: [event] });
+    return groups;
+  }, []);
+}
+
 const FALLBACK_EVENTS = [
-  { name: "Mehendi & Sangeet", date: "2026-02-13", time: "6:00 PM", venue: "Grand Ballroom", description: "An evening of music and celebration" },
-  { name: "Wedding Ceremony", date: "2026-02-14", time: "7:00 PM", venue: "The Garden", description: "Join us as we exchange vows" },
-  { name: "Reception", date: "2026-02-14", time: "9:00 PM", venue: "The Terrace", description: "Dinner and dancing under the stars" },
+  {
+    name: "Mehendi and Sangeet",
+    date: "2026-02-13",
+    time: "6:00 PM",
+    venue: "Grand Ballroom",
+    description: "An evening of music, laughter, and dancing with our favourite people.",
+  },
+  {
+    name: "Wedding Ceremony",
+    date: "2026-02-14",
+    time: "7:00 PM",
+    venue: "The Garden Pavilion",
+    description: "Join us as we exchange vows beneath candlelight and flowers.",
+  },
+  {
+    name: "Reception Dinner",
+    date: "2026-02-14",
+    time: "9:00 PM",
+    venue: "The Terrace",
+    description: "Dinner, toasts, and a dance floor that stays full all night.",
+  },
 ];
 
 const FALLBACK_GALLERY = [
-  "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=85",
-  "https://images.unsplash.com/photo-1606216794074-735e91aa2c92?auto=format&fit=crop&w=800&q=85",
-  "https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=800&q=85",
-  "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=800&q=85",
-  "https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&w=800&q=85",
-  "https://images.unsplash.com/photo-1522083165195-3424ed129620?auto=format&fit=crop&w=800&q=85",
+  "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=85",
+  "https://images.unsplash.com/photo-1606216794074-735e91aa2c92?auto=format&fit=crop&w=1200&q=85",
+  "https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=1200&q=85",
+  "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=1200&q=85",
+  "https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&w=1200&q=85",
 ];
 
-/* ═══════════════════════════════════════════════════════════
-   ThemePreview — Story-driven wedding microsite preview
-   Rich, emotional, aspirational sample previews for luxury studio
-   ═══════════════════════════════════════════════════════════ */
-export default function ThemePreview({ theme }: { theme: PortfolioTheme }) {
-  // Get story data if available, otherwise use theme defaults
-  const story = getStoryBySlug(theme.slug);
-  
-  const dark = isDarkBg(theme.background);
-  const bg = theme.background;
-  const accent = theme.accent;
-  const ink = dark ? "#faf8f5" : "#1a1816";
-  const body = dark ? "rgba(255,255,255,0.7)" : "#57504a";
-  const muted = dark ? "rgba(255,255,255,0.45)" : "#9a9189";
-  const surface = dark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.025)";
-  const line = dark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.06)";
+const GALLERY_LAYOUTS = [
+  "sm:col-span-2 lg:col-span-7 min-h-[21rem] lg:min-h-[38rem]",
+  "lg:col-span-5 min-h-[16rem] lg:min-h-[18rem]",
+  "lg:col-span-3 min-h-[14rem] lg:min-h-[18rem]",
+  "lg:col-span-4 min-h-[14rem] lg:min-h-[18rem]",
+  "lg:col-span-5 min-h-[14rem] lg:min-h-[18rem]",
+];
 
-  // Use story data if available, fallback to theme data
-  const groom = story?.groomName || theme.couple.split("&")[0]?.trim() || "Groom";
-  const bride = story?.brideName || theme.couple.split("&")[1]?.trim() || "Bride";
+export default function ThemePreview({ theme }: { theme: PortfolioTheme }) {
+  const story = getStoryBySlug(theme.slug);
+
+  const dark = isDarkBg(theme.background);
+  const accent = theme.accent;
+  const ink = dark ? "#f8efe6" : "#2d241d";
+  const body = dark ? "rgba(248,239,230,0.76)" : "#51443a";
+  const muted = dark ? "rgba(248,239,230,0.55)" : "#736459";
+  const pageBg = dark ? "#120f0d" : "#f4eadf";
+  const shell = dark ? "rgba(30,24,20,0.9)" : "rgba(255,250,245,0.98)";
+  const shellAlt = dark ? "rgba(255,255,255,0.04)" : "#f2e8db";
+  const line = dark ? "rgba(255,255,255,0.12)" : "rgba(45,36,29,0.08)";
+  const deepOverlay = dark ? "rgba(10,8,7,0.82)" : "rgba(33,22,16,0.62)";
+  const names = theme.couple.split("&").map((part) => part.trim());
+
+  const groom = story?.groomName || names[0] || "Groom";
+  const bride = story?.brideName || names[1] || "Bride";
   const heroTitle = story?.heroTitle || `${groom} & ${bride}`;
   const heroSubtitle = story?.heroSubtitle || "Together with their families";
+  const heroImage = story?.heroImage || theme.image;
+  const heroImagePosition = story?.heroImagePosition || "center center";
   const venue = story?.venue || theme.location;
+  const venueAddress = story?.venueAddress || venue;
   const events = story?.events || FALLBACK_EVENTS;
-  const gallery = story?.galleryImages || FALLBACK_GALLERY;
-  const cta = `${BRAND.whatsappBase}Hi%2C%20I%27d%20like%20to%20reserve%20the%20${encodeURIComponent(theme.name)}%20invitation%20design.`;
+  const gallery = (story?.galleryImages || FALLBACK_GALLERY).slice(0, 5);
+  const galleryImagePositions = story?.galleryImagePositions || [];
+  const groupedEvents = groupEventsByDate(events);
+  const firstEvent = events[0];
+  const ceremonyDate = firstEvent
+    ? formatEventDate(firstEvent.date, {
+        weekday: "long",
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      })
+    : "A beautiful day to remember";
+  const ceremonyDay = firstEvent ? formatEventDate(firstEvent.date, { day: "2-digit" }) : "--";
+  const ceremonyMonth = firstEvent ? formatEventDate(firstEvent.date, { month: "short" }) : "Date";
+  const ceremonyYear = firstEvent ? formatEventDate(firstEvent.date, { year: "numeric" }) : "";
+  const cardTeaser = story?.cardTeaser || theme.shortDescription;
+  const invitationNote =
+    story?.welcomeNote ||
+    `Together with their families, ${groom} and ${bride} invite you to a celebration of love, beauty, and a lifetime of shared memories.`;
+  const proposalTitle = story?.proposalTitle || "The Proposal";
+  const ourStoryTitle = story?.ourStoryTitle || "Our Story";
+  const littleThings =
+    story?.littleThings ||
+    "The most unforgettable celebrations feel intimate, thoughtful, and full of tenderness in every detail.";
+  const proposalStory =
+    story?.proposalStory ||
+    "Every beautiful celebration deserves an invitation that carries atmosphere, romance, and a sense of occasion from the very first glance.";
+  const dressCode =
+    story?.dressCode ||
+    "Elegant festive wear that feels camera-ready, comfortable, and celebration-worthy.";
+  const closingNote =
+    story?.closingNote ||
+    "Thank you for being part of our story. Your presence, blessings, and joy would mean everything to us.";
+  const storyCTA = story?.cardCTA || "Reserve this design";
+  const mapsUrl = buildMapsUrl(venueAddress);
+  const whatsappUrl = `${BRAND.whatsappBase}Hi%2C%20I%27d%20like%20to%20reserve%20the%20${encodeURIComponent(theme.name)}%20design%20for%20my%20wedding.`;
+  const monogram = `${bride.charAt(0)}${groom.charAt(0)}`;
 
   return (
-    <div className="min-h-screen" style={{ background: bg, color: ink }}>
-      {/* ─── Top bar ─── */}
-      <div className="sticky top-0 z-50 flex items-center justify-between px-4 py-3 backdrop-blur-xl" style={{ background: `${bg}E0`, borderBottom: `1px solid ${line}` }}>
-        <Link href="/" className="text-[10px] font-medium tracking-[0.2em] uppercase" style={{ color: muted }}>
-          ← Back to collection
-        </Link>
-        <div className="flex items-center gap-2">
-          <span className="rounded-full px-2.5 py-1 text-[8px] font-bold tracking-[0.15em] uppercase" style={{ background: `${accent}20`, color: accent }}>
-            {theme.tier} · Preview
+    <div style={{ background: pageBg, color: ink }}>
+      <div
+        className="sticky top-0 z-50 border-b backdrop-blur-xl"
+        style={{ background: dark ? "rgba(18,15,13,0.82)" : "rgba(246,239,231,0.82)", borderColor: line }}
+      >
+        <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
+          <Link
+            href="/"
+            className="text-[10px] font-semibold uppercase tracking-[0.28em]"
+            style={{ color: muted }}
+          >
+            Back to collection
+          </Link>
+          <span
+            className="hidden rounded-full px-3 py-1 text-[9px] font-semibold uppercase tracking-[0.24em] sm:inline-flex"
+            style={{ background: `${accent}18`, color: accent, border: `1px solid ${accent}30` }}
+          >
+            {theme.tier} collection
           </span>
+          <Link
+            href={`/builder?template=${theme.slug}`}
+            className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.16em] sm:px-5"
+            style={{ background: accent, color: "#fff" }}
+          >
+            Reserve
+            <ArrowRight size={12} />
+          </Link>
         </div>
-        <Link href={`/builder?template=${theme.slug}`}
-          className="flex items-center gap-1.5 rounded-full px-4 py-2 text-[10px] font-semibold tracking-wide"
-          style={{ background: accent, color: "white" }}
-        >
-          Reserve This Invite <ArrowRight size={10} />
-        </Link>
       </div>
 
-      {/* ─── HERO ─── */}
-      <section className="relative overflow-hidden" style={{ minHeight: "100vh" }}>
-        <motion.div className="absolute inset-0 bg-cover bg-center scale-105"
-          style={{ backgroundImage: `url(${theme.image})` }}
-          initial={{ scale: 1.1 }} animate={{ scale: 1.05 }} transition={{ duration: 12, ease: "easeOut" }}
+      <section className="relative overflow-hidden">
+        <motion.div
+          className="absolute inset-0 bg-cover bg-center"
+          style={{ backgroundImage: `url(${heroImage})`, backgroundPosition: heroImagePosition }}
+          initial={{ scale: 1.08 }}
+          animate={{ scale: 1.02 }}
+          transition={{ duration: 12, ease: "easeOut" }}
         />
-        <div className="absolute inset-0" style={{ background: `linear-gradient(180deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.25) 40%, ${bg}F0 100%)` }} />
+        <div
+          className="absolute inset-0"
+          style={{
+            background: `linear-gradient(180deg, rgba(0,0,0,0.18) 0%, ${deepOverlay} 60%, ${pageBg} 100%)`,
+          }}
+        />
+        <div
+          className="absolute inset-0 opacity-20"
+          style={{
+            backgroundImage: `radial-gradient(circle at top left, ${accent} 0, transparent 28%), radial-gradient(circle at bottom right, rgba(255,255,255,0.18) 0, transparent 24%)`,
+          }}
+        />
 
-        {/* Dot pattern */}
-        <div className="pointer-events-none absolute inset-0 opacity-[0.04]" style={{ backgroundImage: `radial-gradient(circle at 1px 1px, ${accent} 1px, transparent 1px)`, backgroundSize: "20px 20px" }} />
+        <div className="relative z-10 mx-auto flex min-h-[100svh] max-w-6xl items-end px-4 pb-16 pt-24 sm:px-6 sm:pb-20 sm:pt-28">
+          <div className="w-full">
+            <motion.div {...fadeUp(0)} className="max-w-3xl">
+              <div
+                className="inline-flex h-16 w-16 items-center justify-center rounded-full border text-lg font-semibold sm:h-20 sm:w-20 sm:text-xl"
+                style={{ borderColor: "rgba(255,255,255,0.3)", color: "#fff", background: "rgba(255,255,255,0.08)" }}
+              >
+                {monogram}
+              </div>
+              <p className="mt-6 text-[10px] font-semibold uppercase tracking-[0.36em]" style={{ color: `${accent}` }}>
+                Wedding invitation
+              </p>
+              <h1
+                className="mt-5 font-display text-white"
+                style={{ fontSize: "clamp(2.5rem, 7vw, 5.75rem)", lineHeight: 0.96 }}
+              >
+                {heroTitle}
+              </h1>
+              <p className="mt-4 max-w-2xl text-[14px] leading-[1.85] sm:text-[15px]" style={{ color: "rgba(255,255,255,0.78)" }}>
+                {heroSubtitle}
+              </p>
+              <div className="mt-7 flex flex-wrap items-center gap-3 text-white/80">
+                <div
+                  className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-[11px] uppercase tracking-[0.18em]"
+                  style={{ background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.12)" }}
+                >
+                  <Calendar size={12} />
+                  {ceremonyDate}
+                </div>
+                <div
+                  className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-[11px] uppercase tracking-[0.18em]"
+                  style={{ background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.12)" }}
+                >
+                  <MapPin size={12} />
+                  {venue}
+                </div>
+              </div>
+            </motion.div>
 
-        <div className="relative z-10 flex min-h-screen flex-col items-center justify-center px-6 text-center">
-          <motion.div {...fadeUp(0.2)} className="mb-8 flex h-16 w-16 items-center justify-center rounded-full border-2 backdrop-blur-md" style={{ borderColor: `${accent}60`, background: "rgba(255,255,255,0.08)" }}>
-            <Heart size={22} style={{ color: accent }} />
-          </motion.div>
+            <motion.div
+              {...fadeUp(0.12)}
+              className="mt-10 grid gap-4 lg:grid-cols-[1.15fr_0.85fr]"
+            >
+              <div
+                className="rounded-[30px] border p-6 sm:p-8"
+                style={{ background: "rgba(255,250,245,0.12)", borderColor: "rgba(255,255,255,0.14)", backdropFilter: "blur(16px)" }}
+              >
+                <p className="text-[10px] font-semibold uppercase tracking-[0.28em]" style={{ color: `${accent}` }}>
+                  Wedding story
+                </p>
+                <p className="mt-4 max-w-2xl text-[14px] leading-[1.9] text-white/84 sm:text-[15px]">
+                  {cardTeaser}
+                </p>
+                <div className="mt-6 flex flex-wrap gap-3">
+                  <a
+                    href={whatsappUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-2 rounded-full px-5 py-3 text-[11px] font-semibold uppercase tracking-[0.16em]"
+                    style={{ background: "#fff", color: "#241c16" }}
+                  >
+                    <MessageCircle size={13} />
+                    Discuss this look
+                  </a>
+                  <a
+                    href="#preview-story"
+                    className="inline-flex items-center gap-2 rounded-full px-5 py-3 text-[11px] font-semibold uppercase tracking-[0.16em]"
+                    style={{ border: "1px solid rgba(255,255,255,0.16)", color: "#fff" }}
+                  >
+                    <Heart size={13} />
+                    Explore the card
+                  </a>
+                </div>
+              </div>
 
-          <motion.p {...fadeUp(0.4)} className="text-[9px] font-semibold uppercase tracking-[0.55em]" style={{ color: accent }}>
-            {heroSubtitle}
-          </motion.p>
-
-          <motion.h1 {...fadeUp(0.6)} className="mt-6 font-serif leading-[1.1] px-4" style={{ color: "#ffffff", fontSize: "clamp(2rem, 7vw, 4.5rem)" }}>
-            {heroTitle}
-          </motion.h1>
-
-          <motion.div {...fadeUp(1)} className="mt-10 flex items-center gap-3">
-            <span className="h-px w-12" style={{ background: accent }} />
-            <Sparkles size={12} style={{ color: accent }} />
-            <span className="h-px w-12" style={{ background: accent }} />
-          </motion.div>
-
-          {events && events.length > 0 && (
-            <motion.p {...fadeUp(1.1)} className="mt-5 text-[10px] font-medium uppercase tracking-[0.4em] text-white/80">
-              {new Date(events[0].date).toLocaleDateString("en-IN", { weekday: "long", month: "long", day: "numeric", year: "numeric" })}
-            </motion.p>
-          )}
-          <motion.p {...fadeUp(1.2)} className="mt-2 flex items-center gap-1.5 text-[11px] text-white/55">
-            <MapPin size={10} /> {venue}
-          </motion.p>
-
-          <motion.div {...fadeUp(1.4)} className="mt-10">
-            <div className="animate-bounce text-white/40">
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 4v10m0 0l-4-4m4 4l4-4" stroke="currentColor" strokeWidth="1.5" /></svg>
-            </div>
-          </motion.div>
+              <div
+                className="rounded-[30px] border p-6 sm:p-8"
+                style={{ background: "rgba(20,14,11,0.42)", borderColor: "rgba(255,255,255,0.14)", backdropFilter: "blur(16px)" }}
+              >
+                <p className="text-[10px] font-semibold uppercase tracking-[0.28em]" style={{ color: `${accent}` }}>
+                  Save the date
+                </p>
+                <div className="mt-5 flex items-end gap-4">
+                  <span className="font-display text-[4rem] leading-none text-white sm:text-[5rem]">
+                    {ceremonyDay}
+                  </span>
+                  <div className="pb-2">
+                    <p className="text-lg font-semibold uppercase tracking-[0.3em] text-white/88">
+                      {ceremonyMonth}
+                    </p>
+                    <p className="text-[12px] uppercase tracking-[0.24em] text-white/58">
+                      {ceremonyYear}
+                    </p>
+                  </div>
+                </div>
+                <div className="mt-5 h-px" style={{ background: "rgba(255,255,255,0.12)" }} />
+                <p className="mt-5 text-[13px] leading-[1.8] text-white/78">
+                  A beautifully paced celebration of vows, atmosphere, and cherished memory.
+                </p>
+              </div>
+            </motion.div>
+          </div>
         </div>
       </section>
 
-      {/* ─── WELCOME NOTE ─── */}
-      {story?.welcomeNote && (
-        <section className="px-6 py-16 text-center" style={{ background: surface }}>
-          <motion.div {...fadeUp(0)} className="mx-auto max-w-2xl">
-            <Sparkles size={20} className="mx-auto mb-3" style={{ color: accent }} />
-            <p className="text-[9px] font-semibold uppercase tracking-[0.45em]" style={{ color: accent }}>You Are Invited</p>
-            <p className="mx-auto mt-5 text-[13px] sm:text-[14px] leading-[1.9]" style={{ color: body }}>
-              {story.welcomeNote}
+      <main id="preview-story" className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16">
+        <motion.section {...fadeUp(0)} className="grid gap-6 lg:grid-cols-[0.78fr_1.22fr]">
+          <div className="rounded-[32px] border p-6 sm:p-8" style={{ background: shell, borderColor: line }}>
+            <p className="text-[10px] font-semibold uppercase tracking-[0.3em]" style={{ color: accent }}>
+              Invitation
             </p>
-          </motion.div>
-        </section>
-      )}
-
-      {/* ─── OUR STORY ─── */}
-      {story && (
-        <section className="px-6 py-16 sm:px-10" style={{ background: bg }}>
-          <motion.div {...fadeUp(0)} className="mx-auto max-w-2xl">
-            <div className="text-center mb-10">
-              <Heart size={20} className="mx-auto mb-3" style={{ color: accent }} />
-              <p className="text-[9px] font-semibold uppercase tracking-[0.45em]" style={{ color: accent }}>{story.ourStoryTitle || "Our Story"}</p>
-            </div>
-            
-            {/* How We Met */}
-            {story.howWeMet && (
-              <div className="mb-8">
-                <h3 className="font-serif text-xl sm:text-2xl mb-3" style={{ color: ink }}>How We Met</h3>
-                <p className="text-[13px] sm:text-[14px] leading-[1.9]" style={{ color: body }}>
-                  {story.howWeMet}
-                </p>
-              </div>
-            )}
-
-            {/* Little Things */}
-            {story.littleThings && (
-              <div className="mb-8">
-                <p className="text-[13px] sm:text-[14px] leading-[1.9] italic" style={{ color: body }}>
-                  {story.littleThings}
-                </p>
-              </div>
-            )}
-
-            {/* Proposal */}
-            {story.proposalStory && (
-              <div className="mt-12 p-6 sm:p-8 rounded-2xl" style={{ background: `${accent}08`, border: `1px solid ${accent}20` }}>
-                <Scroll size={20} className="mx-auto mb-3" style={{ color: accent }} />
-                <h3 className="text-center font-serif text-xl sm:text-2xl mb-4" style={{ color: ink }}>{story.proposalTitle || "The Proposal"}</h3>
-                <p className="text-[13px] sm:text-[14px] leading-[1.9]" style={{ color: body }}>
-                  {story.proposalStory}
-                </p>
-              </div>
-            )}
-          </motion.div>
-        </section>
-      )}
-
-      {/* ─── EVENTS ─── */}
-      <section className="relative overflow-hidden px-6 py-16 sm:px-10" style={{ background: dark ? surface : "#0d0b0a" }}>
-        <div className="pointer-events-none absolute inset-0 opacity-[0.05]" style={{ backgroundImage: `radial-gradient(circle at 1px 1px, ${accent} 1px, transparent 1px)`, backgroundSize: "22px 22px" }} />
-        <div className="relative z-10">
-          <div className="mb-10 text-center">
-            <p className="text-[9px] font-semibold uppercase tracking-[0.45em]" style={{ color: accent }}>Celebrations</p>
-            <h2 className="mt-3 font-serif text-3xl sm:text-4xl" style={{ color: dark ? ink : "#faf8f5" }}>Wedding Festivities</h2>
-          </div>
-          <div className="mx-auto grid max-w-2xl gap-4 sm:grid-cols-2">
-            {events.map((e: any, i: number) => (
-              <motion.div key={e.name} {...fadeUp(i * 0.1)}
-                className="rounded-2xl border p-5 backdrop-blur"
-                style={{ borderColor: `${accent}40`, background: dark ? "rgba(255,255,255,0.04)" : "rgba(255,255,255,0.06)" }}
-              >
-                <div className="flex items-center gap-3">
-                  <div className="flex h-9 w-9 items-center justify-center rounded-full" style={{ background: `${accent}20` }}>
-                    <Calendar size={14} style={{ color: accent }} />
-                  </div>
-                  <h3 className="font-serif text-lg" style={{ color: dark ? ink : "#faf8f5" }}>{e.name}</h3>
+            <h2 className="mt-4 font-display text-3xl sm:text-4xl" style={{ lineHeight: 1.02 }}>
+              Come celebrate
+              <br />
+              <span className="font-script" style={{ color: accent }}>
+                their forever.
+              </span>
+            </h2>
+            <p className="mt-5 text-[14px] leading-[1.95] sm:text-[15px]" style={{ color: body }}>
+              {invitationNote}
+            </p>
+            <div className="mt-7 rounded-[24px] p-5" style={{ background: shellAlt }}>
+              <p className="text-[10px] font-semibold uppercase tracking-[0.24em]" style={{ color: muted }}>
+                Celebration details
+              </p>
+              <div className="mt-4 space-y-3 text-[13px]" style={{ color: body }}>
+                <div className="flex items-start gap-3">
+                  <Calendar size={15} style={{ color: accent }} />
+                  <span>{ceremonyDate}</span>
                 </div>
-                <p className="mt-2 text-[10px] font-medium uppercase tracking-[0.3em]" style={{ color: accent }}>
-                  {new Date(e.date).toLocaleDateString("en-IN", { weekday: "short", month: "short", day: "numeric" })} · {e.time}
+                <div className="flex items-start gap-3">
+                  <MapPin size={15} style={{ color: accent }} />
+                  <span>{venue}</span>
+                </div>
+                {firstEvent?.time && (
+                  <div className="flex items-start gap-3">
+                    <Clock size={15} style={{ color: accent }} />
+                    <span>{firstEvent.time}</span>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+
+          <div className="rounded-[32px] border p-6 sm:p-8" style={{ background: shell, borderColor: line }}>
+            <div className="grid gap-6 lg:grid-cols-[1fr_0.8fr]">
+              <div>
+                <p className="text-[10px] font-semibold uppercase tracking-[0.3em]" style={{ color: accent }}>
+                  Hosted with love
                 </p>
-                {e.venue && <p className="mt-1 text-[11px]" style={{ color: dark ? muted : "rgba(255,255,255,0.5)" }}>{e.venue}</p>}
-                {e.description && <p className="mt-2 text-[10px] leading-relaxed" style={{ color: dark ? body : "rgba(255,255,255,0.6)" }}>{e.description}</p>}
-              </motion.div>
+                <p className="mt-4 text-[14px] leading-[1.95] sm:text-[15px]" style={{ color: body }}>
+                  Together with their families, they invite you into a celebration shaped with intimacy, elegance, and heartfelt intention.
+                </p>
+              </div>
+              <div className="grid gap-4">
+                {story?.groomFamily && (
+                  <div className="rounded-[24px] p-5" style={{ background: shellAlt }}>
+                    <div className="flex items-center gap-2">
+                      <Users size={15} style={{ color: accent }} />
+                      <p className="text-[10px] font-semibold uppercase tracking-[0.24em]" style={{ color: muted }}>
+                        {groom}&apos;s family
+                      </p>
+                    </div>
+                    <p className="mt-3 text-[13px] leading-[1.8]" style={{ color: body }}>
+                      {story.groomFamily}
+                    </p>
+                  </div>
+                )}
+                {story?.brideFamily && (
+                  <div className="rounded-[24px] p-5" style={{ background: shellAlt }}>
+                    <div className="flex items-center gap-2">
+                      <Users size={15} style={{ color: accent }} />
+                      <p className="text-[10px] font-semibold uppercase tracking-[0.24em]" style={{ color: muted }}>
+                        {bride}&apos;s family
+                      </p>
+                    </div>
+                    <p className="mt-3 text-[13px] leading-[1.8]" style={{ color: body }}>
+                      {story.brideFamily}
+                    </p>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </motion.section>
+
+        <motion.section {...fadeUp(0.04)} className="mt-6 grid gap-6 lg:grid-cols-[1.08fr_0.92fr]">
+          <div className="rounded-[32px] border p-6 sm:p-8" style={{ background: shell, borderColor: line }}>
+            <p className="text-[10px] font-semibold uppercase tracking-[0.3em]" style={{ color: accent }}>
+              {ourStoryTitle}
+            </p>
+            <h3 className="mt-4 font-display text-2xl sm:text-3xl">How they found each other</h3>
+            <p className="mt-5 text-[14px] leading-[1.95] sm:text-[15px]" style={{ color: body }}>
+              {story?.howWeMet || invitationNote}
+            </p>
+            <div className="mt-6 rounded-[24px] p-5" style={{ background: shellAlt }}>
+              <p className="text-[10px] font-semibold uppercase tracking-[0.24em]" style={{ color: muted }}>
+                The little things
+              </p>
+              <p className="mt-3 text-[14px] leading-[1.9] italic" style={{ color: body }}>
+                {littleThings}
+              </p>
+            </div>
+          </div>
+
+          <div className="grid gap-6">
+            <div
+              className="min-h-[17rem] overflow-hidden rounded-[32px] border bg-cover bg-center"
+              style={{
+                backgroundImage: `url(${gallery[0] || heroImage})`,
+                backgroundPosition: galleryImagePositions[0] || heroImagePosition,
+                borderColor: line,
+              }}
+            />
+            <div className="rounded-[32px] border p-6 sm:p-8" style={{ background: shell, borderColor: line }}>
+              <div className="flex items-center gap-2">
+                <Scroll size={16} style={{ color: accent }} />
+                <p className="text-[10px] font-semibold uppercase tracking-[0.3em]" style={{ color: accent }}>
+                  {proposalTitle}
+                </p>
+              </div>
+              <p className="mt-4 text-[14px] leading-[1.95] sm:text-[15px]" style={{ color: body }}>
+                {proposalStory}
+              </p>
+            </div>
+          </div>
+        </motion.section>
+
+        <motion.section {...fadeUp(0.08)} className="mt-6 rounded-[34px] border p-6 sm:p-8" style={{ background: shell, borderColor: line }}>
+          <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-end">
+            <div>
+              <div className="flex items-center gap-2">
+                <Camera size={16} style={{ color: accent }} />
+                <p className="text-[10px] font-semibold uppercase tracking-[0.3em]" style={{ color: accent }}>
+                  Moments
+                </p>
+              </div>
+              <h3 className="mt-4 font-display text-2xl sm:text-3xl">A gallery that feels personal</h3>
+            </div>
+            <p className="max-w-md text-[13px] leading-[1.8]" style={{ color: body }}>
+              A sequence of images chosen to let the atmosphere, fashion, and tenderness of the day speak for themselves.
+            </p>
+          </div>
+          <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-12">
+            {gallery.map((src, index) => (
+              <div
+                key={`${src}-${index}`}
+                className={`overflow-hidden rounded-[28px] border bg-cover bg-center ${GALLERY_LAYOUTS[index] || "min-h-[16rem]"}`}
+                style={{
+                  backgroundImage: `url(${src})`,
+                  backgroundPosition: galleryImagePositions[index] || heroImagePosition,
+                  borderColor: line,
+                }}
+              />
             ))}
           </div>
-        </div>
-      </section>
+        </motion.section>
 
-      {/* ─── GALLERY ─── */}
-      <section className="px-6 py-16 sm:px-10" style={{ background: bg }}>
-        <div className="mb-10 text-center">
-          <Camera size={20} className="mx-auto mb-3" style={{ color: accent }} />
-          <p className="text-[9px] font-semibold uppercase tracking-[0.45em]" style={{ color: accent }}>Gallery</p>
-          <h2 className="mt-3 font-serif text-3xl sm:text-4xl" style={{ color: ink }}>Captured Moments</h2>
-        </div>
-        <div className="mx-auto grid max-w-3xl grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4">
-          {gallery.map((src: string, i: number) => (
-            <motion.div key={i} {...fadeUp(i * 0.08)}
-              className="overflow-hidden rounded-xl sm:rounded-2xl"
-              style={{ border: `1px solid ${line}` }}
-            >
-              <div className="aspect-square bg-cover bg-center transition-transform duration-700 hover:scale-105" style={{ backgroundImage: `url(${src})` }} />
-            </motion.div>
-          ))}
-        </div>
-      </section>
-
-      {/* ─── VENUE ─── */}
-      <section className="relative overflow-hidden" style={{ minHeight: "320px" }}>
-        <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${theme.image})`, filter: "brightness(0.35)" }} />
-        <div className="absolute inset-0" style={{ background: "rgba(0,0,0,0.5)" }} />
-        <div className="relative z-10 flex min-h-[320px] flex-col items-center justify-center px-6 py-12 text-center">
-          <p className="text-[9px] font-semibold uppercase tracking-[0.45em]" style={{ color: accent }}>The Venue</p>
-          <h3 className="mt-3 font-serif text-2xl sm:text-3xl text-white px-4">{story?.venue || venue}</h3>
-          {story?.venueAddress && <p className="mt-2 text-[11px] text-white/50 max-w-md">{story.venueAddress}</p>}
-          <div className="mt-5 rounded-full border px-5 py-2 text-[10px] font-bold uppercase tracking-[0.2em]" style={{ borderColor: accent, color: accent }}>
-            <MapPin size={10} className="mr-1 inline" /> View Location
-          </div>
-        </div>
-      </section>
-
-      {/* ─── FAMILY ─── */}
-      {story && (story.groomFamily || story.brideFamily) && (
-        <section className="px-6 py-16 text-center" style={{ background: surface }}>
-          <motion.div {...fadeUp(0)} className="mx-auto max-w-xl">
-            <Users size={20} className="mx-auto mb-3" style={{ color: accent }} />
-            <p className="text-[9px] font-semibold uppercase tracking-[0.45em]" style={{ color: accent }}>Our Families</p>
-            <div className="mt-8 grid gap-6 sm:grid-cols-2">
-              {story.groomFamily && (
-                <div>
-                  <h4 className="font-serif text-lg mb-2" style={{ color: ink }}>{story.groomName}&apos;s Family</h4>
-                  <p className="text-[12px] leading-relaxed" style={{ color: body }}>{story.groomFamily}</p>
-                </div>
-              )}
-              {story.brideFamily && (
-                <div>
-                  <h4 className="font-serif text-lg mb-2" style={{ color: ink }}>{story.brideName}&apos;s Family</h4>
-                  <p className="text-[12px] leading-relaxed" style={{ color: body }}>{story.brideFamily}</p>
-                </div>
-              )}
+        <motion.section {...fadeUp(0.12)} className="mt-6 grid gap-6 lg:grid-cols-[0.95fr_1.05fr]">
+          <div className="overflow-hidden rounded-[32px] border" style={{ background: shell, borderColor: line }}>
+            <div
+              className="min-h-[18rem] bg-cover bg-center"
+              style={{
+                backgroundImage: `linear-gradient(180deg, rgba(0,0,0,0.08), rgba(0,0,0,0.4)), url(${gallery[1] || heroImage})`,
+                backgroundPosition: galleryImagePositions[1] || heroImagePosition,
+              }}
+            />
+            <div className="p-6 sm:p-8">
+              <div className="flex items-center gap-2">
+                <MapPin size={16} style={{ color: accent }} />
+                <p className="text-[10px] font-semibold uppercase tracking-[0.3em]" style={{ color: accent }}>
+                  Venue
+                </p>
+              </div>
+              <h3 className="mt-4 font-display text-2xl sm:text-3xl">{venue}</h3>
+              <p className="mt-3 text-[14px] leading-[1.9]" style={{ color: body }}>
+                {venueAddress}
+              </p>
+              <a
+                href={mapsUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="mt-6 inline-flex items-center gap-2 rounded-full px-5 py-3 text-[11px] font-semibold uppercase tracking-[0.16em]"
+                style={{ background: `${accent}18`, color: accent, border: `1px solid ${accent}2f` }}
+              >
+                <MapPin size={13} />
+                View map
+              </a>
             </div>
-          </motion.div>
-        </section>
-      )}
+          </div>
 
-      {/* ─── CLOSING NOTE / RSVP ─── */}
-      <section className="px-6 py-16 text-center sm:px-10" style={{ background: dark ? surface : "#0d0b0a" }}>
-        <Heart size={20} className="mx-auto mb-3" style={{ color: accent }} />
-        <p className="text-[9px] font-semibold uppercase tracking-[0.45em]" style={{ color: accent }}>{story?.rsvpText || "Join Us"}</p>
-        <h3 className="mt-3 font-serif text-2xl sm:text-3xl" style={{ color: dark ? ink : "#faf8f5" }}>We&apos;d be honoured by your presence</h3>
-        {story?.closingNote && (
-          <p className="mx-auto mt-4 max-w-lg text-[13px] sm:text-[14px] leading-relaxed" style={{ color: dark ? body : "rgba(255,255,255,0.65)" }}>
-            {story.closingNote}
+          <div className="rounded-[32px] border p-6 sm:p-8" style={{ background: shell, borderColor: line }}>
+            <div className="flex items-center gap-2">
+              <Sparkles size={16} style={{ color: accent }} />
+              <p className="text-[10px] font-semibold uppercase tracking-[0.3em]" style={{ color: accent }}>
+                Wedding itinerary
+              </p>
+            </div>
+            <div className="mt-6 space-y-4">
+              {groupedEvents.map((group, groupIndex) => (
+                <div key={group.key} className="rounded-[26px] p-5 sm:p-6" style={{ background: shellAlt }}>
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.22em]" style={{ color: muted }}>
+                    Day {groupIndex + 1}
+                  </p>
+                  <h4 className="mt-2 font-display text-xl">{group.label}</h4>
+                  <div className="mt-5 space-y-4">
+                    {group.items.map((event) => (
+                      <div key={`${group.key}-${event.name}`} className="border-l pl-4" style={{ borderColor: `${accent}55` }}>
+                        <div className="flex flex-wrap items-center gap-2">
+                          <p className="font-semibold">{event.name}</p>
+                          <span className="text-[11px] uppercase tracking-[0.18em]" style={{ color: accent }}>
+                            {event.time}
+                          </span>
+                        </div>
+                        <p className="mt-1 text-[13px]" style={{ color: body }}>
+                          {event.venue}
+                        </p>
+                        {event.description && (
+                          <p className="mt-2 text-[13px] leading-[1.8]" style={{ color: body }}>
+                            {event.description}
+                          </p>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </motion.section>
+
+        <motion.section {...fadeUp(0.16)} className="mt-6 grid gap-6 lg:grid-cols-[0.78fr_1.22fr]">
+          <div className="rounded-[32px] border p-6 sm:p-8" style={{ background: shell, borderColor: line }}>
+            <p className="text-[10px] font-semibold uppercase tracking-[0.3em]" style={{ color: accent }}>
+              Attire note
+            </p>
+            <h3 className="mt-4 font-display text-2xl sm:text-3xl">Dress for the mood</h3>
+            <p className="mt-5 text-[14px] leading-[1.95] sm:text-[15px]" style={{ color: body }}>
+              {dressCode}
+            </p>
+          </div>
+          <div className="rounded-[32px] border p-6 sm:p-8" style={{ background: shell, borderColor: line }}>
+            <div className="flex items-center gap-2">
+              <Heart size={16} style={{ color: accent }} />
+              <p className="text-[10px] font-semibold uppercase tracking-[0.3em]" style={{ color: accent }}>
+                Closing note
+              </p>
+            </div>
+            <p className="mt-5 text-[14px] leading-[1.95] sm:text-[15px]" style={{ color: body }}>
+              {closingNote}
+            </p>
+          </div>
+        </motion.section>
+
+        <motion.section
+          {...fadeUp(0.2)}
+          className="mt-6 rounded-[36px] border px-6 py-8 text-center sm:px-8 sm:py-10"
+          style={{
+            background: `linear-gradient(135deg, ${shell}, ${shellAlt})`,
+            borderColor: line,
+          }}
+        >
+          <p className="text-[10px] font-semibold uppercase tracking-[0.32em]" style={{ color: accent }}>
+            {story?.rsvpText || "Join us"}
           </p>
-        )}
-      </section>
-
-
-      {/* ─── CTA Footer ─── */}
-      <section className="px-6 py-20 text-center" style={{ background: bg }}>
-        <Sparkles size={20} className="mx-auto mb-3" style={{ color: accent }} />
-        <p className="text-[9px] font-semibold uppercase tracking-[0.45em]" style={{ color: accent }}>Inspired by this design?</p>
-        <h3 className="mt-3 font-serif text-2xl sm:text-3xl" style={{ color: ink }}>Let us craft yours.</h3>
-        <p className="mx-auto mt-4 max-w-lg text-[13px] sm:text-[14px] leading-[1.9]" style={{ color: body }}>
-          Reserve the {theme.name} design and we&apos;ll personalize it with your love story, photos, and celebration details. Premium, boutique, unforgettable.
-        </p>
-        <div className="mt-10 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
-          <Link href={`/builder?template=${theme.slug}`}
-            className="group flex items-center gap-2 rounded-full px-10 py-4 text-[12px] font-semibold tracking-wide shadow-xl transition-all hover:scale-[1.02]"
-            style={{ background: accent, color: "white" }}
-          >
-            Reserve This Design <ArrowRight size={12} className="transition-transform group-hover:translate-x-1" />
-          </Link>
-          <a href={cta} target="_blank" rel="noreferrer"
-            className="flex items-center gap-2 rounded-full px-8 py-3.5 text-[11px] font-medium border transition-all hover:border-opacity-70"
-            style={{ borderColor: `${accent}40`, color: muted }}
-          >
-            <MessageCircle size={11} /> Speak to Our Team
-          </a>
-        </div>
-      </section>
-
-      {/* ─── Footer ─── */}
-      <div className="py-8 text-center" style={{ background: dark ? "rgba(0,0,0,0.3)" : "#0d0b0a" }}>
-        <p className="text-[9px] uppercase tracking-[0.25em] mb-2" style={{ color: "rgba(255,255,255,0.3)" }}>
-          Sample Preview · {theme.name}
-        </p>
-        <p className="text-[8px] uppercase tracking-[0.3em]" style={{ color: "rgba(255,255,255,0.2)" }}>
-          Crafted by The Digital Inviters · Boutique Wedding Invitations
-        </p>
-      </div>
+          <h3 className="mt-4 font-display text-3xl sm:text-4xl" style={{ lineHeight: 1.02 }}>
+            {storyCTA}
+          </h3>
+          <p className="mx-auto mt-4 max-w-2xl text-[14px] leading-[1.9] sm:text-[15px]" style={{ color: body }}>
+            If this world feels like yours, we would be delighted to shape your own invitation with the same romance, detail, and atmosphere.
+          </p>
+          <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+            <Link
+              href={`/builder?template=${theme.slug}`}
+              className="inline-flex items-center gap-2 rounded-full px-6 py-3.5 text-[11px] font-semibold uppercase tracking-[0.16em]"
+              style={{ background: accent, color: "#fff" }}
+            >
+              Reserve this design
+              <ArrowRight size={13} />
+            </Link>
+            <a
+              href={whatsappUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-2 rounded-full px-6 py-3.5 text-[11px] font-semibold uppercase tracking-[0.16em]"
+              style={{ border: `1px solid ${accent}40`, color: accent }}
+            >
+              <MessageCircle size={13} />
+              WhatsApp us
+            </a>
+          </div>
+        </motion.section>
+      </main>
     </div>
   );
 }

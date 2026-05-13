@@ -27,6 +27,7 @@ import {
   Film,
 } from "lucide-react";
 import { PORTFOLIO_THEMES, BRAND } from "@/lib/portfolioThemes";
+import { getStoryPreviewImage, getStoryPreviewPosition, getStoryPreviewFit } from "@/lib/sampleStories";
 import { useLocale } from "@/components/LocaleProvider";
 import VideoPreview from "@/components/video/VideoPreview";
 import { BASE_PRICES } from "@/lib/i18n";
@@ -70,6 +71,55 @@ const STEPS = [
   { id: "review", label: "Review", icon: Eye },
   { id: "payment", label: "Payment", icon: CreditCard },
 ];
+
+function getThemeCardImage(themeSlug: string, fallbackImage: string) {
+  return getStoryPreviewImage(themeSlug, fallbackImage);
+}
+
+function getThemeCardPosition(themeSlug: string) {
+  return getStoryPreviewPosition(themeSlug);
+}
+
+function getThemeCardFit(themeSlug: string) {
+  return getStoryPreviewFit(themeSlug);
+}
+
+function ThemeCardArtwork({
+  themeSlug,
+  fallbackImage,
+  hoverScaleClass = "",
+  containInset = "0.9rem",
+}: {
+  themeSlug: string;
+  fallbackImage: string;
+  hoverScaleClass?: string;
+  containInset?: string;
+}) {
+  const previewImage = getThemeCardImage(themeSlug, fallbackImage);
+  const previewPosition = getThemeCardPosition(themeSlug);
+  const previewFit = getThemeCardFit(themeSlug);
+
+  return (
+    <>
+      <div
+        className="absolute inset-0 scale-110 bg-cover bg-center opacity-75 blur-2xl"
+        style={{
+          backgroundImage: `url(${previewImage})`,
+          backgroundPosition: previewPosition,
+        }}
+      />
+      <div
+        className={`absolute bg-center bg-no-repeat ${hoverScaleClass}`}
+        style={{
+          inset: previewFit === "contain" ? containInset : "0px",
+          backgroundImage: `url(${previewImage})`,
+          backgroundPosition: previewPosition,
+          backgroundSize: previewFit,
+        }}
+      />
+    </>
+  );
+}
 
 /* ══════════════════════════════════════════════════════════
    MAIN BUILDER — Premium editorial ordering experience
@@ -354,7 +404,11 @@ function BuilderInner() {
                       style={{ border: sel ? `2px solid ${P.gold}` : isLuxe ? `1px solid ${P.goldMuted}` : `1px solid ${P.lineSoft}`, boxShadow: sel ? `0 0 0 3px ${P.gold}20` : "none" }}
                     >
                       <div className="relative aspect-[3/4] overflow-hidden">
-                        <div className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105" style={{ backgroundImage: `url(${theme.image})` }} />
+                        <ThemeCardArtwork
+                          themeSlug={theme.slug}
+                          fallbackImage={theme.image}
+                          hoverScaleClass="transition-transform duration-700 group-hover:scale-105"
+                        />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent" />
 
                         {/* Top-left badges */}
@@ -382,7 +436,7 @@ function BuilderInner() {
                           className="absolute bottom-2 right-2 sm:bottom-3 sm:right-3 flex items-center gap-1 rounded-full px-2 sm:px-2.5 py-1 text-[8px] sm:text-[9px] font-medium backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity hidden sm:flex"
                           style={{ background: "rgba(255,255,255,0.9)", color: P.ink }}
                         >
-                          <Eye size={9} /> Preview
+                          <Eye size={9} /> View Invite
                         </Link>
                       </div>
 
@@ -528,7 +582,15 @@ function BuilderInner() {
               {/* Full order summary */}
               <div className="mx-auto max-w-2xl mb-6 sm:mb-8 rounded-xl sm:rounded-2xl p-4 sm:p-6 space-y-4" style={{ background: P.surface, border: `1px solid ${P.lineSoft}` }}>
                 <div className="flex items-center gap-3 sm:gap-4">
-                  {selectedTheme && <div className="h-14 w-14 sm:h-16 sm:w-16 flex-shrink-0 rounded-lg sm:rounded-xl bg-cover bg-center shadow-sm" style={{ backgroundImage: `url(${selectedTheme.image})` }} />}
+                  {selectedTheme && (
+                    <div className="relative h-14 w-14 sm:h-16 sm:w-16 flex-shrink-0 rounded-lg sm:rounded-xl overflow-hidden shadow-sm">
+                      <ThemeCardArtwork
+                        themeSlug={selectedTheme.slug}
+                        fallbackImage={selectedTheme.image}
+                        containInset="0.25rem"
+                      />
+                    </div>
+                  )}
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
                       <h3 className="font-display text-[15px] sm:text-lg truncate" style={{ color: P.ink }}>{selectedTheme?.name}</h3>
@@ -668,7 +730,15 @@ function BuilderInner() {
                 <div className="rounded-xl sm:rounded-2xl p-4 sm:p-6 space-y-4" style={{ background: P.surface, border: `1px solid ${P.lineSoft}` }}>
                   <p className="text-[9px] font-bold tracking-[0.2em] uppercase" style={{ color: P.gold }}>Order Summary</p>
                   <div className="flex items-center gap-3 sm:gap-4">
-                    {selectedTheme && <div className="h-12 w-12 sm:h-14 sm:w-14 flex-shrink-0 rounded-lg sm:rounded-xl bg-cover bg-center shadow-sm" style={{ backgroundImage: `url(${selectedTheme.image})` }} />}
+                    {selectedTheme && (
+                      <div className="relative h-12 w-12 sm:h-14 sm:w-14 flex-shrink-0 rounded-lg sm:rounded-xl overflow-hidden shadow-sm">
+                        <ThemeCardArtwork
+                          themeSlug={selectedTheme.slug}
+                          fallbackImage={selectedTheme.image}
+                          containInset="0.2rem"
+                        />
+                      </div>
+                    )}
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2">
                         <p className="font-display text-[14px] sm:text-base truncate" style={{ color: P.ink }}>{selectedTheme?.name}</p>
@@ -959,7 +1029,16 @@ function LivePreview({ details, theme }: { details: WeddingDetails; theme?: (typ
     <div>
       <p className="mb-3 text-[10px] font-medium tracking-[0.15em] uppercase" style={{ color: P.gold }}>Live Preview</p>
       <div className="rounded-2xl overflow-hidden" style={{ border: `1px solid ${P.lineSoft}`, boxShadow: "0 8px 40px rgba(0,0,0,0.06)" }}>
-        <div className="relative h-48 bg-cover bg-center" style={{ backgroundImage: theme ? `url(${theme.image})` : "linear-gradient(135deg, #e8d4d0, #c9a87c)" }}>
+        <div className="relative h-48 overflow-hidden">
+          {theme ? (
+            <ThemeCardArtwork
+              themeSlug={theme.slug}
+              fallbackImage={theme.image}
+              containInset="0.5rem"
+            />
+          ) : (
+            <div className="absolute inset-0 bg-gradient-to-br from-[#e8d4d0] to-[#c9a87c]" />
+          )}
           <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6" style={{ background: "rgba(0,0,0,0.45)" }}>
             <p className="text-[9px] tracking-[0.25em] uppercase text-white/60">{fmtDate(details.weddingDate) || "Your Wedding Date"}</p>
             <h3 className="mt-2 font-display text-xl text-white">{details.groomName || "Groom"} & {details.brideName || "Bride"}</h3>
@@ -1002,7 +1081,17 @@ function FullInvitePreview({ details, theme, tier }: { details: WeddingDetails; 
 
       {/* ─── HERO — Full-screen cinematic like Royal Palace / South Indian Temple ─── */}
       <section className="relative overflow-hidden" style={{ minHeight: "480px" }}>
-        <div className="absolute inset-0 bg-cover bg-center scale-105" style={{ backgroundImage: theme ? `url(${theme.image})` : "linear-gradient(135deg, #2c2420, #1a1210)" }} />
+        {theme ? (
+          <div className="absolute inset-0 scale-105">
+            <ThemeCardArtwork
+              themeSlug={theme.slug}
+              fallbackImage={theme.image}
+              containInset="1rem"
+            />
+          </div>
+        ) : (
+          <div className="absolute inset-0 bg-gradient-to-br from-[#2c2420] to-[#1a1210] scale-105" />
+        )}
         <div className="absolute inset-0" style={{ background: `linear-gradient(180deg, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.35) 40%, ${bgColor}F0 100%)` }} />
         
         {/* Decorative dots pattern */}
@@ -1106,7 +1195,17 @@ function FullInvitePreview({ details, theme, tier }: { details: WeddingDetails; 
       {/* ─── VENUE — cinematic overlay like Royal Palace venue ─── */}
       {details.venue && (
         <section className="relative overflow-hidden" style={{ minHeight: "200px" }}>
-          <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: theme ? `url(${theme.image})` : "none", filter: "brightness(0.4)" }} />
+          {theme ? (
+            <div className="absolute inset-0 brightness-[0.4]">
+              <ThemeCardArtwork
+                themeSlug={theme.slug}
+                fallbackImage={theme.image}
+                containInset="0.75rem"
+              />
+            </div>
+          ) : (
+            <div className="absolute inset-0 bg-[#2a2420]" />
+          )}
           <div className="absolute inset-0" style={{ background: "rgba(0,0,0,0.6)" }} />
           <div className="relative z-10 flex min-h-[200px] flex-col items-center justify-center px-6 py-10 text-center">
             <p className="text-[9px] font-semibold uppercase tracking-[0.5em]" style={{ color: accent }}>Venue</p>

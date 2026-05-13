@@ -1,23 +1,15 @@
-/**
- * Premium Sample Story Content
- * Story-driven wedding invitation content inspired by real celebrity weddings
- * Each story is cinematic, emotional, and aspirational
- */
-
 export interface SampleStory {
   id: string;
   themeSlug: string;
-  
-  // Card Preview
   cardTeaser: string;
   cardCTA: string;
-  
-  // Hero
   heroTitle: string;
   heroSubtitle: string;
   heroImage: string;
-  
-  // Couple Details
+  heroImagePosition?: string;
+  cardImage?: string;
+  cardImagePosition?: string;
+  cardImageFit?: "cover" | "contain";
   groomName: string;
   brideName: string;
   groomFullName?: string;
@@ -25,24 +17,16 @@ export interface SampleStory {
   city: string;
   venue: string;
   venueAddress?: string;
-  
-  // Story Sections
   welcomeNote: string;
   ourStoryTitle: string;
   howWeMet: string;
   littleThings: string;
   proposalTitle: string;
   proposalStory: string;
-  
-  // Family
   groomFamily?: string;
   brideFamily?: string;
-  
-  // Gallery
   galleryImages: string[];
-  galleryCaptions?: string[];
-  
-  // Events
+  galleryImagePositions?: string[];
   events: Array<{
     name: string;
     date: string;
@@ -50,22 +34,49 @@ export interface SampleStory {
     venue: string;
     description?: string;
   }>;
-  
-  // Details
   dressCode?: string;
   closingNote: string;
   rsvpText: string;
 }
 
+function make4k(url: string) {
+  return url.replace(/w=\d+/g, "w=3840").replace(/q=\d+/g, "q=92");
+}
+
+const PREMIUM_4K = {
+  palace: make4k("https://images.unsplash.com/photo-1596178065887-1198b6148b2b?auto=format&fit=crop&w=1200&q=90"),
+  nightSky: make4k("https://images.unsplash.com/photo-1507400492013-162706c8c05e?auto=format&fit=crop&w=1200&q=90"),
+  tuscany: make4k("https://images.unsplash.com/photo-1523531294919-4bcd7c65e216?auto=format&fit=crop&w=1200&q=85"),
+  santorini: make4k("https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?auto=format&fit=crop&w=1200&q=85"),
+  festive: make4k("https://images.unsplash.com/photo-1583089892943-e02e5b017b6a?auto=format&fit=crop&w=1200&q=85"),
+  forest: make4k("https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=1200&q=85"),
+  blossom: make4k("https://images.unsplash.com/photo-1522383225653-ed111181a951?auto=format&fit=crop&w=1200&q=85"),
+  floral: make4k("https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=1200&q=85"),
+  stationery: make4k("https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&w=1200&q=85"),
+  editorial: make4k("https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=1200&q=85"),
+  pastel: make4k("https://images.unsplash.com/photo-1487530811176-3780de880c2d?auto=format&fit=crop&w=1200&q=85"),
+  monsoon: make4k("https://images.unsplash.com/photo-1464699908537-0954e50791ee?auto=format&fit=crop&w=1200&q=85"),
+  ballroom: make4k("https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&w=1200&q=85"),
+  quietLuxury: make4k("https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&w=1200&q=85"),
+  botanical: make4k("https://images.unsplash.com/photo-1518837695005-2083093ee35b?auto=format&fit=crop&w=1200&q=85"),
+  redGold: make4k("https://images.unsplash.com/photo-1600850056064-a8b380df8395?auto=format&fit=crop&w=1200&q=85"),
+  seaside: make4k("https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=85"),
+  boho: make4k("https://images.unsplash.com/photo-1469371670807-013ccf25f16a?auto=format&fit=crop&w=1200&q=85"),
+};
+
 export const SAMPLE_STORIES: SampleStory[] = [
   {
     id: "sidharth-kiara",
     themeSlug: "palace-heirloom",
-    cardTeaser: "From Shershaah's golden sands to a golden palace in Jaisalmer — their love story was always meant for the big screen.",
+    cardTeaser: "From Shershaah's quiet chemistry to a desert palace lit in gold, their forever arrived like a film frame made real.",
     cardCTA: "Step into their royal celebration",
     heroTitle: "Sidharth Malhotra & Kiara Advani",
-    heroSubtitle: "From reel to real — a love written in the golden sands of Jaisalmer",
-    heroImage: "https://images.unsplash.com/photo-1477587458883-47145ed94245?auto=format&fit=crop&w=1920&q=90",
+    heroSubtitle: "A desert palace, a moonlit varmala, and a love story written with grace",
+    heroImage: "/story-assets/sidharth-kiara/sidharth-kiara-card-hd.jpg",
+    heroImagePosition: "center 38%",
+    cardImage: "/story-assets/sidharth-kiara/sidharth-kiara-card-hd.jpg",
+    cardImagePosition: "center 40%",
+    cardImageFit: "contain",
     groomName: "Sidharth",
     brideName: "Kiara",
     groomFullName: "Sidharth Malhotra",
@@ -73,242 +84,234 @@ export const SAMPLE_STORIES: SampleStory[] = [
     city: "Jaisalmer",
     venue: "Suryagarh Palace, Jaisalmer",
     venueAddress: "Sam Road, Jaisalmer, Rajasthan 345001",
-    welcomeNote: "With hearts full of joy and the golden sands of Jaisalmer as our backdrop, we invite you to celebrate the love story that began on screen and became forever. Join us for a royal celebration in the desert city of our dreams.",
+    welcomeNote: "With the dunes of Jaisalmer glowing around us and our families by our side, we invite you to celebrate a love that moved from the screen into real life. Join us for an evening of warmth, music, and a promise that feels timeless.",
     ourStoryTitle: "When Reel Love Became Real",
-    howWeMet: "They met on the sets of Shershaah in 2021 — a film about love, courage, and sacrifice. Sidharth played Captain Vikram Batra, and Kiara played Dimple Cheema, the woman who waited. What began as a professional collaboration slowly blossomed into something far more real, far more precious. The world saw their chemistry on screen before they could even name what they felt for each other.",
-    littleThings: "Sidharth loves how Kiara's laugh can light up any room. Kiara adores Sidharth's quiet strength and the way he shows up — always. Together, they are proof that love stories don't end at 'The End' — sometimes, that's exactly where they begin.",
-    proposalTitle: "He Said Forever",
-    proposalStory: "In an intimate moment away from the world's gaze, Sidharth took Kiara's hands and asked her the question that would change everything. It was quiet, personal, and deeply them — a moment as genuine as the love they had built together. She said yes, and a forever was sealed.",
+    howWeMet: "They met while filming Shershaah, a story already steeped in love and longing. What began as admiration deepened slowly, quietly, and beautifully, until the world watching from afar realized the tenderness on screen was no act at all.",
+    littleThings: "Sidharth treasures Kiara's lightness and the way joy follows her into every room. Kiara loves Sidharth's steadiness, his gentleness, and the calm confidence with which he shows up for love.",
+    proposalTitle: "He Asked for Forever",
+    proposalStory: "Away from the noise, in a moment known only to the two of them, Sidharth asked Kiara to build a life with him. It was intimate, certain, and entirely their own. Some promises do not need spectacle when the feeling has already said everything.",
     groomFamily: "Son of Sunil & Rimma Malhotra",
     brideFamily: "Daughter of Jagdeep & Genevieve Advani",
     galleryImages: [
-      "https://images.unsplash.com/photo-1609921212029-bb5a28e60960?auto=format&fit=crop&w=800&q=85",
-      "https://images.unsplash.com/photo-1477587458883-47145ed94245?auto=format&fit=crop&w=800&q=85",
-      "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=85",
-      "https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=800&q=85",
-      "https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=800&q=85",
-      "https://images.unsplash.com/photo-1587474260584-136574528ed5?auto=format&fit=crop&w=800&q=85",
+      PREMIUM_4K.palace,
+      PREMIUM_4K.ballroom,
+      PREMIUM_4K.redGold,
+      PREMIUM_4K.boho,
+      PREMIUM_4K.nightSky,
     ],
+    galleryImagePositions: ["center center", "center center", "center center", "center center", "center center"],
     events: [
       {
-        name: "Mehendi",
+        name: "Desert Revelry",
         date: "Sunday, 5th February 2023",
-        time: "4:00 PM",
-        venue: "Suryagarh Palace Garden",
-        description: "An evening of henna, music, and golden celebrations"
-      },
-      {
-        name: "Haldi Ceremony",
-        date: "Monday, 6th February 2023",
-        time: "10:00 AM",
-        venue: "Suryagarh Palace Courtyard",
-        description: "A morning of blessings and golden traditions"
+        time: "4:00 PM onwards",
+        venue: "Suryagarh Palace, Jaisalmer",
+        description: "An evening of mehendi, music, candlelight, and golden desert glamour.",
       },
       {
         name: "Wedding Ceremony",
         date: "Tuesday, 7th February 2023",
         time: "7:00 PM",
         venue: "Suryagarh Palace, Jaisalmer",
-        description: "A royal union in the golden city"
+        description: "A moonlit union in the golden city.",
       },
       {
-        name: "Grand Reception",
-        date: "Wednesday, 8th February 2023",
-        time: "7:30 PM",
-        venue: "Suryagarh Palace Ballroom",
-        description: "Celebrating love under the desert stars"
-      }
+        name: "Mumbai Reception",
+        date: "Sunday, 12th February 2023",
+        time: "8:00 PM",
+        venue: "The St. Regis Mumbai",
+        description: "A luminous celebration with family, friends, and the film fraternity.",
+      },
     ],
-    dressCode: "Royal Indian formal — Sherwanis, Lehengas, and Sarees in jewel and ivory tones",
-    closingNote: "Your presence would mean the world to us as we begin this beautiful chapter. Come celebrate in the golden city of Jaisalmer — where our forever begins.",
-    rsvpText: "Kindly grace us with your presence"
+    dressCode: "Royal Indian formal in jewel, gold, and ivory tones.",
+    closingNote: "Your presence would mean the world to us as we begin this beautiful chapter. Come celebrate in Jaisalmer, where our forever begins.",
+    rsvpText: "Kindly grace us with your presence",
   },
-
   {
-    id: "ranveer-deepika",
+    id: "vicky-katrina",
     themeSlug: "paris-romance",
-    cardTeaser: "From Ram-Leela's flames to Lake Como's shores — a love story as dramatic, passionate, and eternal as the films they made together.",
-    cardCTA: "Step into their Lake Como world",
-    heroTitle: "Ranveer Singh & Deepika Padukone",
-    heroSubtitle: "Amore assoluto — Where Italian shores witnessed an Indian forever",
-    heroImage: "https://images.unsplash.com/photo-1531685250784-7569952593d2?auto=format&fit=crop&w=1920&q=90",
-    groomName: "Ranveer",
-    brideName: "Deepika",
-    groomFullName: "Ranveer Singh Bhavnani",
-    brideFullName: "Deepika Padukone",
-    city: "Lake Como, Italy",
-    venue: "Villa del Balbianello, Lake Como",
-    venueAddress: "Via Comoedia 5, Lenno, Lake Como, Italy",
-    welcomeNote: "With immense joy and the breathtaking beauty of Lake Como as our backdrop, we invite you to celebrate the love that set our worlds on fire. Six years of a love story culminate here — in the most beautiful place on earth — as we say forever.",
-    ourStoryTitle: "The Fire That Never Went Out",
-    howWeMet: "They met on the sets of Goliyon Ki Raasleela Ram-Leela in 2012 — a love story set in fire and fury. The chemistry that director Sanjay Leela Bhansali captured on screen turned out to be entirely real. What began as admiration and friendship slowly became the most talked-about, most celebrated love story in Indian cinema.",
-    littleThings: "Ranveer loves how Deepika carries quiet grace in everything she does. Deepika adores how Ranveer's infectious joy lights up every room he enters. Together, they are fire and grace — complete opposites who make each other whole.",
-    proposalTitle: "The Moment They Said Forever",
-    proposalStory: "After six years of love that had been in the public eye, Ranveer and Deepika chose the most intimate of moments to seal their forever — away from cameras, in the quiet of their own world. When the question was asked, it needed no grand gesture. Their love had already answered it a thousand times over.",
-    groomFamily: "Son of Jugjeet Singh Bhavnani & Anju Bhavnani",
-    brideFamily: "Daughter of Prakash Padukone & Ujjala Padukone",
+    cardTeaser: "Rose petals, old stone walls, and a love they guarded quietly until the world saw it bloom.",
+    cardCTA: "Enter their Fort Barwara romance",
+    heroTitle: "Vicky Kaushal & Katrina Kaif",
+    heroSubtitle: "Only love and gratitude, wrapped in the warm blush of Fort Barwara",
+    heroImage: "/story-assets/vicky-katrina/vicky-katrina-1.jpg",
+    heroImagePosition: "center 26%",
+    cardImagePosition: "center 24%",
+    groomName: "Vicky",
+    brideName: "Katrina",
+    groomFullName: "Vicky Kaushal",
+    brideFullName: "Katrina Kaif",
+    city: "Sawai Madhopur",
+    venue: "Six Senses Fort Barwara",
+    venueAddress: "Chauth Ka Barwara, Sawai Madhopur, Rajasthan 322702",
+    welcomeNote: "With hearts full of gratitude and a fort wrapped in candlelight around us, we invite you to witness a celebration that felt deeply personal from the very first moment. Join us in Rajasthan as we begin our forever beneath winter skies and old-world stone.",
+    ourStoryTitle: "A Quiet Love in Full Bloom",
+    howWeMet: "What began in the quiet corners of Mumbai's film world slowly became something deeply anchored and beautifully certain. Their love was never loud for the world; it was built in glances, trust, warmth, and the rare comfort of finding home in another person.",
+    littleThings: "Vicky loves Katrina's grace and the sincerity she brings to every room. Katrina treasures Vicky's open-hearted warmth and the way he makes joy feel effortless and safe.",
+    proposalTitle: "A Promise Kept Close",
+    proposalStory: "Before the celebrations and the headlines, there was a private yes between two people who knew exactly what they had found. Their wedding carried that same feeling into every ritual: intimate, tender, and overflowing with love.",
+    groomFamily: "Son of Sham & Veena Kaushal",
+    brideFamily: "Daughter of Mohammed Kaif & Suzanne Turquotte",
     galleryImages: [
-      "https://images.unsplash.com/photo-1531685250784-7569952593d2?auto=format&fit=crop&w=800&q=85",
-      "https://images.unsplash.com/photo-1562074896-f36ef6fc1ede?auto=format&fit=crop&w=800&q=85",
-      "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=85",
-      "https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?auto=format&fit=crop&w=800&q=85",
-      "https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=800&q=85",
-      "https://images.unsplash.com/photo-1516483638261-f4dbaf036963?auto=format&fit=crop&w=800&q=85",
+      PREMIUM_4K.floral,
+      PREMIUM_4K.palace,
+      PREMIUM_4K.quietLuxury,
+      PREMIUM_4K.boho,
+      PREMIUM_4K.redGold,
     ],
+    galleryImagePositions: ["center center", "center center", "center center", "center center", "center center"],
     events: [
       {
-        name: "Sindhi Wedding Ceremony",
-        date: "Wednesday, 14th November 2018",
-        time: "5:00 PM",
-        venue: "Villa del Balbianello, Lake Como",
-        description: "A traditional Sindhi ceremony by the lakeside"
+        name: "Mehendi & Celebration Evening",
+        date: "Wednesday, 8th December 2021",
+        time: "4:00 PM onwards",
+        venue: "Six Senses Fort Barwara",
+        description: "Rose petals, music, and the warmth of both families gathered together.",
       },
       {
-        name: "Konkani Wedding Ceremony",
-        date: "Thursday, 15th November 2018",
-        time: "5:00 PM",
-        venue: "Villa del Balbianello, Lake Como",
-        description: "A beautiful Konkani celebration of love"
+        name: "Wedding Ceremony",
+        date: "Thursday, 9th December 2021",
+        time: "3:30 PM",
+        venue: "Six Senses Fort Barwara",
+        description: "A sacred ceremony set against fort walls, winter light, and timeless vows.",
       },
-      {
-        name: "Wedding Reception",
-        date: "Friday, 16th November 2018",
-        time: "8:00 PM",
-        venue: "Lake Como Grand Terrace",
-        description: "An Italian evening of celebration and love"
-      }
     ],
-    dressCode: "Elegant Indian formal — Sabyasachi-inspired attire welcome",
-    closingNote: "Come celebrate where Indian love met Italian beauty. Your presence makes our forever complete.",
-    rsvpText: "Join us on the shores of forever"
+    dressCode: "Romantic Indian formal in blush, rose, champagne, and ivory.",
+    closingNote: "Thank you for carrying our story with so much love. We cannot wait to celebrate this chapter with you.",
+    rsvpText: "Join us in Fort Barwara",
   },
-
   {
     id: "virat-anushka",
     themeSlug: "tuscany-vineyard",
-    cardTeaser: "From a shampoo commercial to a Tuscany wedding — a love story that the whole world fell in love with.",
+    cardTeaser: "From a chance commercial to a Tuscan wedding, their story became a collective memory for an entire generation.",
     cardCTA: "Step into their Tuscany",
-    heroTitle: "Virat Kohli & Anushka Sharma",
-    heroSubtitle: "Under the Tuscan sun — where India's most beloved couple said forever",
-    heroImage: "https://images.unsplash.com/photo-1523531294919-4bcd7c65e216?auto=format&fit=crop&w=1920&q=90",
+    heroTitle: "Virat Weds Anushka",
+    heroSubtitle: "Under the Tuscan sun, where India's most beloved couple said forever",
+    heroImage: "/story-assets/virat-anushka/virat-anushka-1.jpg",
+    heroImagePosition: "center 22%",
+    cardImagePosition: "center 24%",
     groomName: "Virat",
     brideName: "Anushka",
     groomFullName: "Virat Kohli",
     brideFullName: "Anushka Sharma",
     city: "Tuscany, Italy",
-    venue: "Il Borro Tuscan Biodynamic Resort",
-    venueAddress: "Loc. Il Borro 1, San Giustino Valdarno, Tuscany, Italy",
-    welcomeNote: "Surrounded by the rolling hills and golden vineyards of Tuscany, in a ceremony as intimate as our love, we celebrated the beginning of forever. We are grateful for every person who has cheered for our love — and now we invite you to be part of our most precious celebration.",
-    ourStoryTitle: "A Love That Belonged to the World",
-    howWeMet: "They met on the set of a commercial in 2013. A cricketer at the peak of his powers, an actress at the height of her career — two worlds colliding in the most ordinary of settings. What followed were years of quiet love, public scrutiny, and an unshakeable bond that only grew stronger with every challenge.",
-    littleThings: "Virat loves how Anushka grounds him — her calm to his fire, her grace to his intensity. Anushka adores how Virat shows up with complete devotion, in every sense of the word. Together, they have built not just a home, but a haven — a life rooted in love, faith, and family.",
-    proposalTitle: "The Quiet Yes That Shook the World",
-    proposalStory: "Away from the cameras and the celebrations, in the privacy of a moment that was entirely theirs, Virat asked Anushka to be his forever. When news of their wedding emerged — a quiet ceremony in the hills of Tuscany — India collectively smiled. Because some love stories feel personal to everyone who has watched them unfold.",
+    venue: "Borgo Finocchieto, Tuscany",
+    venueAddress: "Buonconvento, Siena, Tuscany, Italy",
+    welcomeNote: "Surrounded by rolling hills and winter light in Tuscany, we celebrated the quiet beginning of forever. We are grateful for every person who has cheered for our love, and now invite you to share in the most intimate chapter of our story.",
+    ourStoryTitle: "A Love the World Cherished",
+    howWeMet: "They first met in 2013 while filming a commercial. A cricketer at the height of his powers and an actress carrying her own luminous world, they found connection in a setting that seemed ordinary until it changed everything.",
+    littleThings: "Virat loves how Anushka grounds him with grace and clarity. Anushka loves Virat's devotion, his intensity, and the warmth behind his strength. Together they built a love rooted in faith, family, and deep companionship.",
+    proposalTitle: "The Quiet Yes That Moved Millions",
+    proposalStory: "Long before Tuscany became the setting the world remembers, their forever had already been chosen in private. When the wedding news finally arrived, it felt less like a surprise and more like the world collectively exhaling into joy.",
     groomFamily: "Son of Late Prem Kohli & Saroj Kohli",
     brideFamily: "Daughter of Col. Ajay Kumar Sharma & Ashima Sharma",
     galleryImages: [
-      "https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?auto=format&fit=crop&w=800&q=85",
-      "https://images.unsplash.com/photo-1568819317551-31051b37f69f?auto=format&fit=crop&w=800&q=85",
-      "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=85",
-      "https://images.unsplash.com/photo-1523531294919-4bcd7c65e216?auto=format&fit=crop&w=800&q=85",
-      "https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=800&q=85",
-      "https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&w=800&q=85",
+      PREMIUM_4K.tuscany,
+      PREMIUM_4K.botanical,
+      PREMIUM_4K.boho,
+      PREMIUM_4K.blossom,
+      PREMIUM_4K.monsoon,
     ],
+    galleryImagePositions: ["center center", "center center", "center center", "center center", "center center"],
     events: [
       {
         name: "Wedding Ceremony",
         date: "Monday, 11th December 2017",
         time: "5:00 PM",
-        venue: "Il Borro Resort, Tuscany",
-        description: "An intimate ceremony among family and closest friends"
+        venue: "Borgo Finocchieto, Tuscany",
+        description: "An intimate ceremony among family and the closest of friends.",
       },
       {
-        name: "Wedding Reception — Delhi",
-        date: "Saturday, 21st January 2018",
+        name: "Delhi Reception",
+        date: "Thursday, 21st December 2017",
         time: "7:30 PM",
-        venue: "New Delhi",
-        description: "Celebrating with family and friends in India"
+        venue: "Taj Diplomatic Enclave, New Delhi",
+        description: "A celebration in the capital with family, friends, and well-wishers.",
       },
       {
-        name: "Wedding Reception — Mumbai",
-        date: "Tuesday, 27th February 2018",
+        name: "Mumbai Reception",
+        date: "Tuesday, 26th December 2017",
         time: "7:30 PM",
-        venue: "Mumbai",
-        description: "A grand Mumbai celebration of love"
-      }
+        venue: "The St. Regis Mumbai",
+        description: "A luminous Mumbai evening shared with cricket and cinema's inner circles.",
+      },
     ],
-    dressCode: "Elegant Indian formal — Sabyasachi attire welcome",
-    closingNote: "Thank you for being part of our journey. Your love and blessings have always meant the world to us. We celebrate this forever with you in our hearts.",
-    rsvpText: "Join us in Tuscany and in our hearts"
+    dressCode: "Elegant Indian formal with rich ivory, blush, and classic Sabyasachi detailing.",
+    closingNote: "Thank you for being part of our journey. Your love and blessings have always meant the world to us.",
+    rsvpText: "Join us in Tuscany and in our hearts",
   },
-
   {
-    id: "santorini-shores",
+    id: "harry-meghan",
     themeSlug: "santorini-sunset",
-    cardTeaser: "Where the Aegean whispers forever — a love as endless as the Mediterranean sky.",
-    cardCTA: "Discover their Santorini",
-    heroTitle: "Elena & Nikos",
-    heroSubtitle: "Αγάπη κάτω από τον ουρανό της Σαντορίνης",
-    heroImage: "https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?auto=format&fit=crop&w=1920&q=90",
-    groomName: "Nikos",
-    brideName: "Elena",
-    groomFullName: "Nikos Andreas Papadopoulos",
-    brideFullName: "Elena Maria Dimitriou",
-    city: "Santorini",
-    venue: "Canaves Oia Suites",
-    venueAddress: "Oia, Santorini 84702, Greece",
-    welcomeNote: "With the Aegean as our witness and the whitewashed cliffs as our altar, we invite you to celebrate the love that was written in the stars and sealed by the sea. Join us on this island of dreams as we promise forever.",
-    ourStoryTitle: "Where the Sea Met the Sky",
-    howWeMet: "Elena was a travel photographer from Athens, visiting Santorini to capture the famous sunset. Nikos owned a small boat tour company, showing visitors the island's hidden coves. She booked his sunset cruise, and as the sky turned gold and pink, he told her, 'Some sunsets are so beautiful, you never forget where you were.' She photographed that moment, and it became the first of a thousand more they'd witness together.",
-    littleThings: "Nikos loves how Elena collects seashells from every beach they visit. Elena adores how Nikos plays the bouzouki and sings old Greek love songs. Every evening, they watch the sunset together — a ritual as sacred as prayer.",
-    proposalTitle: "The Sunset He'll Never Forget",
-    proposalStory: "On the cliffs of Oia, with the caldera glowing beneath the setting sun, Nikos took Elena's hand and said, 'I've shown a thousand people this view, but with you, I finally see it.' He knelt with a ring carved from local Santorini stone and gold, and asked her to be his forever. As the sun dipped below the horizon, she said yes, and the island celebrated with them.",
-    groomFamily: "Son of Andreas & Maria Papadopoulos",
-    brideFamily: "Daughter of Dimitrios & Sophia Dimitriou",
+    cardTeaser: "A royal procession, a sunlit kiss, and a wedding that felt both historic and unexpectedly intimate.",
+    cardCTA: "Enter their Windsor day",
+    heroTitle: "Prince Harry & Meghan Markle",
+    heroSubtitle: "A spring wedding at Windsor, where tradition met modern grace",
+    heroImage: "/story-assets/harry-meghan/harry-meghan-4.jpg",
+    heroImagePosition: "center 22%",
+    cardImage: "/story-assets/harry-meghan/harry-meghan-5.jpg",
+    cardImagePosition: "center 32%",
+    cardImageFit: "contain",
+    groomName: "Harry",
+    brideName: "Meghan",
+    groomFullName: "Prince Harry, Duke of Sussex",
+    brideFullName: "Meghan Markle",
+    city: "Windsor",
+    venue: "St George's Chapel, Windsor Castle",
+    venueAddress: "Windsor SL4 1NJ, United Kingdom",
+    welcomeNote: "In the heart of Windsor, beneath vaulted stone and spring light, we invite you to witness a celebration of love that honors tradition while opening itself to a new kind of grace. Join us for a day of vows, music, bells, and a carriage procession that the world will remember.",
+    ourStoryTitle: "A Modern Fairy Tale",
+    howWeMet: "They were introduced on a blind date in London in 2016. What followed was a swift and certain love, built across continents, private dinners, and a deep sense of recognition that they had found in each other something both grounding and extraordinary.",
+    littleThings: "Harry loves Meghan's poise, warmth, and fearless compassion. Meghan treasures Harry's humor, tenderness, and the devotion with which he protects the life they are building together.",
+    proposalTitle: "The Night It Became Forever",
+    proposalStory: "In the quiet comfort of Nottingham Cottage, over a simple evening in, Harry proposed. It was unguarded and heartfelt, the kind of moment that feels unforgettable precisely because it is filled with sincerity rather than spectacle.",
+    groomFamily: "Son of King Charles III & Diana, Princess of Wales",
+    brideFamily: "Daughter of Thomas Markle Sr. & Doria Ragland",
     galleryImages: [
-      "https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?auto=format&fit=crop&w=800&q=85",
-      "https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&w=800&q=85",
-      "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=85",
-      "https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&w=800&q=85",
-      "https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=800&q=85",
-      "https://images.unsplash.com/photo-1522083165195-3424ed129620?auto=format&fit=crop&w=800&q=85",
+      PREMIUM_4K.botanical,
+      PREMIUM_4K.seaside,
+      PREMIUM_4K.palace,
+      PREMIUM_4K.floral,
+      PREMIUM_4K.stationery,
     ],
+    galleryImagePositions: ["center center", "center center", "center center", "center center", "center center"],
     events: [
       {
-        name: "Welcome Dinner",
-        date: "Friday, 5th July 2026",
-        time: "8:00 PM",
-        venue: "Ambrosia Restaurant, Oia",
-        description: "Traditional Greek feast by the caldera"
+        name: "Wedding Service",
+        date: "Saturday, 19th May 2018",
+        time: "12:00 PM",
+        venue: "St George's Chapel, Windsor Castle",
+        description: "A royal wedding service with gospel, vows, and ringing chapel bells.",
       },
       {
-        name: "Wedding Ceremony",
-        date: "Saturday, 6th July 2026",
-        time: "6:30 PM",
-        venue: "Canaves Oia Infinity Pool Terrace",
-        description: "Vows at sunset, overlooking the Aegean"
+        name: "Carriage Procession",
+        date: "Saturday, 19th May 2018",
+        time: "1:00 PM",
+        venue: "Windsor Castle Grounds",
+        description: "A sunlit procession through Windsor, shared with the world.",
       },
       {
-        name: "Reception Under the Stars",
-        date: "Saturday, 6th July 2026",
-        time: "9:00 PM",
-        venue: "Canaves Oia Suites",
-        description: "Dancing, music, and Mediterranean magic"
-      }
+        name: "Evening Reception",
+        date: "Saturday, 19th May 2018",
+        time: "7:00 PM",
+        venue: "Frogmore House",
+        description: "An intimate evening reception for family and close friends.",
+      },
     ],
-    dressCode: "Coastal elegance — whites, blues, and flowing fabrics",
-    closingNote: "Your presence is our greatest blessing. Come celebrate where the sea meets the sky and love knows no end.",
-    rsvpText: "Join us by the Aegean"
+    dressCode: "Classic day formal, refined tailoring, and understated elegance.",
+    closingNote: "Your presence would complete this joyous day as we begin the next chapter of our lives together.",
+    rsvpText: "Join us in Windsor",
   },
-
   {
     id: "priyanka-nick",
     themeSlug: "bollywood-sangeet",
-    cardTeaser: "A Bollywood star, a global pop icon, and a royal Jodhpur palace — the most cinematic wedding the world has ever seen.",
+    cardTeaser: "Two continents, two ceremonies, and one of the most cinematic unions modern celebrity culture has ever seen.",
     cardCTA: "Enter their royal world",
     heroTitle: "Priyanka Chopra & Nick Jonas",
     heroSubtitle: "When Bollywood met Hollywood at Umaid Bhawan Palace",
-    heroImage: "https://images.unsplash.com/photo-1583089892943-e02e5b017b6a?auto=format&fit=crop&w=1920&q=90",
+    heroImage: "/story-assets/priyanka-nick/priyanka-nick-2.png",
+    heroImagePosition: "center 20%",
+    cardImagePosition: "center 22%",
     groomName: "Nick",
     brideName: "Priyanka",
     groomFullName: "Nicholas Jerry Jonas",
@@ -316,370 +319,354 @@ export const SAMPLE_STORIES: SampleStory[] = [
     city: "Jodhpur",
     venue: "Umaid Bhawan Palace, Jodhpur",
     venueAddress: "Circuit House Road, Cantt Area, Jodhpur, Rajasthan 342006",
-    welcomeNote: "Two worlds, two cultures, one extraordinary love. We invite you to join us at the magnificent Umaid Bhawan Palace as we celebrate our union — a wedding that honors both our heritages and the love that brought us together across oceans.",
+    welcomeNote: "Two worlds, two cultures, and one extraordinary love. Join us at Umaid Bhawan Palace as we celebrate a union that honors both our heritages with music, ritual, glamour, and joy.",
     ourStoryTitle: "When Two Worlds Became One",
-    howWeMet: "Their story began with a Twitter DM in 2016, blossomed at the Met Gala in 2017, and became something the world could not stop talking about. A former Miss World and a Grammy-nominated pop star — from different countries, different industries, different worlds — and yet every moment they shared made it clear that some love stories transcend all boundaries.",
-    littleThings: "Nick loves how Priyanka carries the grace of India everywhere she goes. Priyanka adores how Nick shows up for her completely, in every culture and every room. Together, they are a study in how love makes the whole world feel smaller and warmer.",
+    howWeMet: "Their story began with a message, bloomed through red carpets and long-distance flights, and soon became one of the most talked-about romances in the world. Yet beneath the headlines was something far simpler: two people who recognized home in each other.",
+    littleThings: "Nick loves how Priyanka carries India with her in everything she does. Priyanka loves how fully Nick shows up for love, family, and every room they walk into together.",
     proposalTitle: "A Yes Heard Around the World",
-    proposalStory: "On Priyanka's birthday in July 2018, in London, Nick shut down a Tiffany & Co. store and proposed with a stunning diamond ring. When news broke, it felt like a celebration the world had been waiting for. After years of on-screen love stories for both of them, their real one had finally begun.",
+    proposalStory: "On Priyanka's birthday in London, Nick proposed with an iconic ring and a certainty that felt larger than the moment itself. Their answer to that yes became a wedding that was as grand as it was deeply personal.",
     groomFamily: "Son of Paul Kevin Jonas Sr. & Denise Miller Jonas",
     brideFamily: "Daughter of Dr. Ashok Chopra & Dr. Madhu Chopra",
     galleryImages: [
-      "https://images.unsplash.com/photo-1570168007204-dfb528c6958f?auto=format&fit=crop&w=800&q=85",
-      "https://images.unsplash.com/photo-1583089892943-e02e5b017b6a?auto=format&fit=crop&w=800&q=85",
-      "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=85",
-      "https://images.unsplash.com/photo-1596178065887-1198b6148b2b?auto=format&fit=crop&w=800&q=85",
-      "https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=800&q=85",
-      "https://images.unsplash.com/photo-1477587458883-47145ed94245?auto=format&fit=crop&w=800&q=85",
+      PREMIUM_4K.ballroom,
+      PREMIUM_4K.palace,
+      PREMIUM_4K.redGold,
+      PREMIUM_4K.festive,
+      PREMIUM_4K.quietLuxury,
     ],
+    galleryImagePositions: ["center center", "center center", "center center", "center center", "center center"],
     events: [
       {
         name: "Mehendi Ceremony",
         date: "Friday, 30th November 2018",
         time: "4:00 PM",
         venue: "Umaid Bhawan Palace Gardens",
-        description: "A vibrant celebration of Indian tradition"
-      },
-      {
-        name: "Sangeet Night",
-        date: "Friday, 30th November 2018",
-        time: "8:00 PM",
-        venue: "Umaid Bhawan Palace Ballroom",
-        description: "Bollywood meets Hollywood on the dance floor"
+        description: "A vibrant celebration of Indian tradition, music, and color.",
       },
       {
         name: "Christian Wedding Ceremony",
         date: "Saturday, 1st December 2018",
         time: "6:00 PM",
         venue: "Umaid Bhawan Palace",
-        description: "A Western ceremony in a royal Indian setting"
+        description: "A Western ceremony inside a royal Indian setting.",
       },
       {
         name: "Hindu Wedding Ceremony",
         date: "Sunday, 2nd December 2018",
         time: "6:00 PM",
         venue: "Umaid Bhawan Palace",
-        description: "A traditional Hindu celebration of union"
-      }
+        description: "A traditional Hindu celebration of union and blessing.",
+      },
     ],
-    dressCode: "Bollywood royalty — bold Indian formal or elegant Western attire",
-    closingNote: "Two cultures. One love. Your presence at our celebration would mean the world to us. Come dressed to celebrate the union of two worlds.",
-    rsvpText: "Join us in Jodhpur for a wedding of two worlds"
+    dressCode: "Bollywood royalty with space for both Indian opulence and black-tie elegance.",
+    closingNote: "Two cultures, one love, and a celebration we will remember forever. Your presence would mean the world to us.",
+    rsvpText: "Join us in Jodhpur",
   },
-
   {
-    id: "garden-romance",
+    id: "ranbir-alia",
     themeSlug: "roses-luxury",
-    cardTeaser: "Where roses bloom and hearts intertwine — a love story as timeless as a garden in spring.",
-    cardCTA: "Walk through their garden",
-    heroTitle: "Meera & Aarav",
-    heroSubtitle: "Pyaar ka phool, dil ka bahaar",
-    heroImage: "https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=1920&q=90",
-    groomName: "Aarav",
-    brideName: "Meera",
-    groomFullName: "Aarav Sharma",
-    brideFullName: "Meera Verma",
-    city: "Udaipur",
-    venue: "Saheliyon Ki Bari, Udaipur",
-    venueAddress: "Saheli Marg, Udaipur, Rajasthan 313001",
-    welcomeNote: "In a garden where roses bloom eternal and love whispers through every petal, we found our forever. Join us as we celebrate the beginning of our beautiful journey together — a love story written in flowers.",
-    ourStoryTitle: "Love in Full Bloom",
-    howWeMet: "Meera was a botanist, researching heirloom roses at Udaipur's historic gardens. Aarav was an architect restoring the garden's ancient fountains. She asked if he could help preserve a section without disturbing a rare climbing rose. He said yes, and they spent every afternoon working side by side. When that rose finally bloomed, he told her, 'Some things are worth waiting for.' He meant her.",
-    littleThings: "Aarav loves how Meera presses flowers from every date they've ever been on. Meera adores how Aarav sketches architectural plans for their dream home, always with a garden at the center. They plant a new rose bush every anniversary — their love, forever growing.",
-    proposalTitle: "Among the Roses",
-    proposalStory: "In the garden where they first met, surrounded by a thousand blooming roses, Aarav knelt and said, 'You've taught me that the most beautiful things take time, care, and patience. Will you grow old with me?' He presented a ring with a rosette-cut diamond, and she said yes as petals fell around them like confetti. That garden is now their favorite place on earth.",
-    groomFamily: "Son of Mr. Rajesh Sharma & Mrs. Kavita Sharma",
-    brideFamily: "Daughter of Dr. Anil Verma & Mrs. Sunita Verma",
+    cardTeaser: "Sunlit ivory, jasmine strings, and a balcony wedding that felt like the softest kind of luxury.",
+    cardCTA: "Enter their Mumbai day",
+    heroTitle: "Ranbir Kapoor & Alia Bhatt",
+    heroSubtitle: "An intimate balcony wedding wrapped in ivory, gold, and family",
+    heroImage: "/story-assets/ranbir-alia/ranbir-alia-5.jpg",
+    heroImagePosition: "center 24%",
+    cardImagePosition: "center 24%",
+    groomName: "Ranbir",
+    brideName: "Alia",
+    groomFullName: "Ranbir Kapoor",
+    brideFullName: "Alia Bhatt",
+    city: "Mumbai",
+    venue: "Vastu, Pali Hill",
+    venueAddress: "Pali Hill, Bandra West, Mumbai, Maharashtra",
+    welcomeNote: "In the home that has witnessed our happiest ordinary moments, we invite you to celebrate a day built on closeness, light, and the people who know us best. Join us in Mumbai for a wedding that feels intimate, luminous, and deeply ours.",
+    ourStoryTitle: "A Love Lit by Familiar Light",
+    howWeMet: "They came together while working on Brahmastra, but what followed stretched far beyond a film set. Their bond grew through years of friendship, family, work, and the quiet understanding that some loves deepen most beautifully away from noise.",
+    littleThings: "Ranbir loves Alia's instinctive joy and the sincerity she brings to every gesture. Alia loves Ranbir's calm, his protective warmth, and the ease with which he makes her feel at home.",
+    proposalTitle: "The Yes Before the Ceremony",
+    proposalStory: "Their wedding was intimate by design, but no less grand in feeling. Every detail pointed inward toward memory, family, and the life already taking shape between them long before the first vow was spoken.",
+    groomFamily: "Son of Rishi Kapoor & Neetu Kapoor",
+    brideFamily: "Daughter of Mahesh Bhatt & Soni Razdan",
     galleryImages: [
-      "https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=800&q=85",
-      "https://images.unsplash.com/photo-1522083165195-3424ed129620?auto=format&fit=crop&w=800&q=85",
-      "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=85",
-      "https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&w=800&q=85",
-      "https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=800&q=85",
-      "https://images.unsplash.com/photo-1464503459993-c2592b9b85ab?auto=format&fit=crop&w=800&q=85",
+      PREMIUM_4K.floral,
+      PREMIUM_4K.botanical,
+      PREMIUM_4K.stationery,
+      PREMIUM_4K.quietLuxury,
+      PREMIUM_4K.pastel,
     ],
+    galleryImagePositions: ["center center", "center center", "center center", "center center", "center center"],
     events: [
       {
-        name: "Mehendi Afternoon",
-        date: "Friday, 22nd February 2026",
+        name: "Mehendi & Haldi",
+        date: "Wednesday, 13th April 2022",
         time: "2:00 PM",
-        venue: "Saheliyon Ki Bari",
-        description: "Mehendi, music, and garden magic"
-      },
-      {
-        name: "Sangeet Evening",
-        date: "Friday, 22nd February 2026",
-        time: "7:00 PM",
-        venue: "Lake Pichola Pavilion",
-        description: "An evening of song, dance, and celebration"
+        venue: "Vastu, Pali Hill",
+        description: "An intimate afternoon of ritual, laughter, and family blessings.",
       },
       {
         name: "Wedding Ceremony",
-        date: "Saturday, 23rd February 2026",
-        time: "6:00 PM",
-        venue: "Rose Garden, Saheliyon Ki Bari",
-        description: "Vows among a thousand roses"
-      }
+        date: "Thursday, 14th April 2022",
+        time: "2:00 PM",
+        venue: "Vastu, Pali Hill",
+        description: "A private ceremony held in the couple's favorite corner of home.",
+      },
     ],
-    dressCode: "Garden elegance — floral prints, pastels, and romantic charm",
-    closingNote: "Come celebrate love in full bloom. Your presence would be the most beautiful gift.",
-    rsvpText: "Bloom with us on our special day"
+    dressCode: "Soft ivory, antique gold, and heirloom elegance.",
+    closingNote: "Thank you for being part of this tender chapter. We would be honored to celebrate it with you.",
+    rsvpText: "Join us in Mumbai",
   },
-
   {
-    id: "editorial-chic",
+    id: "kl-athiya",
     themeSlug: "ivory-monogram",
-    cardTeaser: "Where timeless elegance meets modern romance — a love story written in classic style.",
-    cardCTA: "Discover their elegance",
-    heroTitle: "Nisha & Aditya",
-    heroSubtitle: "A love story, classically told",
-    heroImage: "https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&w=1920&q=90",
-    groomName: "Aditya",
-    brideName: "Nisha",
-    groomFullName: "Aditya Khanna",
-    brideFullName: "Nisha Kapoor",
-    city: "Bangalore",
-    venue: "Taj West End, Bangalore",
-    venueAddress: "Race Course Road, Bangalore 560001",
-    welcomeNote: "With grace, gratitude, and timeless love, we invite you to witness the union of two souls who found forever in each other. Join us for a celebration as elegant and enduring as our love.",
-    ourStoryTitle: "Elegance Meets Forever",
-    howWeMet: "Nisha was a fashion editor for a luxury magazine, attending a product launch at Bangalore's most exclusive boutique. Aditya was a brand consultant working on the event. They both reached for the same champagne flute, laughed at the coincidence, and spent the entire evening in conversation. He walked her home under the stars, and she knew — this was the beginning of something beautiful.",
-    littleThings: "Aditya loves how Nisha always wears pearls, even with jeans. Nisha adores how Aditya writes her handwritten notes on their anniversary paper. They collect vintage books together, and their favorite Sunday activity is browsing old bookstores, hand in hand.",
-    proposalTitle: "A Perfectly Classic Moment",
-    proposalStory: "At their favorite bookstore, surrounded by the smell of old paper and memories, Aditya got down on one knee and said, 'I want every chapter of my life to be written with you.' He presented a vintage Art Deco engagement ring, and she said yes through happy tears. They sealed it with a kiss, and the bookstore owner applauded from behind the counter.",
-    groomFamily: "Son of Mr. Rajiv Khanna & Mrs. Meena Khanna",
-    brideFamily: "Daughter of Mr. Sanjay Kapoor & Mrs. Anjali Kapoor",
+    cardTeaser: "An understated wedding in Khandala, bathed in sunlight, jasmine, and the ease of a love grown quietly over time.",
+    cardCTA: "Discover their Khandala day",
+    heroTitle: "KL Rahul & Athiya Shetty",
+    heroSubtitle: "A softly lit celebration in Khandala, made radiant by stillness and grace",
+    heroImage: "/story-assets/kl-athiya/kl-athiya-1.jpg",
+    heroImagePosition: "center 24%",
+    cardImage: "/story-assets/kl-athiya/kl-athiya-3.jpg",
+    cardImagePosition: "center 32%",
+    cardImageFit: "contain",
+    groomName: "Rahul",
+    brideName: "Athiya",
+    groomFullName: "Kannanur Lokesh Rahul",
+    brideFullName: "Athiya Shetty",
+    city: "Khandala",
+    venue: "Jahan, Khandala",
+    venueAddress: "Suniel Shetty's farmhouse, Khandala, Maharashtra",
+    welcomeNote: "With the hills of Khandala around us and our closest people gathered in peace, we invite you to celebrate a love that has always preferred sincerity over spectacle. Join us for a day of jasmine, sunlight, music, and timeless promises.",
+    ourStoryTitle: "A Love Built with Ease",
+    howWeMet: "Their relationship unfolded gently and without hurry, grounded in friendship, trust, and the quiet certainty of two people who never needed to perform their love for the world to know it was real.",
+    littleThings: "Rahul loves Athiya's softness and the serenity she carries into every moment. Athiya loves Rahul's composure, his warmth, and the deep steadiness he brings into the life they share.",
+    proposalTitle: "The Kind of Yes That Feels Like Peace",
+    proposalStory: "Their wedding carried the same mood as their relationship: refined, intimate, and deeply unforced. Every detail felt touched by calm, the kind of calm that only arrives when love has already made itself home.",
+    groomFamily: "Son of K. N. Lokesh & Rajeshwari Rahul",
+    brideFamily: "Daughter of Suniel & Mana Shetty",
     galleryImages: [
-      "https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&w=800&q=85",
-      "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=85",
-      "https://images.unsplash.com/photo-1522083165195-3424ed129620?auto=format&fit=crop&w=800&q=85",
-      "https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=800&q=85",
-      "https://images.unsplash.com/photo-1464503459993-c2592b9b85ab?auto=format&fit=crop&w=800&q=85",
-      "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=800&q=85",
+      PREMIUM_4K.botanical,
+      PREMIUM_4K.monsoon,
+      PREMIUM_4K.quietLuxury,
+      PREMIUM_4K.stationery,
+      PREMIUM_4K.floral,
     ],
+    galleryImagePositions: ["center center", "center center", "center center", "center center", "center center"],
     events: [
-      {
-        name: "Cocktail Evening",
-        date: "Friday, 14th November 2025",
-        time: "7:00 PM",
-        venue: "Taj West End Lawns",
-        description: "An evening of cocktails and celebration"
-      },
-      {
-        name: "Wedding Ceremony",
-        date: "Saturday, 15th November 2025",
-        time: "6:30 PM",
-        venue: "Taj West End Grand Ballroom",
-        description: "A timeless union"
-      },
-      {
-        name: "Reception Dinner",
-        date: "Saturday, 15th November 2025",
-        time: "8:30 PM",
-        venue: "Taj West End Terrace",
-        description: "An elegant evening under the stars"
-      }
-    ],
-    dressCode: "Black tie elegance — classic formal attire",
-    closingNote: "Your presence is the finest gift. Join us for a celebration of timeless love and enduring elegance.",
-    rsvpText: "Grace us with your presence"
-  },
-
-  {
-    id: "modern-luxury",
-    themeSlug: "modern-gold",
-    cardTeaser: "Where contemporary style meets eternal love — a bold, modern romance for the ages.",
-    cardCTA: "Explore their modern love",
-    heroTitle: "Riya & Sahil",
-    heroSubtitle: "Contemporary love. Timeless promise.",
-    heroImage: "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=1920&q=90",
-    groomName: "Sahil",
-    brideName: "Riya",
-    groomFullName: "Sahil Mehta",
-    brideFullName: "Riya Desai",
-    city: "Pune",
-    venue: "JW Marriott, Pune",
-    venueAddress: "Senapati Bapat Road, Pune 411053",
-    welcomeNote: "With bold hearts and modern spirits, we invite you to celebrate a love that defies convention and embraces forever. Join us for a wedding as contemporary, confident, and unforgettable as our journey together.",
-    ourStoryTitle: "Bold Meets Beautiful",
-    howWeMet: "Riya was a tech entrepreneur pitching at a startup accelerator in Pune. Sahil was a venture capitalist in the audience, intrigued not just by her idea but by the fire in her eyes. After her presentation, he approached her with feedback — and his number. Their first date lasted 8 hours, and they've been inseparable ever since.",
-    littleThings: "Sahil loves how Riya codes while listening to 90s hip-hop. Riya adores how Sahil makes her coffee every morning, perfectly. They run together at sunrise, debate tech trends over dinner, and build their dreams side by side.",
-    proposalTitle: "A Modern Fairytale",
-    proposalStory: "On the rooftop of Pune's most iconic skyscraper, under a sky full of stars and city lights, Sahil took Riya's hand and said, 'You're the best investment I'll ever make.' He presented a sleek, modern platinum ring with a flawless solitaire, and asked her to be his co-founder in life. She said yes, and they toasted with champagne as the city celebrated below.",
-    groomFamily: "Son of Mr. Arvind Mehta & Mrs. Neeta Mehta",
-    brideFamily: "Daughter of Mr. Karan Desai & Mrs. Pooja Desai",
-    galleryImages: [
-      "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=800&q=85",
-      "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=85",
-      "https://images.unsplash.com/photo-1522083165195-3424ed129620?auto=format&fit=crop&w=800&q=85",
-      "https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=800&q=85",
-      "https://images.unsplash.com/photo-1464503459993-c2592b9b85ab?auto=format&fit=crop&w=800&q=85",
-      "https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&w=800&q=85",
-    ],
-    events: [
-      {
-        name: "Welcome Drinks",
-        date: "Friday, 18th October 2025",
-        time: "8:00 PM",
-        venue: "JW Marriott Skybar",
-        description: "Cocktails and skyline views"
-      },
-      {
-        name: "Wedding Ceremony",
-        date: "Saturday, 19th October 2025",
-        time: "7:00 PM",
-        venue: "JW Marriott Grand Ballroom",
-        description: "A modern celebration of love"
-      },
-      {
-        name: "After-Party",
-        date: "Saturday, 19th October 2025",
-        time: "10:30 PM onwards",
-        venue: "JW Marriott Rooftop",
-        description: "DJ, dancing, and city lights"
-      }
-    ],
-    dressCode: "Contemporary formal — sleek, bold, and confident",
-    closingNote: "Come celebrate a modern love story. Your presence is the ultimate upgrade.",
-    rsvpText: "Join us in redefining forever"
-  },
-
-  {
-    id: "pastel-dream",
-    themeSlug: "pastel-garden",
-    cardTeaser: "Where soft hues paint forever — a gentle love story in watercolor and warmth.",
-    cardCTA: "Enter their pastel dream",
-    heroTitle: "Kavya & Rohan",
-    heroSubtitle: "Soft colors. Endless love.",
-    heroImage: "https://images.unsplash.com/photo-1487530811176-3780de880c2d?auto=format&fit=crop&w=1920&q=90",
-    groomName: "Rohan",
-    brideName: "Kavya",
-    groomFullName: "Rohan Malhotra",
-    brideFullName: "Kavya Nair",
-    city: "Chandigarh",
-    venue: "The Oberoi Sukhvilas, Chandigarh",
-    venueAddress: "Siswan Forest Range, New Chandigarh 140901",
-    welcomeNote: "In soft pastels and gentle whispers, we found a love that speaks louder than words. Join us as we celebrate the beginning of our forever — a story painted in kindness, joy, and endless warmth.",
-    ourStoryTitle: "A Gentle Love",
-    howWeMet: "Kavya was a watercolor artist teaching workshops in Chandigarh. Rohan was a teacher who signed up for her class, hoping to unwind after stressful weeks. She taught him how to blend colors, and he taught her how to laugh again. By the end of the workshop, they'd created not just art, but something far more beautiful — a connection neither wanted to let go of.",
-    littleThings: "Rohan loves how Kavya paints little watercolor cards for him on random days. Kavya adores how Rohan reads to her every night before bed. They collect pressed flowers, take long walks in botanical gardens, and dream in soft hues.",
-    proposalTitle: "Painted in Love",
-    proposalStory: "In her art studio, surrounded by her paintings and the smell of fresh watercolor, Rohan knelt and said, 'You've taught me to see the world in color. Will you paint the rest of our lives together?' He presented a ring with a pastel sapphire, and she said yes, tears streaming down her face. That painting now hangs in their home — a reminder of the day everything changed.",
-    groomFamily: "Son of Mr. Vinay Malhotra & Mrs. Rekha Malhotra",
-    brideFamily: "Daughter of Mr. Suresh Nair & Mrs. Maya Nair",
-    galleryImages: [
-      "https://images.unsplash.com/photo-1487530811176-3780de880c2d?auto=format&fit=crop&w=800&q=85",
-      "https://images.unsplash.com/photo-1522083165195-3424ed129620?auto=format&fit=crop&w=800&q=85",
-      "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=85",
-      "https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&w=800&q=85",
-      "https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=800&q=85",
-      "https://images.unsplash.com/photo-1464503459993-c2592b9b85ab?auto=format&fit=crop&w=800&q=85",
-    ],
-    events: [
-      {
-        name: "Mehendi Garden Party",
-        date: "Friday, 6th March 2026",
-        time: "3:00 PM",
-        venue: "The Oberoi Garden Lawns",
-        description: "Pastel perfection in a garden setting"
-      },
       {
         name: "Sangeet Evening",
-        date: "Friday, 6th March 2026",
+        date: "Sunday, 22nd January 2023",
         time: "7:00 PM",
-        venue: "The Oberoi Ballroom",
-        description: "Music, dance, and gentle celebration"
+        venue: "Jahan, Khandala",
+        description: "A night of music, dancing, and families gathered under the stars.",
       },
       {
         name: "Wedding Ceremony",
-        date: "Saturday, 7th March 2026",
-        time: "6:00 PM",
-        venue: "The Oberoi Forest Pavilion",
-        description: "Vows among nature's pastel palette"
-      }
+        date: "Monday, 23rd January 2023",
+        time: "4:00 PM",
+        venue: "Jahan, Khandala",
+        description: "An intimate wedding ceremony framed by florals, sunlight, and the hills.",
+      },
     ],
-    dressCode: "Pastel elegance — soft pinks, lavenders, mints, and gentle hues",
-    closingNote: "Come celebrate a love painted in softness and sealed in joy. Your presence is our greatest blessing.",
-    rsvpText: "Join us in our pastel paradise"
+    dressCode: "Ivory, muted gold, and refined day-wedding elegance.",
+    closingNote: "Your love and blessings would make this celebration even more meaningful. We cannot wait to share it with you.",
+    rsvpText: "Join us in Khandala",
   },
-
   {
-    id: "beach-paradise",
-    themeSlug: "beach-destination",
-    cardTeaser: "Where waves whisper forever — a coastal love story written in sand and sealed by the sea.",
-    cardCTA: "Walk their beach",
-    heroTitle: "Zara & Arjun",
-    heroSubtitle: "Love. Tide. Forever.",
-    heroImage: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1920&q=90",
-    groomName: "Arjun",
-    brideName: "Zara",
-    groomFullName: "Arjun Reddy",
-    brideFullName: "Zara Khan",
-    city: "Goa",
-    venue: "Taj Exotica, Goa",
-    venueAddress: "Calwaddo, Benaulim, Goa 403716",
-    welcomeNote: "With the ocean as our witness and the horizon as our promise, we invite you to celebrate a love as endless as the sea. Join us on the shores where our forever began.",
-    ourStoryTitle: "Salt, Sand, and Soulmates",
-    howWeMet: "Zara was a marine biologist researching coral reefs off the coast of Goa. Arjun was a scuba instructor who led her dive expeditions. Underwater, surrounded by colorful fish and swaying coral, they communicated in hand signals and shared glances. On the surface, they talked for hours about the ocean, life, and dreams. By the end of the expedition, they'd discovered something far more valuable than research — each other.",
-    littleThings: "Arjun loves how Zara collects seashells from every beach they visit. Zara adores how Arjun plays the guitar by the bonfire at sunset. Every year, they return to the reef where they first dove together — a pilgrimage to the place where it all began.",
-    proposalTitle: "The Tide That Changed Everything",
-    proposalStory: "At sunset, on their favorite beach, Arjun wrote 'Marry me?' in the sand. As Zara approached, he knelt with a ring carved from mother-of-pearl and gold, and said, 'The ocean brought us together. Let it witness our forever.' She said yes as the waves washed over their feet, and they kissed as the sun dipped below the horizon.",
-    groomFamily: "Son of Mr. Ravi Reddy & Mrs. Lakshmi Reddy",
-    brideFamily: "Daughter of Mr. Imran Khan & Mrs. Ayesha Khan",
+    id: "shahid-mira",
+    themeSlug: "blush-romance",
+    cardTeaser: "Rose-tinted lehengas, handwritten vows of faith, and a wedding that felt personal in the most beautiful way.",
+    cardCTA: "Step into their Delhi celebration",
+    heroTitle: "Shahid Kapoor & Mira Rajput",
+    heroSubtitle: "A blush-toned wedding in Delhi, intimate at heart and luminous in memory",
+    heroImage: "/story-assets/shahid-mira/shahid-mira-3.jpg",
+    heroImagePosition: "center 18%",
+    cardImage: "/story-assets/shahid-mira/shahid-mira-card-hd.jpg",
+    cardImagePosition: "center 34%",
+    cardImageFit: "contain",
+    groomName: "Shahid",
+    brideName: "Mira",
+    groomFullName: "Shahid Kapoor",
+    brideFullName: "Mira Rajput",
+    city: "Delhi",
+    venue: "Shivinder Singh's Farmhouse, Rajokri",
+    venueAddress: "Rajokri, New Delhi",
+    welcomeNote: "With our families close and our celebrations wrapped in softness, music, and gratitude, we invite you to be part of a wedding that honors love in its most personal form. Join us in Delhi as we begin our forever.",
+    ourStoryTitle: "A Love Chosen with Intention",
+    howWeMet: "They were introduced through family and faith, and what followed was an old-fashioned love story in the most elegant sense. Their connection was rooted in shared values, quiet trust, and the feeling that they had met each other at exactly the right moment.",
+    littleThings: "Shahid loves Mira's warmth, clarity, and the way she brings lightness into every gathering. Mira loves Shahid's sensitivity, his intensity, and the devotion behind the way he loves.",
+    proposalTitle: "A Gentle Turning of Fate",
+    proposalStory: "Not every great love story begins with spectacle. Some begin with a family introduction, a conversation that lingers, and a certainty that grows stronger with each passing moment. Their wedding held that same gentle conviction.",
+    groomFamily: "Son of Pankaj Kapur & Neelima Azeem",
+    brideFamily: "Daughter of Vikramaditya & Bela Rajput",
     galleryImages: [
-      "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=85",
-      "https://images.unsplash.com/photo-1519046904884-53103b34b206?auto=format&fit=crop&w=800&q=85",
-      "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=85",
-      "https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&w=800&q=85",
-      "https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=800&q=85",
-      "https://images.unsplash.com/photo-1522083165195-3424ed129620?auto=format&fit=crop&w=800&q=85",
+      PREMIUM_4K.floral,
+      PREMIUM_4K.botanical,
+      PREMIUM_4K.quietLuxury,
+      PREMIUM_4K.ballroom,
+      PREMIUM_4K.stationery,
     ],
+    galleryImagePositions: ["center center", "center center", "center center", "center center", "center center"],
     events: [
       {
-        name: "Beach Welcome Party",
-        date: "Friday, 25th April 2026",
-        time: "6:00 PM",
-        venue: "Taj Exotica Beach",
-        description: "Bonfire, cocktails, and sunset vibes"
+        name: "Sangeet & Haldi",
+        date: "Monday, 6th July 2015",
+        time: "7:00 PM",
+        venue: "The Trident, Gurugram",
+        description: "A family evening of music, blessings, and celebration.",
       },
       {
-        name: "Mehendi by the Sea",
-        date: "Saturday, 26th April 2026",
-        time: "3:00 PM",
-        venue: "Taj Exotica Pool Deck",
-        description: "Beachside mehendi and music"
+        name: "Wedding Ceremony",
+        date: "Tuesday, 7th July 2015",
+        time: "11:00 AM",
+        venue: "Shivinder Singh's Farmhouse, Rajokri",
+        description: "An intimate ceremony attended by close family and cherished friends.",
       },
       {
-        name: "Beach Wedding Ceremony",
-        date: "Saturday, 26th April 2026",
-        time: "6:30 PM",
-        venue: "Taj Exotica Beach",
-        description: "Vows at sunset, by the ocean"
+        name: "Delhi Reception",
+        date: "Tuesday, 7th July 2015",
+        time: "8:00 PM",
+        venue: "The Oberoi, Gurugram",
+        description: "An evening reception in classic black-tie style.",
       },
-      {
-        name: "Reception Under the Stars",
-        date: "Saturday, 26th April 2026",
-        time: "9:00 PM",
-        venue: "Taj Exotica Beachfront",
-        description: "Dancing, music, and coastal magic"
-      }
     ],
-    dressCode: "Coastal elegance — breezy fabrics, tropical colors, beach chic",
-    closingNote: "Come celebrate where the land meets the sea and love knows no bounds. Your presence is our greatest treasure.",
-    rsvpText: "Sail into our celebration"
+    dressCode: "Blush, ivory, and refined Indian formal with a romantic edge.",
+    closingNote: "We would be honored to celebrate this beautiful new chapter with you. Thank you for your love and blessings.",
+    rsvpText: "Join us in Delhi",
+  },
+  {
+    id: "yuvraj-hazel",
+    themeSlug: "heritage-cream",
+    cardTeaser: "From an intimate gurudwara ceremony to a second set of vows by the sea, their wedding carried both devotion and celebration.",
+    cardCTA: "Walk through their wedding week",
+    heroTitle: "Yuvraj Singh & Hazel Keech",
+    heroSubtitle: "A wedding of prayer, celebration, and a second promise by the sea",
+    heroImage: "/story-assets/yuvraj-hazel/yuvraj-hazel-1.jpg",
+    heroImagePosition: "center 36%",
+    cardImage: "/story-assets/yuvraj-hazel/yuvraj-hazel-1.jpg",
+    cardImagePosition: "center 36%",
+    cardImageFit: "contain",
+    groomName: "Yuvraj",
+    brideName: "Hazel",
+    groomFullName: "Yuvraj Singh",
+    brideFullName: "Hazel Keech",
+    city: "Fatehgarh Sahib & Goa",
+    venue: "Dera of Baba Ram Singh Ji, Fatehgarh Sahib",
+    venueAddress: "Fatehgarh Sahib district, Punjab",
+    welcomeNote: "With prayer at the center of our celebrations and joy woven through every gathering, we invite you to join us for a wedding week that moves from Punjab to Goa, from quiet blessing to vibrant celebration.",
+    ourStoryTitle: "Love Across Two Ceremonies",
+    howWeMet: "Their story unfolded with patience, persistence, and affection that only deepened over time. When the day finally arrived, their wedding reflected both the sacredness of union and the exuberance of a celebration long awaited.",
+    littleThings: "Yuvraj loves Hazel's spark, her softness, and the joy she carries effortlessly. Hazel loves Yuvraj's fierce heart, his humor, and the tenderness behind his strength.",
+    proposalTitle: "A Celebration That Kept Growing",
+    proposalStory: "Their wedding did not belong to one room or one ritual. It unfolded in chapters, each one adding a new kind of beauty: devotion in Punjab, festivity in Goa, and the feeling of a love ready to be celebrated with the whole world.",
+    groomFamily: "Son of Yograj Singh & Shabnam Singh",
+    galleryImages: [
+      PREMIUM_4K.palace,
+      PREMIUM_4K.redGold,
+      PREMIUM_4K.boho,
+      PREMIUM_4K.seaside,
+      PREMIUM_4K.botanical,
+    ],
+    galleryImagePositions: ["center center", "center center", "center center", "center center", "center center"],
+    events: [
+      {
+        name: "Sikh Wedding Ceremony",
+        date: "Wednesday, 30th November 2016",
+        time: "11:00 AM",
+        venue: "Dera of Baba Ram Singh Ji, Fatehgarh Sahib",
+        description: "A traditional Anand Karaj surrounded by family and blessings.",
+      },
+      {
+        name: "Goa Pheras",
+        date: "Friday, 2nd December 2016",
+        time: "6:00 PM",
+        venue: "Teso Waterfront, Siolim, Goa",
+        description: "A seaside Hindu ceremony lit by sunset and celebration.",
+      },
+      {
+        name: "Delhi Reception",
+        date: "Wednesday, 7th December 2016",
+        time: "8:00 PM",
+        venue: "Hotel Maurya, New Delhi",
+        description: "A grand reception to conclude a wedding week full of heart.",
+      },
+    ],
+    dressCode: "Heritage Indian formal with room for celebration, color, and sparkle.",
+    closingNote: "Thank you for being part of this beautiful journey. We cannot wait to celebrate it with you.",
+    rsvpText: "Join us from Punjab to Goa",
+  },
+  {
+    id: "sunset-mehendi",
+    themeSlug: "sunset-mehendi",
+    cardTeaser: "A sunset mehendi wrapped in marigold light, temple bells, and the quiet romance of Shiva-Parvati blessing the evening.",
+    cardCTA: "Reserve this sunset celebration",
+    heroTitle: "Shivansh & Aarohi",
+    heroSubtitle: "A mehendi evening blessed by Shiva and Parvati, glowing with devotion and golden-hour romance",
+    heroImage: "/story-assets/sunset-mehendi/shiva-parvati-cover.png",
+    heroImagePosition: "center 18%",
+    cardImagePosition: "center 20%",
+    groomName: "Shivansh",
+    brideName: "Aarohi",
+    city: "Jodhpur",
+    venue: "Sunset Courtyard, Jodhpur",
+    venueAddress: "Jodhpur, Rajasthan",
+    welcomeNote: "As the sky turns saffron and marigold light settles across the courtyard, we invite you to join us for a mehendi evening shaped by devotion, music, and the blessing of Shiva and Parvati. It will be intimate, luminous, and full of heart.",
+    ourStoryTitle: "Where Devotion Meets Celebration",
+    howWeMet: "Our story began gently, with the kind of ease that feels fated from the very beginning. What drew us together was not noise but recognition, and the beautiful certainty that love can feel both grounding and sacred at once.",
+    littleThings: "Temple bells, marigold garlands, hand-drawn henna, sandalwood, and the blessing of Shiva and Parvati create an evening that feels divine, romantic, and deeply refined.",
+    proposalTitle: "A Sacred Mood, Beautifully Told",
+    proposalStory: "Before the music and the mehendi came a promise held close to the heart. This celebration carries that promise forward with warmth, beauty, and a sense of grace that feels timeless.",
+    galleryImages: [
+      "/story-assets/sunset-mehendi/shiva-parvati-3.jpg",
+      "/story-assets/sunset-mehendi/shiva-parvati-2.jpg",
+      PREMIUM_4K.redGold,
+      PREMIUM_4K.boho,
+      PREMIUM_4K.palace,
+    ],
+    galleryImagePositions: ["center 22%", "center 24%", "center center", "center center", "center center"],
+    events: [
+      {
+        name: "Mehendi Ritual",
+        date: "2026-02-13",
+        time: "5:30 PM",
+        venue: "Sunset Courtyard, Jodhpur",
+        description: "Henna, shehnai, petals, and golden-hour blessings.",
+      },
+      {
+        name: "Sangeet Under the Lamps",
+        date: "2026-02-13",
+        time: "8:00 PM",
+        venue: "Sunset Courtyard, Jodhpur",
+        description: "A romantic evening of music, dance, and divine atmosphere.",
+      },
+    ],
+    dressCode: "Saffron, vermilion, ivory, and festive Indian couture with sacred detailing.",
+    closingNote: "May this evening be filled with beauty, blessing, and the warmth of everyone we hold dear.",
+    rsvpText: "Join us for mehendi at sunset",
   },
 ];
 
-/**
- * Helper function to get story by theme slug
- */
 export function getStoryBySlug(themeSlug: string): SampleStory | undefined {
-  return SAMPLE_STORIES.find(story => story.themeSlug === themeSlug);
+  return SAMPLE_STORIES.find((story) => story.themeSlug === themeSlug);
 }
 
-/**
- * Helper function to check if a theme has a story
- */
+export function getStoryPreviewImage(themeSlug: string, fallbackImage: string): string {
+  const story = getStoryBySlug(themeSlug);
+  return story?.cardImage || story?.heroImage || fallbackImage;
+}
+
+export function getStoryPreviewPosition(themeSlug: string): string {
+  const story = getStoryBySlug(themeSlug);
+  return story?.cardImagePosition || story?.heroImagePosition || "center center";
+}
+
+export function getStoryPreviewFit(themeSlug: string): "cover" | "contain" {
+  const story = getStoryBySlug(themeSlug);
+  if (!story) {
+    return "cover";
+  }
+
+  return story.cardImageFit || "contain";
+}
+
 export function hasStory(themeSlug: string): boolean {
-  return SAMPLE_STORIES.some(story => story.themeSlug === themeSlug);
+  return SAMPLE_STORIES.some((story) => story.themeSlug === themeSlug);
 }

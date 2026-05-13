@@ -4,8 +4,13 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import type { PortfolioTheme } from "@/lib/portfolioThemes";
+import { getStoryPreviewFit, getStoryPreviewImage, getStoryPreviewPosition } from "@/lib/sampleStories";
 
 export default function ThemeCard({ theme, index }: { theme: PortfolioTheme; index: number }) {
+  const previewImage = getStoryPreviewImage(theme.slug, theme.image);
+  const previewPosition = getStoryPreviewPosition(theme.slug);
+  const previewFit = getStoryPreviewFit(theme.slug);
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 40 }}
@@ -17,8 +22,20 @@ export default function ThemeCard({ theme, index }: { theme: PortfolioTheme; ind
       <Link href={`/${theme.slug}`} className="block">
         <div className="relative h-64 overflow-hidden">
           <div
-            className="absolute inset-0 bg-cover bg-center transition-transform duration-[1200ms] group-hover:scale-110"
-            style={{ backgroundImage: `url(${theme.image})` }}
+            className="absolute inset-0 scale-110 bg-cover bg-center opacity-75 blur-2xl"
+            style={{
+              backgroundImage: `url(${previewImage})`,
+              backgroundPosition: previewPosition,
+            }}
+          />
+          <div
+            className="absolute bg-center bg-no-repeat transition-transform duration-[1200ms] group-hover:scale-[1.03]"
+            style={{
+              inset: previewFit === "contain" ? "0.9rem" : "0px",
+              backgroundImage: `url(${previewImage})`,
+              backgroundPosition: previewPosition,
+              backgroundSize: previewFit,
+            }}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-[#1a0a14]/70 via-transparent to-transparent" />
           <div className="absolute left-5 top-5 flex gap-1.5">
@@ -45,7 +62,7 @@ export default function ThemeCard({ theme, index }: { theme: PortfolioTheme; ind
             className="mt-6 inline-flex items-center gap-2 rounded-full px-5 py-3 text-xs font-bold uppercase tracking-[0.28em] text-white shadow-md transition group-hover:gap-3"
             style={{ background: theme.accent === "#ffffff" ? "#111111" : theme.accent }}
           >
-            View Sample <ArrowUpRight size={14} />
+            View Invite <ArrowUpRight size={14} />
           </span>
         </div>
       </Link>
